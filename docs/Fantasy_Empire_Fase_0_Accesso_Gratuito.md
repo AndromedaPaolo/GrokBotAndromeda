@@ -1,10 +1,11 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.0. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
-**Versione:** 1.0 — 28 agosto 2026
-**Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA.
+**Documento operativo.** Completa la proposta v2.1. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Versione:** 1.1 — 28 agosto 2026
+**Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
+**Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.
 
-> Non è un parere legale. Serve a non accendere Stripe "perché tanto è presto" e a non lasciare scoperti gli obblighi che esistono **anche a zero euro**.
+> Non è un parere legale. Serve a non accendere Stripe "perché tanto è presto" (o "perché è scaduto il trimestre") e a non lasciare scoperti gli obblighi che esistono **anche a zero euro**.
 
 ---
 
@@ -55,14 +56,16 @@ Attenzione: se in landing scrivi "compra a 14,99 €" con bottone che non funzio
 
 Testo da usare, in italiano chiaro, in T&C e in landing:
 
-> Fantasy Empire è in accesso gratuito limitato (beta). Non è un abbonamento. Non è "gratis per sempre". Non stiamo vendendo il gioco. Quando decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai acquistare o esportare il save e uscire. Finché sei in beta, il servizio può essere sospeso o chiuso.
+> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai acquistare o esportare il save e uscire. Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
 
 Quello che **non** si scrive:
 
 - "early access a pagamento incluso"
 - "lifetime"
 - "posto Founders già pagato"
-- qualsiasi frase che faccia credere che il gioco resti gratis dopo la data X senza una data X
+- "beta fino al GG/MM/AAAA"
+- "90 giorni di prova"
+- qualsiasi frase che faccia credere che il gioco resti gratis dopo una data X, o che i pagamenti partano in una data X già nota
 
 Una beta **invite-only** è più facile da difendere di un open server: meno minori casuali, meno tetti D1, community tracciabile. È il default della proposta.
 
@@ -121,9 +124,11 @@ Se in beta il tono risulta più esplicito del previsto, si stringe **prima** di 
 
 ---
 
-## 8. Transizione a Fase B (pagamenti)
+## 8. Transizione a Fase B (pagamenti), se e quando
 
-Checklist che **blocca** l'accensione di `STRIPE_LIVE`:
+Non c'è una data in questo paragrafo. C'è un blocco. `STRIPE_LIVE` resta off finché **tutti** i box sotto sono verdi **e** tu hai detto di partire **e** i 30 giorni di preavviso sono scaduti.
+
+Checklist che **blocca** l'accensione:
 
 - [ ] P.IVA, ATECO, eventuale SCIA: commercialista
 - [ ] T&C aggiornati: prezzo, recesso, conformità, durata aggiornamenti, rimborsi
@@ -135,6 +140,7 @@ Checklist che **blocca** l'accensione di `STRIPE_LIVE`:
 - [ ] DPA Stripe, verifica DPF
 - [ ] Prezzi IVA inclusa, prova Paese cliente
 - [ ] Email di preavviso 30 giorni già partita, periodo scaduto
+- [ ] Tua conferma esplicita di partire (issue o messaggio). Non un KPI e non una data in agenda
 - [ ] Piano Hobby Vercel riletto / upgrade se i ToS lo chiedono
 - [ ] Riclassificazione se gli "acquisti nel videogioco" cambiano i descrittori
 
@@ -146,17 +152,18 @@ Cosa succede al giocatore che non compra:
 
 ---
 
-## 9. Crescita senza spendere in ads
+## 9. Crescita senza ads, con Cursor e GrokBot
 
-Il bot ops resta spento. In Fase 0 la crescita è lenta e voluta.
+In Fase 0 la crescita è lenta e voluta. Cursor tiene il git (bug, cap, tetti). GrokBot, se glielo chiedi, manda una mail di waitlist o fa un memo su X. Niente post automatici.
 
-| Leva | Come | Limite |
-|---|---|---|
-| Invite | Ogni `beta_active` ha 0 invite all'inizio. Tu ne dai a mano | Niente viralità incontrollata |
-| Waitlist | Email + consenso. Quando si libera un posto, magic link | Non è una newsletter di prodotto se non hanno spuntato marketing |
-| Capture reale | Sostituisce Trailer 0 | Resta SFW, resta dichiarato IA se usi clip generate |
-| Metriche interne | D1: D1/D7, drop tutorial, 429, tetto video | Niente GA/Meta pixel in Fase 0 |
-| Discord / chat pubblica | **No** in Fase 0 | Altrimenti scatta la riqualificazione DSA "piattaforma online" |
+| Leva | Come | Chi | Limite |
+|---|---|---|---|
+| Invite | Ogni `beta_active` ha 0 invite all'inizio. Tu ne dai a mano | tu | Niente viralità incontrollata |
+| Waitlist | Email + consenso. Quando si libera un posto, magic link | GrokBot su ordine | Non è una newsletter di prodotto se non hanno spuntato marketing |
+| Capture reale / patch gioco | Sostituisce Trailer 0, sistema drop-off | Cursor, PR | Resta SFW |
+| Metriche interne | D1: D1/D7, drop tutorial, 429, tetto video | Cursor in issue | Niente GA/Meta pixel in Fase 0 |
+| Ricerca legale / policy | Memo con fonti | GrokBot | Non è un parere; non accende Stripe |
+| Discord / chat pubblica | **No** in Fase 0 | — | Altrimenti scatta la riqualificazione DSA "piattaforma online" |
 
 KPI da inseguire (non vanity):
 
@@ -172,4 +179,4 @@ Se D7 è morto, alzare un paywall non lo resuscita. Si patcha il gioco.
 
 ## 10. Fuori scope
 
-Nessun testo legale pronto da copiare-incollare sul sito (va redatto). Nessuna pratica IARC compilata. Nessuna Automation. Nessun account Stripe live.
+Nessun testo legale pronto da copiare-incollare sul sito (va redatto). Nessuna pratica IARC compilata. Nessuna Automation Cursor. Nessuna Routine GrokBot. Nessun account Stripe live. Nessuna data di lancio commerciale.

@@ -1,9 +1,9 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.0 — 28 agosto 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.0.
+**Versione:** 1.1 — 28 agosto 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.1.
 
-I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con lo stack e il tono dei file che mi hai passato.
+I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, e **nessuna data** da gratis a pagato.
 
 ---
 
@@ -59,11 +59,11 @@ Senza una delle due, il go-live pubblico in Italia è scoperto. Non è rinviabil
 
 ## 6. Cosa succede quando si accendono i pagamenti
 
-- **A (default).** Preavviso 30 giorni. Offerta Founders a prezzo bloccato per chi ha save recente. Chi non compra: save in sola lettura 60 giorni + export.
+- **A (default).** Preavviso 30 giorni **quando tu decidi**, non da una data scritta oggi. Offerta Founders a prezzo bloccato per chi ha save recente. Chi non compra: save in sola lettura 60 giorni + export.
 - **B.** I beta ricevono Standard in omaggio (1 slot) e pagano solo se vogliono Founders.
 - **C.** Wipe dei save beta, si riparte da zero sul paywall. Pulito tecnicamente, brutta fede verso chi ha giocato.
 
-B è generoso e può andarti stretto se i beta sono 40 e poi diventano 400. C va detto **da subito** in T&C, altrimenti è una pratica scorretta. A è il compromesso.
+B è generoso e può andarti stretto se i beta sono 40 e poi diventano 400. C va detto **da subito** in T&C, altrimenti è una pratica scorretta. A è il compromesso. I 30 giorni sono la durata del preavviso, non la fine della beta.
 
 ---
 
@@ -116,7 +116,7 @@ A evita di fare un'offerta al pubblico e lascia comunque una direzione. C è la 
 - **B.** Discord ufficiale, regole 18+, moderazione tua.
 - **C.** Chat in-game.
 
-B e C riqualificano il servizio verso "piattaforma online" DSA. In Fase 0 è peso inutile. In Fase C si riparla.
+B e C riqualificano il servizio verso "piattaforma online" DSA. In Fase 0 è peso inutile. Se un giorno c'è profitto e lo vuoi, si riparla.
 
 ---
 
@@ -130,15 +130,23 @@ C brucia il free tier e, se il provider è a consumo, brucia te. B è più sicur
 
 ---
 
-## 14. Soglia per accendere Stripe (oltre al legale)
+## 14. Soglia per *poter* accendere Stripe (oltre al legale)
 
-Il legale è un **blocco**. Questa è la soglia *di prodotto*:
+Il legale è un **blocco**. Questa è solo una soglia *di prodotto* da guardare. **Non accende nulla da sola.** Non è una data.
 
-- **A (default).** D7 sopra una soglia che fissi tu (proposta: 20%) **e** almeno 25 save recenti **e** checklist legale Fase B verde.
-- **B.** Data fissa, anche se D7 è basso.
-- **C.** Appena la checklist legale è verde, a prescindere dalle metriche.
+- **A (default).** D7 sopra una soglia che fissi tu (proposta: 20%) **e** almeno 25 save recenti. Anche se i numeri sono verdi, serve ancora la tua frase esplicita + checklist legale.
+- **B.** ~~Data fissa~~ **Scartata.** Una data prefissata è quello che non vuoi: o paghi a checklist rossa, o smenti il calendario in pubblico.
+- **C.** Non si guarda nemmeno D7. Solo checklist legale + tuo sì.
 
-B e C fanno cassa su un gioco che magari non ritengono. A usa la beta per quello che serve.
+A usa la beta per quello che serve. C è più pulita se i numeri non ti interessano. B non si prende.
+
+---
+
+## 15. Chi fa cosa
+
+- **A (default).** Cursor Pro+ tiene il git (PR, test, flag). GrokBot a chiamata: mail, analisi X/Twitter, ricerca legale. Soldi e `STRIPE_LIVE` solo tu. Vedi `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
+- **B.** GrokBot fa anche le PR di prodotto. Sconsigliato: il git è di Cursor.
+- **C.** Solo Cursor, GrokBot spento. Perdi mail e analisi X senza un giro manuale tuo.
 
 ---
 
@@ -147,7 +155,7 @@ B e C fanno cassa su un gioco che magari non ritengono. A usa la beta per quello
 Mandami un elenco tipo:
 
 ```
-1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A
+1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A
 ```
 
-oppure mescola (`3B 6B 9B`). Aggiorno i tre file di proposta, alzo le versioni, e ti dico cosa cambia in landing, D1 e checklist.
+oppure mescola (`3B 6B 9B`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia in landing, D1 e checklist. Niente codice finché non lo chiedi.

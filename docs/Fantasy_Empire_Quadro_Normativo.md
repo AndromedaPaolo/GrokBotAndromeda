@@ -1,12 +1,12 @@
 # Fantasy Empire — Quadro normativo per realizzare il progetto
 
 **Documento separato dalla proposta commerciale.**
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.0) · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
-**Versione:** 1.1 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.1) · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
+**Versione:** 1.2 — 28 agosto 2026
 **Oggetto:** tutte le norme che l'idea descritta nei file di proposta deve rispettare per esistere legalmente.
 **Ipotesi di base:** titolare stabilito in Italia, *poi* vendita a consumatori (B2C), gioco web, stack GitHub · Vercel · Cloudflare D1/R2 · Stripe, video generati da IA con tono "SFW sexy", bot ops post-profitto.
 
-**Fase 0 (agosto 2026):** il go-live è un accesso gratuito. Stripe live è spento. Questo file resta la mappa *completa*, scritta per il momento in cui si vende. Cosa si applica già a zero euro, e cosa resta inerte, sta in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Non cancellare le sezioni su recesso, IVA e pulsante 54-bis: servono il giorno in cui `STRIPE_LIVE` passa a on.
+**Fase 0 (agosto 2026):** il go-live è un accesso gratuito **senza data di fine**. Stripe live è spento. Automantenimento sul git: Cursor Pro+. GrokBot a chiamata (mail, X, ricerca legale). Questo file resta la mappa *completa*, scritta anche per il momento in cui si venderà. Cosa si applica già a zero euro, e cosa resta inerte, sta in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Non cancellare le sezioni su recesso, IVA e pulsante 54-bis: servono il giorno in cui `STRIPE_LIVE` passa a on. Quel giorno non è in calendario.
 
 > **Non è un parere legale.** È una mappa normativa per sapere *cosa* si applica, *quando* scatta e *cosa* va prodotto. Le scelte fiscali (regime, ATECO, SCIA) vanno confermate da un commercialista; i testi legali (T&C, privacy, EULA) da un avvocato. Norme aggiornate al 28 agosto 2026: alcune sono entrate in vigore da poche settimane (AI Act art. 50 dal 2 agosto 2026, pulsante di recesso dal 19 giugno 2026) e altre stanno cambiando (ADR, Digital Fairness Act).
 
@@ -310,7 +310,7 @@ Utile sapere cosa **escludere**, per non pagare conformità inutile.
 
 ## 14. Checklist per fase
 
-Allineata alla proposta v2.0. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`.
+Allineata alla proposta v2.1. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
 ### Fase 0 — go-live pubblico senza pagamenti
 
@@ -352,7 +352,9 @@ Blocchi che impediscono di accendere i pagamenti se mancanti (in più rispetto a
 - [ ] Riclassificazione se cambiano gli acquisti in-game
 - [ ] Verifica periodica delle certificazioni DPF dei fornitori
 
-### Fase C — profitto, bot, social
+### Quando (se) c'è profitto — marketing live, social
+
+Non è una data. È il momento in cui stai già vendendo e *tu* sblocchi i publish. GrokBot resta a chiamata. Cursor resta sul git. Checklist extra sulle PR che toccano prezzo, entitlement, T&C.
 
 - [ ] Verifica soglie EAA (10 occupati / 2 mln €) prima di superarle
 - [ ] Policy di pubblicazione del bot con approvazione umana e disclosure IA

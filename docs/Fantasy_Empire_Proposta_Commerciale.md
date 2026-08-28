@@ -4,8 +4,9 @@
 **Fonte design:** *Fantasy Empire – Game Design Document (SFW)* — perimetro completo dal giorno uno
 **Stack:** GitHub · Vercel · Cloudflare D1 · Stripe (spento in Fase 0)
 **Tipo documento:** proposta (nessun codice, nessun deploy)
-**Versione proposta:** 2.0 — 28 agosto 2026
-**Ops bot:** `Fantasy_Empire_Grok_Bot_Ops.md`
+**Versione proposta:** 2.1 — 28 agosto 2026
+**Ops (Cursor + GrokBot):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
+**GrokBot, dettaglio:** `Fantasy_Empire_Grok_Bot_Ops.md`
 **Video IA azioni (nel sito):** `Fantasy_Empire_Video_IA_Azioni.md`
 **Quadro normativo:** `Fantasy_Empire_Quadro_Normativo.md`
 **Fase 0 (gratis, Italia):** `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
@@ -22,8 +23,10 @@
 3. **Fase 0.** La gente gioca senza pagare. Stripe live è spento. Nessun checkout, nessuna carta, nessun SKU venduto.
 4. Sulla landing c'è un video showcase (trailer). Chi ha un account beta entra in `/play`. Chi non è loggato vede solo landing + pagine legali.
 5. Tutto ciò che la legge italiana e l'UE chiedono *anche a un servizio gratuito* va messo in Fase 0. Quello che scatta *solo con i soldi* (recesso, IVA, OSS, pulsante 54-bis, KYC Stripe) resta preparato ma inerte.
+6. **Automantenimento su Cursor Pro+.** Il git, le PR, i test, i flag, le bozze di pagine. GrokBot (abbonamento già attivo) entra a chiamata: mail, analisi X/Twitter, ricerca legale. Nessuno dei due accende i pagamenti. Dettaglio: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
+7. **Nessuna data di fine beta.** Il passaggio a pagamento è un evento (tu + checklist legale verde + preavviso 30 giorni). Non un giorno in calendario, non un cron, non "tra 90 giorni".
 
-Il punto 3 è il cambio rispetto alla v1.5. Lì `PAYWALL=on` era il default di produzione. Qui il default di produzione, per ora, è `PAYWALL=off` + `STRIPE_LIVE=off` + `BETA_ACCESS=on`.
+Il punto 3 è il cambio rispetto alla v1.5. Lì `PAYWALL=on` era il default di produzione. Qui il default di produzione, finché non lo cambi tu, è `PAYWALL=off` + `STRIPE_LIVE=off` + `BETA_ACCESS=on`.
 
 ---
 
@@ -33,15 +36,15 @@ Fantasy Empire è un web game persistente: città e edifici, produzione/fusione 
 
 **Verso i giocatori, adesso.** Accesso gratuito con account, gate 18+, cap di posti. Si gioca il GDD intero. Non si compra nulla. Non si chiede un metodo di pagamento "per dopo".
 
-**Verso i giocatori, dopo.** Quando tu decidi (e quando partita IVA, T&C a pagamento e Stripe sono pronti), la stessa installazione accende il paywall. Chi era in beta tiene il save. Il prezzo Founders glielo si può bloccare. Niente pay-to-win, mai.
+**Verso i giocatori, dopo.** Non c'è un "dopo" in agenda. Se e quando tu vuoi vendere, *e* P.IVA / T&C a pagamento / Stripe sono pronti, *e* è partito e scaduto il preavviso di 30 giorni, la stessa installazione accende il paywall. Chi era in beta tiene il save. Il prezzo Founders glielo si può bloccare. Niente pay-to-win, mai. Se quelle cose non succedono, si resta in Fase 0. Il profitto alza il rischio legale: non si entra in quel rischio per una scadenza.
 
-**Verso di te (infra).**
+**Verso di te (infra e ops).**
 
-| Fase | Quando | Cosa paghi tu | Cosa paga il giocatore |
-|---|---|---|---|
-| **0 — Beta legale, gratis** | Go-live → tu accendi i pagamenti | 0 € fissi (free tier) | 0 € |
-| **B — Prime vendite** | Stripe live, primi incassi, ancora free tier | Commissioni Stripe | Standard / Founders |
-| **C — Profitto** | Entrate nette sopra la soglia che fissi tu | Piani paid solo se i free tier non bastano | Stessi SKU + season/cosmetic |
+| Fase | Quando | Cosa paghi tu | Cosa paga il giocatore | Chi tiene in vita |
+|---|---|---|---|---|
+| **0 — Beta legale, gratis** | Go-live, senza data di fine | 0 € fissi (free tier) + i piani che hai già (Cursor Pro+, GrokBot) | 0 € | Cursor sul git. GrokBot a chiamata |
+| **B — Prime vendite** | Evento: tu + checklist verde + preavviso scaduto | Commissioni Stripe | Standard / Founders | Uguale. Più checklist su ogni PR che tocca soldi |
+| **C — C'è margine** | Entrate nette sopra una soglia che *osservi*, non un trigger | Piani paid solo se i free tier non bastano | Stessi SKU + season/cosmetic | Uguale. Marketing live solo con ok tuo |
 
 La vecchia "Fase A — Zero burn con paywall" non esiste più come lancio. Lo zero burn resta. Il paywall slitta.
 
@@ -57,7 +60,7 @@ Un paywall a 14,99 € su un titolo senza community, senza capture reale e senza
 2. **Asset.** Clip IA in cache, trailer 1 da capture reale, bug veri. La landing smette di vendere un animatic.
 3. **Lista Founders.** Chi ha giocato è il primo acquirente. Non un lead freddo.
 
-Il rischio da evitare è dire "è gratis" e poi far pagare come se nulla fosse. In Italia quello è una pratica commerciale. La landing e i T&C devono dire da subito: *accesso gratuito temporaneo, i pagamenti arriveranno, ti avvisiamo con preavviso, il save non si cancella*.
+Il rischio da evitare è dire "è gratis" e poi far pagare come se nulla fosse. In Italia quello è una pratica commerciale. L'altro rischio è scrivere una data di fine beta e doverla o rispettare a checklist rossa, o slittare in pubblico. La landing e i T&C dicono: *accesso gratuito senza data di fine, non è una promessa di gratis per sempre, se attiveremo i pagamenti ti avvisiamo con almeno 30 giorni, il save non si cancella in silenzio*.
 
 ---
 
@@ -143,7 +146,7 @@ UI/UX: web desktop-first, playable su mobile browser. Nessun client Steam/mobile
 
 Flusso utente in Fase 0:
 
-1. Arriva sulla landing (trailer + avviso beta gratuita + "i pagamenti arriveranno").
+1. Arriva sulla landing (trailer + avviso beta gratuita senza data di fine).
 2. Gate 18+: autodichiarazione + T&C. Sotto i 18, stop.
 3. Crea account (email). Consenso privacy. Consenso marketing **separato e spento di default**.
 4. Se c'è posto nel cap (o ha un invite): `entitlements.status = beta_active`.
@@ -174,9 +177,9 @@ Pagine pubbliche: landing, login/registrazione, privacy, cookie, termini, contat
 2. Pittogramma classificazione età (quando c'è IARC/PEGI) e dicitura 18+.
 3. Player video (mute autoplay off; play con click; sottotitoli).
 4. Tre pill: Gestione città · Carte & Bond · Dungeon / mondo infinito.
-5. Banda beta: "Accesso gratuito per un periodo limitato. Non si paga. Quando attiveremo i pagamenti te lo diciamo almeno 30 giorni prima. Il tuo save resta."
+5. Banda beta: "Accesso gratuito, senza una data di fine. Non si paga. Se attiveremo i pagamenti te lo diciamo almeno 30 giorni prima. Il tuo save resta."
 6. CTA "Crea account e gioca" → registrazione, **non** Checkout.
-7. FAQ: è davvero gratis? per quanto? cosa succede ai save? niente pay-to-win; i video sono generati da IA.
+7. FAQ: è davvero gratis? c'è una data di fine? (no.) cosa succede ai save se un giorno si pagherà? niente pay-to-win; i video sono generati da IA.
 8. Footer legale (dati art. 7 d.lgs. 70/2003, per quanto disponibili prima della P.IVA).
 
 **Cosa non stare sulla landing in Fase 0**
@@ -194,7 +197,7 @@ I prezzi indicativi possono stare in una pagina "Dopo la beta", scritta come **i
 | Trailer 0 | Prima del codice / in parallelo | Animatic 45–75 s: mock UI, carte del GDD. 1920×1080, H.264, < 20 MB |
 | Trailer 1 | Quando esiste lo slice visivo | Stesso montaggio con capture reale |
 
-Storyboard Trailer 0: come in v1.5, ultimi 8 secondi cambiati. Non "Paga per giocare". Testo: "Beta gratuita. Maggiorenni."
+Storyboard Trailer 0: come in v1.5, ultimi 8 secondi cambiati. Non "Paga per giocare". Testo: "Beta gratuita. Maggiorenni. Senza data di fine."
 
 Hosting: `/public/trailer.mp4` su Vercel oppure R2. Poster statico per LCP. Il video non è il gioco.
 
@@ -286,32 +289,38 @@ Restare a costo infra zero non accorcia lo sviluppo. Accorcia la bolletta. La Fa
 | Build 4 — Dungeon + mondo + multi-città | Fog, founding, invasion, shrine | Free | — |
 | Build 5 — Evocazione, Influence, eventi, KO | Default §3.10 | Free | — |
 | **Go-live Fase 0** | Gioco ai beta, Stripe assente dal frontend | Free | 0 € |
-| Fase B | Stesso gioco, paywall on, Stripe live | Free + fee | SKU |
-| Fase C | Upgrade piano se i tetti saltano; bot ops | Piani paid mirati | SKU + cosmetic |
+| Fase B | Stesso gioco, paywall on, Stripe live. **Nessuna data in questo piano.** | Free + fee | SKU |
+| C'è margine | Upgrade piano se i tetti saltano | Piani paid mirati | SKU + cosmetic |
 
-Stima onesta per un solo sviluppatore: mesi, non settimane.
-
----
-
-## 9. Come si passa da gratis a pagato (senza farsi denunciare)
-
-Questo è il pezzo che fa crescere *e* resta legale.
-
-1. Preavviso **≥ 30 giorni** a tutti gli account beta, su supporto durevole (email). Testo: da quando si paga, quanto, cosa succede se non paghi (save in sola lettura o account chiuso al gioco, save esportabile).
-2. Banner in-game e sulla landing, stesso contenuto. Niente countdown finti.
-3. Checkout acceso solo dopo: P.IVA, T&C a pagamento, privacy aggiornata, classificazione, architettura recesso art. 59 lett. o), pulsante art. 54-bis, DPA Stripe, decisione sul tono vs policy Stripe.
-4. Conversione consigliata: chi ha `beta_active` e un save recente riceve un'offerta Founders a prezzo bloccato, una tantum, scadenza reale. Chi non compra resta fuori da `/play` ma può esportare il save.
-5. I `beta_active` non diventano `active` in silenzio. Serve un pagamento o un grant manuale tuo (dev).
-
-Dettaglio normativo della transizione: `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`.
+Stima onesta per un solo sviluppatore: mesi, non settimane. Cursor Pro+ accorcia le PR, non il perimetro GDD.
 
 ---
 
-## 10. Video IA e bot
+## 9. Come si passa da gratis a pagato (se succede)
+
+Non c'è una riga "il GG/MM si paga" in questo file. Il profitto fa scattare obblighi pesanti. Quindi si entra lì solo per una decisione tua, a checklist verde.
+
+Ordine obbligato, quando (se) lo vuoi:
+
+1. Checklist Fase B verde. P.IVA, T&C a pagamento, privacy, recesso art. 59 lett. o), pulsante art. 54-bis, DPA Stripe, decisione tono vs policy Stripe, ToS Vercel. Se un box è rosso, si resta in Fase 0. GrokBot può fare ricerca. Cursor può preparare le pagine. Il flag no.
+2. Una frase tua esplicita: si parte col preavviso. Non basta un KPI.
+3. Preavviso **≥ 30 giorni** a tutti i `beta_active`, su supporto durevole (email, GrokBot se glielo chiedi). Testo: da quale momento si paga, quanto, cosa succede se non paghi. I 30 giorni partono da quell'invio.
+4. Banner in-game e landing, stesso contenuto. Niente countdown messi mesi prima. Niente "ultimi giorni" se non è vero.
+5. Checkout on solo a preavviso scaduto. Conversione consigliata: Founders a prezzo bloccato per chi ha save recente, scadenza reale *di quell'offerta*, non della beta. Chi non compra: fuori da `/play`, save esportabile.
+6. I `beta_active` non diventano `active` in silenzio.
+
+Dettaglio: `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` §8. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md` §6.
+
+---
+
+## 10. Video IA, Cursor, GrokBot
 
 - I video sulle azioni restano una feature del **sito**, per chi ha entitlement (`beta_active` o `active`). Policy SFW, adulti 25+, coda `banned`: file video, invariati nel merito.
 - In Fase 0 il tetto di generazione è più stretto (niente margine da 14,99 €). Precache 80–150 chiavi. Live generate con tetto basso. Fallback 2D se il tetto è pieno.
-- Il bot ops **non** si accende in Fase 0. Niente Automation, niente social automatico, niente ads. Si accende in Fase C, dopo il profitto.
+- **Cursor Pro+** tiene il prodotto: PR, test, flag, bozze. Già in Fase 0.
+- **GrokBot** è a chiamata già in Fase 0 per mail, X/Twitter in sola lettura, ricerca legale. Niente post live, niente ads, niente accensione Stripe. Il pezzo marketing si può sbloccare dopo, con ok tuo, non con una data.
+
+Specifica: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
 ---
 
@@ -322,6 +331,7 @@ Dettaglio normativo della transizione: `Fantasy_Empire_Fase_0_Accesso_Gratuito.m
 | GDD completo al day-one | Alto sforzo. Si taglia polish/art, non i sistemi. |
 | Free tier con giocatori veri | Un picco di combat fa 429. Per questo c'è il cap. |
 | "Gratis per sempre" | Non dirlo. Mai. |
+| Data di fine beta in landing | Non scriverla. Ti costringe a pagare a checklist rossa o a smentirti. |
 | Tono SFW sexy + Stripe futuro | In Fase 0 Stripe non ti chiude l'account perché non c'è. Prima di Fase B la decisione §7.1 del quadro normativo è obbligatoria. |
 | Hobby Vercel | Tollerabile in beta non commerciale. Prima di incassare, ToS. |
 | Contenuto vs classificazione | Senza IARC/PEGI un gioco pubblico in Italia è scoperto. Va fatto in Fase 0, non in Fase B. |
@@ -331,15 +341,16 @@ Dettaglio normativo della transizione: `Fantasy_Empire_Fase_0_Accesso_Gratuito.m
 
 ## 12. Cosa chiedo a te adesso
 
-Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.0, se non mi dici il contrario:
+Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.1, se non mi dici il contrario:
 
 1. Fase 0 invite + cap 40, non open registration.
 2. 18+ dichiarato. Territorio: Italia + UE. Niente UK/USA in beta.
 3. Tono SFW sexy tenuto in beta. Prima di Stripe, si rivede.
 4. Classificazione IARC (gratis, browser) in Fase 0.
-5. Preavviso 30 giorni + Founders bloccato per i beta, save esportabile se non comprano.
+5. Preavviso 30 giorni *quando tu decidi*, Founders bloccato per i beta, save esportabile se non comprano. Nessuna data oggi.
 6. Trailer 0 subito. Trailer 1 quando c'è lo slice.
 7. URL `*.vercel.app` fino a P.IVA + dominio.
 8. 1 slot save in beta. I 3 slot restano Founders.
+9. Cursor sul git. GrokBot su mail / X / legale, a chiamata.
 
 Rispondi puntando ai numeri. Cambio il file e rialzo la versione.

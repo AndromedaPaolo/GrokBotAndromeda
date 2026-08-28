@@ -1,187 +1,117 @@
-# Fantasy Empire — Bot Grok (dopo il profitto)
+# Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.0)
-**Versione:** 1.3 — 28 agosto 2026
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.1)
+**Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)
+**Versione:** 2.0 — 28 agosto 2026
 **Video in-sito:** `Fantasy_Empire_Video_IA_Azioni.md`
-**Stato:** spento fino al profitto. Non creare Automation ora.
+**Stato di questo file:** specifica. Nessuna Routine, nessuna Automation, nessun post.
 
-Questo file descrive **solo** il bot. Non fa parte del perimetro di lancio, né della Fase 0 gratuita.
+Hai già l'abbonamento. Questo file dice *a cosa serve* e *a cosa non serve*. Il git lo tiene **Cursor Pro+**. GrokBot entra a chiamata.
 
 ---
 
 ## 1. Mandato
 
-Dopo il profitto il bot non si limita agli upgrade di piano.
+Due strati, non uno.
 
-Compito: **migliorare, potenziare, aggiungere funzionalità** e rendere **sempre più profittevole** il gioco e tutti i servizi legati (hosting, database, pagamenti, landing, video, account, supporto).
+**Da Fase 0, a chiamata.** Mail, analisi X/Twitter, ricerca legale, triage supporto. Output: messaggio mandato (se glielo dici), oppure memo. Non PR di combat.
 
-Tre linee, in parallelo:
+**Dopo che *tu* hai acceso i pagamenti e c'è margine, ancora a chiamata, con approvazione.** Draft marketing, caption, calendario, report canali. Publish solo se esiste una regola scritta tua. Ads budget: mai da solo.
 
-1. **Prodotto** — nuove feature, bilanciamento, qualità, ritenzione.
-2. **Piattaforma** — stack GitHub / Vercel / Cloudflare D1 / Stripe più solido e più protetto.
-3. **Ricavi** — marketing, social, landing, offerte, season/cosmetic (niente pay-to-win).
+Non sostituisce Cursor. Se il memo dice "va cambiato il gate 18+", la patch la fa Cursor.
 
 ---
 
-## 2. Quando si accende
+## 2. Quando gira, quando no
 
-Il bot **non** gira in Fase 0 né in Fase B.
+Non c'è uno switch "Fase C = bot acceso". C'è il tipo di lavoro.
 
-Si accende in **Fase C**, quando c'è profitto.
+| Tipo | Fase 0 | Fase B (pagamenti on) | Con profitto |
+|---|---|---|---|
+| Mail di supporto / waitlist | Sì, su ordine | Sì | Sì |
+| Ricerca legale, policy Stripe, AGCOM | Sì | Sì, più spesso | Sì |
+| Analisi X/Twitter (solo lettura) | Sì | Sì | Sì |
+| Preavviso 30 giorni "arriveranno i pagamenti" | Solo se tu hai già deciso l'accensione e la checklist è verde | n/a (già partito) | n/a |
+| Newsletter promo, patch notes marketing | No, salvo consenso e utilità del servizio | Con consenso | Con consenso |
+| Post social live, ads | No | No, salvo ok tuo | Draft sì, live con ok |
+| Upgrade piani infra, Price ID Stripe | No | No | Propone, non clicca |
+| Dichiarare finita la Fase 0 | No | — | — |
 
-```
-profitto_netto_30gg =
-    incassi Stripe settled
-  − commissioni Stripe
-  − chargeback
-  − costi infra già attivi (all'inizio = 0)
-
-Fase C se profitto_netto_30gg ≥ soglia
-(es. 100 € per 2 mesi di fila, cifra tua)
-```
-
-Prima di quella riga: nessuna Automation, nessuno script di marketing, nessuno upgrade di piano.
-
-In Fase 0 gli incassi sono zero per costruzione. Il bot non ha niente da ottimizzare sui ricavi. Le metriche di gioco (D1/D7, drop tutorial) le leggi tu, a mano o con query D1.
+Niente cron del tipo "tra 90 giorni accendi Stripe". Niente "è il 1 del mese, si paga".
 
 ---
 
-## 3. Prodotto — migliorare e aggiungere
+## 3. Supporto: mail, X, legale
 
-A cadenza (es. settimanale) il bot:
+### 3.1 Mail
 
-- Legge metriche di gioco se esposte (winrate, drop-off tutorial, tempo alla prima vittoria, rimborsi, ticket).
-- Propone **patch di bilanciamento** (SP, Essence, Influence, drop) allineate al GDD SFW.
-- Propone **nuove funzionalità** in backlog prioritizzato per profitto e ritenzione, esempi:
-  - season / biomes dungeon
-  - nuovi tipi mostro e carte
-  - eventi città a tempo
-  - slot save extra come SKU
-  - trailer 1 aggiornato con capture reale
-- Prepara spec / issue GitHub (testo), non mergea da solo su `main`.
-- Segnala bug ricorrenti e duplicati.
+Usi: risposta a un giocatore, magic link di supporto, avviso posto in waitlist, e *solo quando tu l'hai chiesto* il preavviso di transizione.
 
-Regola fissa: **niente carte o stat più forti vendute a parte.** Le feature a pagamento sono accesso, slot, cosmetici, espansioni di contenuto.
+Vincoli Fase 0: niente "compra a 14,99". Base GDPR come nel file Fase 0. Marketing checkbox a parte. Ogni invio di massa è un ordine tuo, non un loop.
 
-Le patch su un gioco già venduto toccano la conformità del contenuto digitale (quadro normativo §5.4 e §10). I giocatori vanno informati. Il bot propone il testo della patch note, non la pubblica da solo.
+Se GrokBot può mandare, manda. Se deve solo bozzare, bozza e aspetta.
 
----
+### 3.2 Analisi Twitter/X
 
-## 4. Servizi legati — potenziare lo stack
+Usi: cosa si dice del gioco, dei card battler, di un competitor, di una polemica sui contenuti.
 
-Stesso perimetro della proposta, potenziato quando i numeri lo giustificano:
+Output: memo (tono, citazioni, rischi reputazionali, *non* un piano ads). Zero like, zero reply, zero post.
 
-- Cloudflare Workers / D1: tetti, backup, Time Travel più lungo, rate limit.
-- Vercel: piano, preview, analytics landing.
-- GitHub: branch protection, secret scanning, CODEOWNERS.
-- Stripe: Radar, portal, nuovi SKU, lotta chargeback.
-- Dominio custom + HTTPS quando il volume lo paga.
-- Email transazionale (ricevute, "il tuo acquisto è attivo").
-- Status / runbook (`OPS.md` nel repo, se autorizzato).
+### 3.3 Ricerca legale
 
-**Non paga i piani da solo.** Propone: costo, motivo, urgenza. Il click sul billing resta tuo.
+Usi: delibere AGCOM, Garante cookie, AI Act art. 50, policy Stripe adult content, ToS Vercel Hobby, classificazione IARC/PEGI.
+
+Output: memo con fonti e data. Scritto in cima: "non è un parere legale".
+
+Se il memo sposta un box della checklist Fase B, apri (o chiedi a Cursor di aprire) una issue. Non "aggiusta" i T&C in produzione.
 
 ---
 
-## 5. Profitto — marketing e social
+## 4. Prodotto e ricavi: solo proposta
 
-Obiettivo: più acquisti Standard/Founders e più ritenzione, senza sconti che bruciano il margine.
+Quando gli chiedi di pensare al gioco, può:
 
-### 5.1 Canali
+- Leggere metriche se gliele passi o se sono in una issue.
+- Proporre patch di bilanciamento allineate al GDD SFW.
+- Proporre backlog (season, carte, tetto video).
+- Segnalare bug duplicati.
 
-- Landing: headline, FAQ, prezzo, poster del trailer, CTA.
-- Video in-game: le clip IA già generate e in cache sul sito (`Fantasy_Empire_Video_IA_Azioni.md`) vengono **riusate e caricate** sui canali del progetto.
-- Social: X, Instagram, TikTok, YouTube, Discord, Reddit (community di gestione / card battler / city builder).
-- SEO on-page e testi store-like sulla landing.
-- Newsletter / email (solo se c'è consenso): patch notes, season.
-- Partnership / creator: brief e lista target, non contratti firmati dal bot.
-- Ads a pagamento (Meta, X, Google): **solo dopo approvazione budget** e account collegati. Il bot prepara copy e targeting, non brucia carta di credito in autonomia. Il targeting non deve raggiungere minori.
+Non mergea su `main`. Non scrive pay-to-win. Le feature a pagamento restano accesso, slot, cosmetici, espansioni.
 
-### 5.2 Distribuzione clip IA (solo Fase C)
-
-Le clip nascono per il **sito** (overlay azioni). Quando il bot è acceso:
-
-1. Seleziona da `cinematics` gli asset `ready`, non `banned`, più usati o più "hook".
-2. Esporta tagli 15 s / 30 s / 9:16 dove serve.
-3. Prepara caption + hashtag + link alla landing (paywall: il video social non fa giocare).
-4. Carica sui canali del progetto (X, Instagram/Reels, TikTok, YouTube Shorts, Discord, eventuale newsletter).
-5. Non pubblica materiale che fallisce la policy SFW sexy **né** le ToS della singola piattaforma (spesso più strette della legge).
-6. Niente upload automatico prima del profitto e niente publish senza la regola di approvazione (§5.4).
-7. Disclosure IA visibile.
-
-Non si rigenera da zero per ogni social se la clip esiste già in cache: si **ripubblica** l'asset del sito.
-
-### 5.3 Cosa produce il bot
-
-| Output | Esempio |
-|---|---|
-| Calendario editoriale | 4 post/settimana + 1 clip |
-| Copy | thread X, caption IG, titolo YouTube |
-| Hook video | primi 3 secondi dello storyboard |
-| A/B landing | 2 headline da testare |
-| Report | CAC vs LTV grezzo, conversion landing→Stripe, canale che converte |
-| Offerte | Founders a tempo *solo se* non erode il full price e la scadenza è reale |
-
-Lingua: italiano + inglese per reach.
-
-### 5.4 Cosa non pubblica da solo
-
-Niente post live, niente ads live, niente cambio prezzo Stripe senza un **ok** tuo (o una regola scritta dopo, tipo "pubblica su X i draft già approvati").
-
-Se il bot parla con persone (supporto, Discord), va dichiarato che è un'IA. In Fase 0/B non parla con nessuno perché è spento.
+Stesso per lo stack: può dire "D1 è all'80%, valuta il piano". Il click sul billing è tuo.
 
 ---
 
-## 6. Ciclo settimanale (Fase C)
+## 5. Marketing live (non ora)
 
-1. Raccoglie metriche prodotto + infra + Stripe + canali.
-2. Scrive report: cosa ha reso, cosa no, rischi 429/D1, idee feature, idee content.
-3. Aggiorna backlog (`ROADMAP.md` / issue GitHub) e `OPS.md`.
-4. Prepara draft marketing della settimana successiva.
-5. Aspetta approvazione sui pezzi che spendono soldi o toccano `main`.
+Resta il disegno vecchio, ma **non è un accendimento automatico al profitto**. È un permesso che dai tu, pezzo per pezzo, quando i pagamenti ci sono già e vuoi spingere.
 
----
+Canali, riuso clip `cinematics`, caption, A/B landing: come prima. Approvazione umana su publish, ads, prezzi. Disclosure IA. Niente targeting minori. Niente offerte Founders con scadenza finta.
 
-## 7. KPI che deve inseguire
-
-- Conversion landing → checkout → `entitlements.active`
-- Chargeback e rimborsi
-- Retention D1 / D7 dei *paganti*
-- Ricavo netto 30 giorni (definizione §2)
-- Costo infra / ricavo (deve restare basso)
-- Engagement social solo se correlato ad acquisti, non vanity follower
-
-Se un canale porta click e zero pagamenti, il bot lo deprioritizza.
-
-In Fase 0 gli stessi KPI di ritenzione si guardano sui `beta_active`. Non è lavoro del bot.
+KPI da inseguire *solo se stai già vendendo*: conversion landing → checkout, chargeback, D7 paganti, ricavo netto, costo infra. In Fase 0 i KPI di ritenzione li guarda Cursor (issue) o tu. GrokBot può commentare un export.
 
 ---
 
-## 8. Limiti
+## 6. Limiti
 
-- Non sostituisce GitHub, Vercel, D1, Stripe.
-- Non mergea codice di combat in produzione senza review.
-- Non inventa pay-to-win.
-- Non tocca billing né ads budget da solo.
-- Non accende sé stesso prima del profitto.
-- Non promette risultati di marketing garantiti.
-- Non è una difesa: ciò che pubblica resta tuo.
-
----
-
-## 9. Relazione con le fasi
-
-| Fase | Bot Grok |
-|---|---|
-| 0 — Beta legale, gratis | Spento |
-| B — Prime vendite | Spento |
-| C — Profitto | Acceso: prodotto + stack + marketing/social + report profitto |
-
-Il paywall, la landing e il video **non** dipendono da questo file: sono nella proposta.
+- Non sostituisce GitHub, Vercel, D1, Stripe, Cursor.
+- Non mergea combat, auth, entitlement.
+- Non accende `STRIPE_LIVE`.
+- Non fissa una data di fine beta.
+- Non è una difesa in AGCM/Garante: ciò che manda resta tuo.
+- Non promette risultati di marketing.
 
 ---
 
-## 10. Deliverable di questo documento
+## 7. Relazione con Cursor
 
-Solo specifica. Nessuna Automation creata ora, nessun post, nessun upgrade di piano.
+Vedi `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
+
+Git e flag = Cursor. Inbox, X, gazzetta = GrokBot. Soldi = tu.
+
+---
+
+## 8. Deliverable di questo documento
+
+Solo specifica. Nessuna Routine creata ora, nessun post, nessun upgrade di piano, nessuna data in calendario.
