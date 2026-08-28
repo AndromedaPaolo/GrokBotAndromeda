@@ -1,9 +1,9 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.1 — 28 agosto 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.1.
+**Versione:** 1.2 — 28 agosto 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.2.
 
-I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, e **nessuna data** da gratis a pagato.
+I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, e **nessuna data** da gratis a pagato.
 
 ---
 
@@ -144,9 +144,17 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 
 ## 15. Chi fa cosa
 
-- **A (default).** Cursor Pro+ tiene il git (PR, test, flag). GrokBot a chiamata: mail, analisi X/Twitter, ricerca legale. Soldi e `STRIPE_LIVE` solo tu. Vedi `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
+- **A (default).** Cursor Pro+ tiene il git (branch, test, flag). GrokBot a chiamata: mail, analisi X/Twitter, ricerca legale. Il sì/no sta in dashboard, non su GitHub. `STRIPE_LIVE` è una card con tasto spento se la checklist è rossa. Vedi `Fantasy_Empire_Ops_Cursor_GrokBot.md` e `Fantasy_Empire_Dashboard_Approvazioni.md`.
 - **B.** GrokBot fa anche le PR di prodotto. Sconsigliato: il git è di Cursor.
 - **C.** Solo Cursor, GrokBot spento. Perdi mail e analisi X senza un giro manuale tuo.
+
+---
+
+## 16. Dove clicchi sì/no
+
+- **A (default).** Una dashboard. Approva = esegue (push, invio, publish). Scarta = elimina (chiude PR, butta bozza). Tutte le cose come questa nella stessa coda. Non apri git.
+- **B.** Restare su GitHub per il merge e chat per le mail. È quello che non vuoi.
+- **C.** Auto-merge se i test passano. No. Toglie il click, che è il punto.
 
 ---
 
@@ -155,7 +163,7 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 Mandami un elenco tipo:
 
 ```
-1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A
+1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A
 ```
 
 oppure mescola (`3B 6B 9B`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia in landing, D1 e checklist. Niente codice finché non lo chiedi.

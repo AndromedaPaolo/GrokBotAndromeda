@@ -1,7 +1,7 @@
 # Fantasy Empire — Video IA sulle azioni (sito)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.1)
+**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.2)
 **Versione:** 1.2 — 28 agosto 2026
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).

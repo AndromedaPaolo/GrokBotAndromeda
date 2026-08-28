@@ -1,19 +1,21 @@
 # Fantasy Empire — Ops: Cursor prima, GrokBot a supporto
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
-**Versione:** 1.0 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.1 · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Versione:** 1.1 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.2 · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---
 
 ## 1. Principio
 
-Il gioco si **automantiene su Cursor**. Issue, patch, PR, test, flag, testi del sito, checklist legale nel repo. Tu approvi il merge.
+Il gioco si **automantiene su Cursor**. Issue, patch, PR, test, flag, testi del sito, checklist legale nel repo.
 
-GrokBot **non** tiene in vita il prodotto. Entra quando Cursor non arriva: mandare una mail, leggere X/Twitter, fare una ricerca normativa, un memo su AGCOM/Stripe, un giro di supporto. Poi, se serve una modifica al gioco, torna Cursor e apre una PR.
+Tu **non** apri GitHub per mergeare. Approvi o scarti da una dashboard. Approva sul git = merge + push su `main`. Scarta = chiude la PR e cancella il branch. Lo stesso schema vale per mail, post, flag, preavviso, ban video, invite: se è un sì/no che oggi faresti su un altro sito, sta in quella coda. Specifica: `Fantasy_Empire_Dashboard_Approvazioni.md`.
 
-Nessuno dei due accende Stripe. Nessuno dei due fissa una data in cui la gente inizia a pagare.
+GrokBot **non** tiene in vita il prodotto. Entra quando Cursor non arriva: mandare una mail, leggere X/Twitter, fare una ricerca normativa, un memo su AGCOM/Stripe, un giro di supporto. Poi, se serve una modifica al gioco, torna Cursor e apre una riga `git_pr` in dashboard.
+
+Nessuno dei due accende Stripe da solo. Nessuno dei due fissa una data in cui la gente inizia a pagare. Stripe e il preavviso 30 giorni sono due righe in coda, con il tasto Approva **spento** finché la checklist è rossa.
 
 ---
 
@@ -40,23 +42,25 @@ Il profitto alza il rischio legale (recesso, IVA, policy Stripe, classificazione
 | Ricerca legale (AGCOM, Garante, AI Act, policy Stripe, ToS Vercel) | **GrokBot** | Memo con fonti. Non è un parere | Cambiare i T&C in produzione da solo |
 | Tradurre un memo legale in patch del repo | **Cursor** | PR che cita il memo | Inventarsi norme |
 | Upgrade Vercel / D1 / dominio | nessuno in autonomia | Proposta in issue, click billing tuo | — |
-| Accensione `STRIPE_LIVE` | **tu** | Dopo checklist verde + preavviso 30gg già partito e scaduto | Automazione, cron, "è ora" |
+| Accensione `STRIPE_LIVE` | **tu, da dashboard** | Riga in coda. Approva solo se checklist verde + preavviso scaduto | Automazione, cron, "è ora" |
 
-Regola corta: **git = Cursor. Mondo fuori dal git = GrokBot. Soldi = tu.**
+Regola corta: **git = Cursor. Mondo fuori dal git = GrokBot. Sì/no = dashboard. Soldi sul billing dei fornitori = tu.**
 
 ---
 
 ## 4. Cosa fa Cursor da solo (automantenimento)
 
-Niente daemon magico. Automantenimento qui significa: il repo è lo stato, gli agent ci lavorano in continuazione, tu vedi PR.
+Niente daemon magico. Automantenimento qui significa: il repo è lo stato, gli agent ci lavorano, tu vedi una card.
 
 Ciclo proposto, **già in Fase 0**, a consumo Pro+:
 
 1. Issue aperte dal gioco (bug, 429, tetto video, drop tutorial) o da te in chat.
-2. Agent Cursor: riproduce, patcha, test, PR.
-3. Tu mergei. Nessun merge automatico su combat, auth, entitlement, flag pagamenti.
-4. Una volta a settimana, se lo chiedi: agent che legge D1/log (se esposti) e apre issue di bilanciamento. Non pusha i numeri in config senza PR.
-5. Quando GrokBot lascia un memo legale in una issue: Cursor propone la modifica a `docs/` o alle pagine del sito. Non la inventa.
+2. Agent Cursor: riproduce, patcha, test, PR sul branch. Scrive una riga `git_pr` in dashboard. Non mergea.
+3. Tu apri la dashboard. Approva = merge + push. Scarta = PR chiusa, branch cancellato. Non apri git.
+4. Una volta a settimana, se lo chiedi: agent che legge D1/log (se esposti) e apre una card di bilanciamento. I numeri in config non si pushano senza Approva.
+5. Quando GrokBot lascia un memo legale in coda: Approva sul memo = Cursor apre un `git_pr`. Non è "diventa legge".
+
+Niente merge automatico, nemmeno se i test passano. Il click è il punto.
 
 Cosa Cursor **non** fa, anche con Pro+:
 
@@ -65,8 +69,9 @@ Cosa Cursor **non** fa, anche con Pro+:
 - Non parla con AGCOM.
 - Non tiene i fondi.
 - Non decide che "ora si paga".
+- Non mergea da solo.
 
-Branch protection e review tua restano. Pro+ non è un permesso a skippare il click.
+Il review resta. Si è solo spostato: dalla pagina GitHub alla dashboard. Pro+ non è un permesso a skippare il click.
 
 ---
 
@@ -104,7 +109,7 @@ La Fase 0 non ha una fine scritta. Non "90 giorni". Non "lancio a Natale". Non u
 
 Si *può* parlare di pagamenti solo se **tutte** queste cose sono vere insieme:
 
-1. Tu lo vuoi, in una frase esplicita (chat, issue, mail a te stesso: non basta un KPI verde).
+1. Tu lo vuoi, con Approva sulla riga `preavviso_pagamenti` in dashboard (non basta un KPI verde, non basta una chat).
 2. Checklist Fase B verde: P.IVA, T&C a pagamento, recesso, pulsante 54-bis, DPA Stripe, decisione tono vs Stripe, ToS Vercel, riclassificazione se servono gli acquisti in-game. Vedi `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` §8 e quadro §14.
 3. Preavviso già inviato ai `beta_active` e 30 giorni solari scaduti. I 30 giorni partono *da quell'invio*, non da oggi.
 
@@ -126,7 +131,7 @@ Cambia il **perimetro del rischio**. Da quel momento esistono recesso, IVA, char
 
 - Ogni PR che tocca prezzo, entitlement, video policy, age gate, T&C ha una checklist extra (quadro normativo).
 - GrokBot, prima di una campagna o di una mail di massa, fa un giro di ricerca "è ancora lecito" e si ferma se la risposta è no o dubbia.
-- Il pezzo marketing/social *live* del file bot si può accendere, con approvazione umana su ogni publish. Non prima.
+- Il pezzo marketing/social *live* del file bot si può accendere, con una card in dashboard per ogni publish. Non prima. Non da GitHub. Non da X.
 
 Non si accende da solo perché `profitto_netto_30gg ≥ 100`. Quel numero, se lo vuoi, è un *allarme* in una issue ("guarda, stiamo incassando"), non un trigger.
 

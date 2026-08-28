@@ -1,6 +1,6 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.1. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Documento operativo.** Completa la proposta v2.2. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
 **Versione:** 1.1 — 28 agosto 2026
 **Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.
@@ -140,7 +140,7 @@ Checklist che **blocca** l'accensione:
 - [ ] DPA Stripe, verifica DPF
 - [ ] Prezzi IVA inclusa, prova Paese cliente
 - [ ] Email di preavviso 30 giorni già partita, periodo scaduto
-- [ ] Tua conferma esplicita di partire (issue o messaggio). Non un KPI e non una data in agenda
+- [ ] Tua conferma esplicita: Approva sulla card `preavviso_pagamenti` in dashboard. Non un KPI e non una data in agenda
 - [ ] Piano Hobby Vercel riletto / upgrade se i ToS lo chiedono
 - [ ] Riclassificazione se gli "acquisti nel videogioco" cambiano i descrittori
 
@@ -159,7 +159,7 @@ In Fase 0 la crescita è lenta e voluta. Cursor tiene il git (bug, cap, tetti). 
 | Leva | Come | Chi | Limite |
 |---|---|---|---|
 | Invite | Ogni `beta_active` ha 0 invite all'inizio. Tu ne dai a mano | tu | Niente viralità incontrollata |
-| Waitlist | Email + consenso. Quando si libera un posto, magic link | GrokBot su ordine | Non è una newsletter di prodotto se non hanno spuntato marketing |
+| Waitlist | Email + consenso. Quando si libera un posto, magic link | GrokBot bozza, tu Approvi in dashboard | Non è una newsletter di prodotto se non hanno spuntato marketing |
 | Capture reale / patch gioco | Sostituisce Trailer 0, sistema drop-off | Cursor, PR | Resta SFW |
 | Metriche interne | D1: D1/D7, drop tutorial, 429, tetto video | Cursor in issue | Niente GA/Meta pixel in Fase 0 |
 | Ricerca legale / policy | Memo con fonti | GrokBot | Non è un parere; non accende Stripe |
