@@ -4,8 +4,9 @@
 **Fonte design:** *Fantasy Empire – Game Design Document (SFW)* — perimetro completo dal giorno uno
 **Stack:** GitHub · Vercel · Cloudflare D1 · Stripe (spento in Fase 0)
 **Tipo documento:** proposta (nessun codice, nessun deploy)
-**Versione proposta:** 2.4 — 28 agosto 2026
+**Versione proposta:** 2.5 — 28 agosto 2026
 **Ops (Cursor + GrokBot):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
+**Squadra agenti (nomi, panchina inclusa):** `Fantasy_Empire_Squadra_Agenti.md`
 **Dashboard sì/no:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, dettaglio:** `Fantasy_Empire_Grok_Bot_Ops.md`
 **Video IA azioni (nel sito):** `Fantasy_Empire_Video_IA_Azioni.md`
@@ -164,7 +165,7 @@ Flusso utente in Fase 0:
 |---|---|---|---|
 | Beta | 0 € | Fase 0. Grant server, non Stripe | GDD, 1 slot, video IA fino al tetto settimanale |
 | **Visioni** (abbonamento) | 9,99 € / mese IVA incl. (indicativo) | Fase B, Stripe `mode=subscription` | Sezione speciale Santuario + i costi di generazione (tetto di sicurezza 40 job/settimana, a carico nostro) |
-| Standard | 14,99 € una tantum IVA incl. | Fase B, solo se chiudi il gioco dietro paywall | Accesso GDD, 1 slot. **Non** è il primo SKU: il gioco in questa v2.4 resta giocabile gratis |
+| Standard | 14,99 € una tantum IVA incl. | Fase B, solo se chiudi il gioco dietro paywall | Accesso GDD, 1 slot. **Non** è il primo SKU: il gioco in questa proposta resta giocabile gratis |
 | Founders | 24,99 € una tantum IVA incl. | Fase B, opzionale | 3 slot, tema UI, credits |
 | Season / cosmetic | dopo il profitto | Solo contenuto o cosmetici. Niente pay-to-win | |
 
@@ -344,13 +345,14 @@ Dettaglio: `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` §8. Ops: `Fantasy_Empire
 
 ## 10. Video IA, Cursor, GrokBot
 
-- I video sulle azioni restano una feature del **sito**, per chi ha entitlement (`beta_active` o `active`). Policy SFW, adulti 25+, coda `banned`: file video, invariati nel merito.
+- I video sulle azioni restano una feature del **sito**, per chi ha entitlement (`beta_active` o `visions`). Policy SFW, adulti 25+, coda `banned`: file video, invariati nel merito.
 - In Fase 0: Grok Imagine (precache), file su R2 privato, miss = 2D + coda. GIF non è il master. Clip nuove in dashboard `video_new`. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
-- **Cursor Pro+** tiene il prodotto: branch, test, flag, bozze. Già in Fase 0. Non mergea da solo.
-- **GrokBot** è a chiamata già in Fase 0 per mail, X/Twitter in sola lettura, ricerca legale, job Imagine. Niente post live, niente ads, niente accensione Stripe se la card è rossa. Non usa le chiavi Grok dei giocatori.
-- **Dashboard.** Una coda. Approva o Scarta. Push, invio mail, publish, flag, invite, ban video. Non apri git. Specifica: `Fantasy_Empire_Dashboard_Approvazioni.md`.
+- **Cursor Pro+** tiene il prodotto: Patcher, Sito, Numeri, Bandiere, Verbale. Checkout e Santuario in preview, spenti in prod. Non mergea da solo.
+- **GrokBot** è a chiamata: Inbox, Ascolto, Gazzetta, Imagine, Corriere (preavviso con tasto morto se checklist rossa). Sportello, Promo, Bacheca, Spesa sono in panchina da subito, tipi dashboard già previsti e spenti.
+- **Dashboard.** Una coda. Approva o Scarta. Non apri git. Specifica: `Fantasy_Empire_Dashboard_Approvazioni.md`.
+- Roster nominato: `Fantasy_Empire_Squadra_Agenti.md`.
 
-Specifica: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
+Specifica di principio: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
 ---
 
@@ -372,7 +374,7 @@ Specifica: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
 ## 12. Cosa chiedo a te adesso
 
-Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.4, se non mi dici il contrario:
+Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.5, se non mi dici il contrario:
 
 1. Fase 0 invite + cap 40, non open registration.
 2. 18+ dichiarato. Territorio: Italia + UE. Niente UK/USA in beta.
@@ -382,9 +384,10 @@ Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa
 6. Trailer 0 subito. Trailer 1 quando c'è lo slice.
 7. URL `*.vercel.app` fino a P.IVA + dominio.
 8. 1 slot save in beta. I 3 slot restano Founders.
-9. Cursor sul git. GrokBot su mail / X / legale, a chiamata.
+9. Cursor sul git. GrokBot su mail / X / legale / Imagine, a chiamata. I posti a pagamento (Checkout preview, Santuario locked, Sportello, Promo, Bacheca, Spesa, Stagione) stanno in formazione da subito, in panchina o preview.
 10. Dashboard unica Approva/Scarta per git e per tutte le cose come questa. Non apri GitHub per il push.
 11. Video: Grok Imagine → R2. Master MP4, non GIF.
 12. Abbonamento Visioni 9,99 €/mese: Santuario + generazione a nostro carico (40 job/sett.). Senza: 7 job/sett. fissi. Niente chiavi Grok dei giocatori.
+13. Squadra: i 17 posti di `Fantasy_Empire_Squadra_Agenti.md`. Non un mega-agent.
 
 Rispondi puntando ai numeri. Cambio il file e rialzo la versione.

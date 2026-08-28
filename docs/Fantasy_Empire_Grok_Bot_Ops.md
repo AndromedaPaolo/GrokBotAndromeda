@@ -1,15 +1,16 @@
 # Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.4)
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.5)
+**Squadra (nomi GrokBot):** `Fantasy_Empire_Squadra_Agenti.md`
 **Video generazione:** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
-**Versione:** 2.2 — 28 agosto 2026
+**Versione:** 2.3 — 28 agosto 2026
 **Video in-sito:** `Fantasy_Empire_Video_IA_Azioni.md`
 **Stato di questo file:** specifica. Nessuna Routine, nessuna Automation, nessun post.
 
-Hai già l'abbonamento. Questo file dice *a cosa serve* e *a cosa non serve*. Il git lo tiene **Cursor Pro+**. GrokBot entra a chiamata. Tu non gli dici sì in chat per ogni cosa: metti Approva o Scarta in dashboard. Mail, post, memo, preavviso. Stesso tasto del push.
+Hai già l'abbonamento. Questo file dice *a cosa serve* e *a cosa non serve*. I posti nominati (Inbox, Ascolto, Gazzetta, Imagine, Corriere, e in panchina Sportello, Promo, Bacheca, Spesa) stanno in `Fantasy_Empire_Squadra_Agenti.md`. Il git lo tiene **Cursor Pro+**. GrokBot entra a chiamata. Tu non gli dici sì in chat per ogni cosa: metti Approva o Scarta in dashboard.
 
 ---
 

@@ -1,7 +1,7 @@
 # Fantasy Empire — Quadro normativo per realizzare il progetto
 
 **Documento separato dalla proposta commerciale.**
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.4) · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.5) · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
 **Versione:** 1.3 — 28 agosto 2026
 **Oggetto:** tutte le norme che l'idea descritta nei file di proposta deve rispettare per esistere legalmente.
 **Ipotesi di base:** titolare stabilito in Italia, *poi* vendita a consumatori (B2C), gioco web, stack GitHub · Vercel · Cloudflare D1/R2 · Stripe, video generati da IA con tono "SFW sexy", bot ops post-profitto.
@@ -295,7 +295,7 @@ Utile sapere cosa **escludere**, per non pagare conformità inutile.
 | Landing pubblica con trailer | D.lgs. 70/2003 art. 7; cookie; T&C beta | Footer legale, T&C, privacy, cookie banner. In Fase 0 **niente** prezzi come offerta. Nessuna clip-azione per i visitatori |
 | GDD giocabile senza pagare | Contratto gratuito; pratiche commerciali | Non promettere "gratis per sempre". Preavviso 30 giorni prima di *qualsiasi* SKU |
 | Abbonamento Visioni (Fase B) | Artt. 49, 52–54-bis, 59; IVA/OSS; IARC "acquisti nel videogioco" | Prezzo 9,99 € IVA incl., durata, disdetta, recesso sul primo periodo, tetto 7 vs 40 dichiarato, niente pay-to-win |
-| `PAYWALL=on` sul GDD (SKU opzionale, non il default v2.4) | Artt. 49, 59 lett. o) | Informazione precontrattuale esplicita + doppia checkbox + e-mail di conferma |
+| `PAYWALL=on` sul GDD (SKU opzionale, non il default) | Artt. 49, 59 lett. o) | Informazione precontrattuale esplicita + doppia checkbox + e-mail di conferma |
 | Account senza Visioni | GDPR art. 6 | Base contrattuale del servizio gratuito; chiaro che il Santuario è chiuso |
 | Webhook Stripe → `entitlements.visions` | PSD2; GDPR art. 32 | Firma, idempotenza, log, retention definita. Cancel → dal periodo successivo tetto 7 |
 | Rimborso → entitlement revocato | Codice del consumo; T&C | Clausola trasparente su rimborsi, dispute e sospensione. Visioni: Santuario si chiude, tetto torna a 7 |
@@ -312,7 +312,7 @@ Utile sapere cosa **escludere**, per non pagare conformità inutile.
 
 ## 14. Checklist per fase
 
-Allineata alla proposta v2.4. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`. Coda sì/no: `Fantasy_Empire_Dashboard_Approvazioni.md`.
+Allineata alla proposta v2.5. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`. Squadra: `Fantasy_Empire_Squadra_Agenti.md`. Coda sì/no: `Fantasy_Empire_Dashboard_Approvazioni.md`.
 
 ### Fase 0 — go-live pubblico senza pagamenti
 

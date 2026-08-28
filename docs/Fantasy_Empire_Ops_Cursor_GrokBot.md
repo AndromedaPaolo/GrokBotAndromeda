@@ -1,8 +1,8 @@
 # Fantasy Empire — Ops: Cursor prima, GrokBot a supporto
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
-**Versione:** 1.2 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.4 · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Versione:** 1.3 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.5 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---
@@ -44,7 +44,7 @@ Il profitto alza il rischio legale (recesso, IVA, policy Stripe, classificazione
 | Upgrade Vercel / D1 / dominio | nessuno in autonomia | Proposta in issue, click billing tuo | — |
 | Accensione `STRIPE_LIVE` | **tu, da dashboard** | Riga in coda. Approva solo se checklist verde + preavviso scaduto | Automazione, cron, "è ora" |
 
-Regola corta: **git = Cursor. Mondo fuori dal git = GrokBot. Sì/no = dashboard. Soldi sul billing dei fornitori = tu.**
+Regola corta: **git = Cursor. Mondo fuori dal git = GrokBot. Sì/no = dashboard. Soldi sul billing dei fornitori = tu.** I nomi dei posti: `Fantasy_Empire_Squadra_Agenti.md`.
 
 ---
 
@@ -139,4 +139,4 @@ Non si accende da solo perché `profitto_netto_30gg ≥ 100`. Quel numero, se lo
 
 ## 8. Fuori scope di questo file
 
-Nessuna Automation Cursor creata. Nessuna Routine GrokBot. Nessun webhook. Nessun cron. Questa è la mappa. L'accensione, pezzo per pezzo, è un altro giro, e solo se lo chiedi.
+Nessuna Automation Cursor creata. Nessuna Routine GrokBot. Nessun webhook. Nessun cron. Questa è la mappa di principio. I **nomi** dei posti, panchina inclusa: `Fantasy_Empire_Squadra_Agenti.md`. L'accensione, pezzo per pezzo, è un altro giro, e solo se lo chiedi.

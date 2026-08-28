@@ -1,6 +1,6 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.4. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Documento operativo.** Completa la proposta v2.5. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
 **Versione:** 1.2 — 28 agosto 2026
 **Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.
@@ -147,7 +147,7 @@ Checklist che **blocca** l'accensione:
 - [ ] Riclassificazione se gli "acquisti nel videogioco" cambiano i descrittori
 - [ ] T&C Visioni: prezzo 9,99 € IVA incl., disdetta, tetto 7 vs 40, Santuario non è pay-to-win, art. 54-bis sul primo periodo
 
-Cosa succede al giocatore che **non** si abbona, default v2.4:
+Cosa succede al giocatore che **non** si abbona, default di questa proposta:
 
 - `/play` resta. Il GDD resta. Tetto generazione resta 7 job/settimana.
 - Il Santuario resta chiuso.

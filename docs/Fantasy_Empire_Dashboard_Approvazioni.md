@@ -1,10 +1,10 @@
 # Fantasy Empire — Dashboard approvazioni
 
 **Tipo documento:** proposta. Nessun codice, nessuna pagina, nessun webhook creato.
-**Versione:** 1.1 — 28 agosto 2026
+**Versione:** 1.2 — 28 agosto 2026
 **Perché esiste:** non devi aprire GitHub, Gmail o X per ogni ok. Una coda. Due tasti. Vale per il push e per **tutte le cose dello stesso tipo**: mail, post, flag, preavviso, ban video, invite.
 
-**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.4 · `Fantasy_Empire_Video_Storage_Generazione.md`
+**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.5 · `Fantasy_Empire_Video_Storage_Generazione.md`
 
 ---
 
@@ -31,13 +31,14 @@ Regola: se oggi dovresti andare su un sito a cliccare, domani sta qui.
 |---|---|---|---|
 | `git_pr` | Titolo, file toccati, diff corto, test ok/ko, tag di rischio (combat, auth, entitlement, legale) | Merge + push su `main`. Deploy se già agganciato a `main` | Chiude PR, cancella branch |
 | `mail` | Destinatario, oggetto, corpo, base GDPR (transazionale / consenso) | Invia | Elimina bozza |
-| `mail_massa` | Conteggio destinatari, oggetto, corpo, consenso filtrato | Invia a quel set | Elimina bozza |
+| `mail_massa` | Conteggio destinatari, oggetto, corpo, consenso filtrato | Invia a quel set. Tipo panchina (G7 Promo) in Fase 0 salvo transazionale | Elimina bozza |
 | `preavviso_pagamenti` | Testo email 30 giorni, numero `beta_active`, checklist Fase B (deve essere verde) | Manda il preavviso. **Non** accende Stripe | Elimina. Fase 0 resta |
+| `mail_visioni` | Destinatario, oggetto, corpo (abbonamento attivo / disdetto / pagamento fallito) | Invia. Tipo **spento** in Fase 0 (G5 Corriere, seconda vita) | Elimina |
 | `stripe_live` | Checklist Fase B, data invio preavviso, giorni scaduti | `STRIPE_LIVE=on` solo se i box sono verdi. Altrimenti il tasto è morto e spiega perché | Lascia off |
 | `prezzo` | Vecchio / nuovo, SKU (Visioni 9,99 o altro) | Patch + push del prezzo | Niente |
 | `quota_week` | Vecchio / nuovo tetto 7 o 40 | Patch `config` + disclosure in-game | Niente |
-| `post_x` / `post_ig` / `post_altro` | Testo, clip, disclosure IA | Pubblica | Elimina bozza |
-| `ads` | Copy, budget, targeting | **Mai** da solo in Fase 0. Dopo, solo se budget e account esistono; comunque Approva qui | Elimina |
+| `post_x` / `post_ig` / `post_altro` | Testo, clip, disclosure IA | Pubblica. Tipo panchina (G8 Bacheca) in Fase 0 | Elimina bozza |
+| `ads` | Copy, budget, targeting | Tipo panchina (G9 Spesa). Anche dopo, Approva qui non paga da solo | Elimina |
 | `memo_legale` | Fonti, cosa cambierebbe | Non pubblica legge. Apre/accoda un `git_pr` con la patch di `docs/` o delle pagine | Archivia il memo |
 | `memo_twitter` | Riassunto sola lettura | Archivia (non c'è niente da pubblicare) | Archivia |
 | `video_new` | Player della clip, `video_key`, prompt version | `ready` in D1, resta su R2 | Cancella oggetti R2, riga `banned` |
@@ -69,7 +70,7 @@ Il browser non ha chiavi. Il browser parla col server della dashboard. Il server
 | Tipo | Chi esegue dopo Approva |
 |---|---|
 | `git_pr`, `prezzo`, patch da memo, flag nel repo | **Cursor** (merge/push sul repo). La dashboard non sostituisce git, nasconde git a te |
-| `mail`, `mail_massa`, `preavviso_pagamenti`, `post_*` | **GrokBot** |
+| `mail`, `mail_massa`, `mail_visioni`, `preavviso_pagamenti`, `post_*` | **GrokBot** |
 | `stripe_live` | Cursor cambia il flag **solo** se la riga porta i vincoli verdi. GrokBot non lo tocca |
 | `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. GrokBot non mergea; ha già messo il file |
 
