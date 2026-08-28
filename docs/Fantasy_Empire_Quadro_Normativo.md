@@ -1,8 +1,8 @@
 # Fantasy Empire — Quadro normativo per realizzare il progetto
 
 **Documento separato dalla proposta commerciale.**
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.3) · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
-**Versione:** 1.2 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.4) · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
+**Versione:** 1.3 — 28 agosto 2026
 **Oggetto:** tutte le norme che l'idea descritta nei file di proposta deve rispettare per esistere legalmente.
 **Ipotesi di base:** titolare stabilito in Italia, *poi* vendita a consumatori (B2C), gioco web, stack GitHub · Vercel · Cloudflare D1/R2 · Stripe, video generati da IA con tono "SFW sexy", bot ops post-profitto.
 
@@ -73,7 +73,7 @@ Base: **D.lgs. 70/2003** (attuazione direttiva 2000/31/CE).
 
 - Art. 7 — accessibili in modo facile, diretto e permanente: denominazione, sede, e-mail **e telefono**, numero REA, partita IVA e codice fiscale, eventuali autorizzazioni, codici di condotta adottati.
 - Artt. 12-13 — informazioni sulle fasi tecniche di conclusione del contratto, archiviazione e correzione degli errori di inserimento, **conferma dell'ordine** senza indebito ritardo per via elettronica.
-- Prezzo chiaro, IVA inclusa (art. 13 e ss. Codice del consumo). I 14,99 € / 24,99 € vanno esposti come prezzi finali al consumatore.
+- Prezzo chiaro, IVA inclusa (art. 13 e ss. Codice del consumo). I 9,99 €/mese (Visioni) e, se li tieni, i 14,99 € / 24,99 € vanno esposti come prezzi finali al consumatore. Periodicità e disdetta dell'abbonamento: visibili prima del click.
 
 Nel piano pagina della landing descritto in `Fantasy_Empire_Proposta_Commerciale.md` mancano oggi: footer legale con i dati dell'art. 7, link a T&C / privacy / cookie, e il riferimento all'organismo ADR (§5.6).
 
@@ -85,7 +85,7 @@ Nel piano pagina della landing descritto in `Fantasy_Empire_Proposta_Commerciale
 
 Prima del pagamento vanno date, in modo chiaro e comprensibile: caratteristiche del gioco, identità e contatti, prezzo totale, modalità di pagamento, durata del contratto, **esistenza o esclusione del diritto di recesso** e come si esercita, garanzia legale di conformità, requisiti tecnici (browser, connessione), interoperabilità, eventuali misure tecniche di protezione, assistenza post-vendita.
 
-Requisito specifico del progetto: va detto **prima** dell'acquisto che senza pagamento non si gioca, che esiste 1 slot save (3 per Founders), che il gioco richiede connessione permanente e che i video sono generati da IA.
+Requisito specifico del progetto: va detto **prima** dell'acquisto che il GDD si gioca anche senza pagare, che Visioni sblocca il Santuario e alza il tetto di generazione (non carte più forti), che senza abbonamento il tetto è 7 job/settimana, che il gioco richiede connessione permanente e che i video sono generati da IA. Se un giorno chiudi il GDD dietro paywall, quella frase va riscritta.
 
 ### 5.2 Recesso e sua esclusione — artt. 52, 53, 59
 
@@ -98,16 +98,16 @@ Requisito specifico del progetto: va detto **prima** dell'acquisto che senza pag
 
 Requisiti: funzione visibile e accessibile per tutto il periodo utile, etichettata "recedere dal contratto qui"; form con nome, identificazione del contratto, mezzo elettronico per la conferma; comando finale "conferma recesso"; **avviso di ricevimento su supporto durevole con testo, data e ora**.
 
-Nel progetto convive con l'esclusione dell'art. 59: il pulsante serve per gli acquisti in cui il recesso non è ancora decaduto (checkout completato, accesso non ancora avviato) e per gli SKU futuri. Va gestito per singolo prodotto, non a livello di sito.
+Nel progetto convive con l'esclusione dell'art. 59: il pulsante serve per gli acquisti in cui il recesso non è ancora decaduto (checkout completato, accesso non ancora avviato) e per il **primo periodo** dell'abbonamento Visioni. Va gestito per singolo prodotto, non a livello di sito. La disdetta del rinnovo (Customer Portal + `/account`) è un altro tasto: ferma i periodi successivi, non è il recesso dei 14 giorni.
 
 ### 5.4 Conformità del contenuto digitale — artt. 135-octies e ss. (d.lgs. 173/2021)
 
 - Il gioco deve essere conforme al contratto e alla descrizione, **e** ai requisiti oggettivi di conformità.
 - Art. 135-undecies: obbligo di informare e fornire gli **aggiornamenti**, anche di sicurezza, necessari a mantenere la conformità, per la durata del contratto o per il periodo che il consumatore può ragionevolmente attendersi.
-- Se una caratteristica si discosta dallo standard atteso, va dichiarata e **accettata espressamente e separatamente** al momento dell'acquisto. Qui serve per: tetto giornaliero di generazione video, fallback all'animazione 2D, 1 solo slot save, dipendenza dai free tier.
+- Se una caratteristica si discosta dallo standard atteso, va dichiarata e **accettata espressamente e separatamente** al momento dell'acquisto. Qui serve per: tetto settimanale di generazione video (7 / 40), fallback all'animazione 2D, Santuario chiuso senza Visioni, dipendenza dai free tier.
 - Rimedi in caso di difetto: ripristino, riduzione del prezzo, risoluzione con rimborso.
 
-Conseguenza pratica sul piano di lavoro: un acquisto una-tantum a 14,99 € con "accesso al GDD completo" implica un impegno di manutenzione. Va scritto per quanto tempo, altrimenti lo decide un giudice.
+Conseguenza pratica sul piano di lavoro: un abbonamento a 9,99 €/mese "Santuario + generazione a nostro carico" implica un impegno di manutenzione *per i periodi pagati*. Va scritto cosa succede a disdetta (Santuario si chiude, tetto torna a 7, save esportabile). Un acquisto una-tantum a 14,99 €, se lo tieni, implica un impegno più lungo: va scritto per quanto, altrimenti lo decide un giudice.
 
 ### 5.5 Pratiche commerciali, clausole, dark pattern
 
@@ -292,15 +292,17 @@ Utile sapere cosa **escludere**, per non pagare conformità inutile.
 
 | Feature (dai tre file) | Norme coinvolte | Adempimento concreto |
 |---|---|---|
-| Landing pubblica con trailer | D.lgs. 70/2003 art. 7; art. 49 Codice del consumo; cookie | Footer legale completo, T&C, privacy, cookie banner, prezzi IVA inclusa, nessuna clip-azione visibile ai non paganti |
-| `PAYWALL=on`, nessuna demo | Artt. 49, 59 lett. o) | Informazione precontrattuale esplicita + doppia checkbox di consenso/rinuncia + e-mail di conferma |
-| Account senza accesso al gioco | GDPR art. 6; art. 49 | Base contrattuale; deve essere chiaro prima della registrazione che l'account non apre il gioco |
-| Webhook Stripe → `entitlements.active` | PSD2; GDPR art. 32 | Firma, idempotenza, log, retention definita |
-| Rimborso → entitlement revocato | Codice del consumo; T&C | Clausola trasparente su rimborsi, dispute e sospensione |
+| Landing pubblica con trailer | D.lgs. 70/2003 art. 7; cookie; T&C beta | Footer legale, T&C, privacy, cookie banner. In Fase 0 **niente** prezzi come offerta. Nessuna clip-azione per i visitatori |
+| GDD giocabile senza pagare | Contratto gratuito; pratiche commerciali | Non promettere "gratis per sempre". Preavviso 30 giorni prima di *qualsiasi* SKU |
+| Abbonamento Visioni (Fase B) | Artt. 49, 52–54-bis, 59; IVA/OSS; IARC "acquisti nel videogioco" | Prezzo 9,99 € IVA incl., durata, disdetta, recesso sul primo periodo, tetto 7 vs 40 dichiarato, niente pay-to-win |
+| `PAYWALL=on` sul GDD (SKU opzionale, non il default v2.4) | Artt. 49, 59 lett. o) | Informazione precontrattuale esplicita + doppia checkbox + e-mail di conferma |
+| Account senza Visioni | GDPR art. 6 | Base contrattuale del servizio gratuito; chiaro che il Santuario è chiuso |
+| Webhook Stripe → `entitlements.visions` | PSD2; GDPR art. 32 | Firma, idempotenza, log, retention definita. Cancel → dal periodo successivo tetto 7 |
+| Rimborso → entitlement revocato | Codice del consumo; T&C | Clausola trasparente su rimborsi, dispute e sospensione. Visioni: Santuario si chiude, tetto torna a 7 |
 | Overlay video IA sulle azioni | AI Act art. 50; L. 132/2025; artt. 600-quater.1, 612-quater c.p.; classificazione | Marcatura/dichiarazione IA, prompt policy versionata, moderazione con coda `banned`, gate 18+, classificazione con descrittore *sesso* |
 | Cache `cinematics` su D1 + R2, URL firmati | GDPR artt. 5, 32 | Nessun `user_id` nella chiave (già così), URL a scadenza breve, bucket non listabile, retention degli scarti = zero |
-| Tetto giornaliero di generazione, fallback 2D | Art. 135-undecies co. 4 | Dichiarare lo scostamento e farlo accettare separatamente al checkout |
-| 1 slot save Standard / 3 Founders | Artt. 49, 135-octies e ss. | Dichiarato prima dell'acquisto; export/portabilità dei save su richiesta (GDPR art. 20) |
+| Tetto settimanale di generazione, fallback 2D | Art. 135-undecies co. 4 | Dichiarare lo scostamento (7 / 40) e, in Fase B, farlo accettare al checkout Visioni |
+| 1 slot save in beta / 3 Founders se lo tieni | Artt. 49, 135-octies e ss. | Dichiarato; export/portabilità dei save su richiesta (GDPR art. 20) |
 | Patch di bilanciamento continue | Artt. 135-undecies e ss. | Policy di aggiornamento e di modifica del servizio nei T&C, con informazione ai giocatori |
 | Season / cosmetic (Fase C) | CPC Key Principles; art. 54-bis; art. 59 | Prezzo in valuta reale, nessuna valuta virtuale intermedia, recesso gestito per SKU |
 | Bot che pubblica sui social | Art. 130 privacy; UCPD; AI Act art. 50; ToS piattaforme | Approvazione umana (già prevista), disclosure IA, moderazione per piattaforma |
@@ -310,7 +312,7 @@ Utile sapere cosa **escludere**, per non pagare conformità inutile.
 
 ## 14. Checklist per fase
 
-Allineata alla proposta v2.2. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`. Coda sì/no: `Fantasy_Empire_Dashboard_Approvazioni.md`.
+Allineata alla proposta v2.4. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`. Coda sì/no: `Fantasy_Empire_Dashboard_Approvazioni.md`.
 
 ### Fase 0 — go-live pubblico senza pagamenti
 
@@ -326,7 +328,8 @@ Blocchi che impediscono di aprire la beta se mancanti:
 - [ ] Punto di contatto DSA
 - [ ] Pipeline video con coda `banned`, revisione umana, log; marcatura AI Act art. 50
 - [ ] Territorio di accesso deciso (default: UE, no UK/USA)
-- [ ] Cap / invite; Stripe assente dal frontend
+- [ ] Cap / invite; Stripe assente dal frontend; nessun CTA Abbonati
+- [ ] Tetto settimanale generazione dichiarato in T&C beta (default 7 job, cache hit esclusi)
 - [ ] Nessuna frase "gratis per sempre" in landing o T&C
 
 ### Fase B — prima di rendere Stripe live
@@ -343,6 +346,8 @@ Blocchi che impediscono di accendere i pagamenti se mancanti (in più rispetto a
 - [ ] Piano fiscale: registro dei corrispettivi, prova di localizzazione del cliente, monitoraggio soglia 10.000 €
 - [ ] Preavviso 30 giorni già inviato e scaduto
 - [ ] ToS Vercel riletti (Hobby vs uso commerciale)
+- [ ] T&C Visioni: rinnovo, disdetta, tetto 7 vs 40, Santuario, art. 54-bis sul primo periodo
+- [ ] Customer Portal Stripe o equivalente in `/account` per disdire il rinnovo
 
 ### Fase B — prime vendite (a pagamenti già accesi)
 

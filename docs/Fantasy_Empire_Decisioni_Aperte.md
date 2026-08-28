@@ -1,9 +1,9 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.3 — 28 agosto 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.3.
+**Versione:** 1.4 — 28 agosto 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.4.
 
-I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, e **nessuna data** da gratis a pagato.
+I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, tetto settimanale sulle clip nuove, e **nessuna data** da gratis a pagato. Niente chiavi Grok dei giocatori.
 
 ---
 
@@ -59,11 +59,12 @@ Senza una delle due, il go-live pubblico in Italia è scoperto. Non è rinviabil
 
 ## 6. Cosa succede quando si accendono i pagamenti
 
-- **A (default).** Preavviso 30 giorni **quando tu decidi**, non da una data scritta oggi. Offerta Founders a prezzo bloccato per chi ha save recente. Chi non compra: save in sola lettura 60 giorni + export.
-- **B.** I beta ricevono Standard in omaggio (1 slot) e pagano solo se vogliono Founders.
-- **C.** Wipe dei save beta, si riparte da zero sul paywall. Pulito tecnicamente, brutta fede verso chi ha giocato.
+- **A (default).** Preavviso 30 giorni **quando tu decidi**. Si vende Visioni. Chi non abbona: `/play` resta, tetto 7, Santuario chiuso. Save intatto.
+- **B.** Come A, più Founders a prezzo bloccato per chi ha save recente (3 slot), scadenza reale di *quell'offerta*.
+- **C.** Paywall sul GDD intero: chi non compra esce da `/play`, save in sola lettura 60 giorni + export. Non è il default di v2.4.
+- **D.** Wipe dei save beta. Pulito tecnicamente, brutta fede. Va detto da subito in T&C.
 
-B è generoso e può andarti stretto se i beta sono 40 e poi diventano 400. C va detto **da subito** in T&C, altrimenti è una pratica scorretta. A è il compromesso. I 30 giorni sono la durata del preavviso, non la fine della beta.
+A è il modello di questa proposta. C era il vecchio "si paga per giocare". D non si prende se non l'hai scritto in beta. I 30 giorni sono la durata del preavviso, non la fine della beta.
 
 ---
 
@@ -122,7 +123,7 @@ B e C riqualificano il servizio verso "piattaforma online" DSA. In Fase 0 è pes
 
 ## 13. Tetto e modo dei video in beta
 
-- **A (default).** Precache 80–150 chiavi. Live generate con tetto basso. Fallback 2D. Master MP4 su R2.
+- **A (default).** Precache 80–150 chiavi. Live generate con tetto settimanale per account (decisione 20). Fallback 2D. Master MP4 su R2.
 - **B.** Solo libreria 2D / poster. Zero video IA.
 - **C.** Generate live senza tetto. Brucia il credito xAI. No.
 
@@ -176,12 +177,36 @@ Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 ---
 
+## 19. Abbonamento Visioni
+
+- **A (default).** 9,99 €/mese IVA inclusa. Stripe `mode=subscription`. Solo Fase B. Sblocca il Santuario delle Visioni e alza il tetto di generazione. I job restano sulla *nostra* chiave xAI. I soldi coprono il credito.
+- **B.** Altro prezzo, o annuale.
+- **C.** Niente abbonamento. Solo tetto settimanale per tutti.
+
+A è lo SKU a pagamento di questa proposta. Il GDD resta gratis. C tiene i costi bassi e toglie la sezione speciale. B lo scrivi tu.
+
+Non si chiede al giocatore di collegare Grok, Imagine, o una API key. Quella idea è scartata.
+
+---
+
+## 20. Quanti job Imagine a settimana
+
+Settimana solare, fuso `Europe/Rome`, reset lunedì 00:00. Un job = cache miss che produce un file nuovo. Rivedere un MP4 già in R2 non conta.
+
+- **A (default).** 7 senza abbonamento. 40 con Visioni (tetto di sicurezza, così un account non svuota il credito).
+- **B.** 3 / 20. Più stretto, meno burn, overlay 2D prima.
+- **C.** 10 / illimitato. No: illimitato su una chiave tua è un buco.
+
+I numeri stanno in `config`. Se li cambi, lo dici in-game e in T&C. Non "circa sette".
+
+---
+
 ## Come ti rispondo io
 
 Mandami un elenco tipo:
 
 ```
-1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A 17A 18A
+1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A 17A 18A 19A 20A
 ```
 
-oppure mescola (`3B 17B 18A`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia. Niente codice finché non lo chiedi.
+oppure mescola (`3B 19B 20B`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia. Niente codice finché non lo chiedi.

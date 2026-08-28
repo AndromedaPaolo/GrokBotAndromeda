@@ -1,11 +1,11 @@
 # Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.3)
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.4)
 **Video generazione:** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
-**Versione:** 2.1 — 28 agosto 2026
+**Versione:** 2.2 — 28 agosto 2026
 **Video in-sito:** `Fantasy_Empire_Video_IA_Azioni.md`
 **Stato di questo file:** specifica. Nessuna Routine, nessuna Automation, nessun post.
 
@@ -68,7 +68,7 @@ Output: memo `memo_legale` in dashboard, con fonti e data. Scritto in cima: "non
 
 GrokBot lancia Imagine Image + Imagine Video (I2V). Non tiene il file: il Worker lo copia su R2 perché l'URL xAI scade. Poi card `video_new` in dashboard. Approva = `ready`. Scarta = delete R2.
 
-Non genera in loop. Precache o tetto giornaliero. Il combat non aspetta il job. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
+Non genera in loop. Precache o tetto. Quota settimanale del giocatore (`gen_quota`) la decrementa il Worker, non GrokBot. Chiave xAI: quella del progetto. Non si chiedono chiavi ai giocatori. Il combat non aspetta il job. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 ---
 
@@ -81,7 +81,7 @@ Quando gli chiedi di pensare al gioco, può:
 - Proporre backlog (season, carte, tetto video).
 - Segnalare bug duplicati.
 
-Non mergea su `main`. Non scrive pay-to-win. Le feature a pagamento restano accesso, slot, cosmetici, espansioni.
+Non mergea su `main`. Non scrive pay-to-win. Le feature a pagamento restano: Visioni (Santuario + tetto generazione), slot, cosmetici. Non "collega il tuo Grok".
 
 Stesso per lo stack: può dire "D1 è all'80%, valuta il piano". Il click sul billing è tuo.
 

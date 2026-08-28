@@ -1,8 +1,8 @@
 # Fantasy Empire — Video IA sulle azioni (sito)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.2)
-**Versione:** 1.3 — 28 agosto 2026
+**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.4)
+**Versione:** 1.4 — 28 agosto 2026
 **Storage e generazione (scelta chiusa in proposta):** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).
@@ -13,13 +13,13 @@ Nessun codice in questo file. Specifica di prodotto + cache + policy.
 
 ## 1. Hook
 
-Ogni volta che un giocatore **con entitlement attivo** (`beta_active` in Fase 0, `active` in Fase B+) compie un'azione di gioco, nel sito compare un **video breve generato da IA**.
+Ogni volta che un giocatore **con entitlement attivo** (`beta_active` in Fase 0, `beta_active` o `visions` in Fase B) compie un'azione di gioco, nel sito compare un **video breve generato da IA**.
 
 - Tono: **SFW ma sexy** — suggestivo, fantasy, camera vicina, vestiti aderenti / armature "fan service", niente nudo esplicito, niente sesso, niente minori.
 - Se quella azione (stessa chiave, vedi §4) ha **già** un video, **non si rigenera**: si riproduce il file in cache.
 - Prima generazione: loading nel player del sito, poi playback. Le volte dopo: playback immediato.
 
-Obiettivo in Fase 0: differenziare il titolo e misurare se la gente resta. Obiettivo in Fase B: vendere l'acquisto. Il combat resolver resta sul server; il video è **presentazione**, non regola.
+Obiettivo in Fase 0: differenziare il titolo e misurare se la gente resta. Obiettivo in Fase B: vendere Visioni (Santuario + più job), non chiudere `/play`. Il combat resolver resta sul server; il video è **presentazione**, non regola.
 
 Chi non ha entitlement **non** chiama l'API video-azioni. In Fase 0 l'entitlement non arriva da Stripe: arriva dal grant beta.
 
@@ -181,9 +181,9 @@ Questa policy è anche la prova che **non** si è nel perimetro pornografico del
 
 ## 9. Relazione con entitlement e infra
 
-- Utenti `beta_active` o `active`.
-- Fase 0: precache + tetto generate stretto, oggetti su R2 free (10 GB). Stream no.
-- Fase B: stesso player, tetto alzabile quando c'è margine.
+- Utenti `beta_active` o `visions`.
+- Fase 0: precache + **7 job Imagine / settimana** a persona. Cache hit non conta. Oggetti su R2 free (10 GB). Stream no. Santuario visibile e chiuso.
+- Fase B senza Visioni: stesso tetto 7. Con Visioni: tetto 40, Santuario aperto, job a carico nostro.
 - Fase C (profitto): eventuale Stream. Il bot **riusa la cache del sito** e carica le clip sui canali del progetto. Non si rigenera un video nuovo per ogni social. Il video social non sblocca il gioco.
 
 Il resolver di danno/SP **ignora** il video. Cheat sul client non sblocca clip nuove senza l'azione validata dal Worker.

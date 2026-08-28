@@ -1,7 +1,7 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.2. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
-**Versione:** 1.1 — 28 agosto 2026
+**Documento operativo.** Completa la proposta v2.4. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Versione:** 1.2 — 28 agosto 2026
 **Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.
 
@@ -27,7 +27,7 @@ Gratis non è una zona franca. È un contratto senza prezzo.
 | Cookie | Art. 122 d.lgs. 196/2003; LG Garante 231/2021 | In Fase 0 solo cookie tecnici (sessione, preferenze video, scelta banner). Niente tracker. Banner minimo: informativa, non un muro |
 | Minori / età | GDPR art. 8; L. 132/2025 art. 4; d.lgs. 203/2017 | Gate 18+ all'ingresso. Coerente con classificazione e T&C. Autodichiarazione + blocco se dichiara <18. Non è l'age assurance "pornografica" del decreto Caivano, **purché** il contenuto resti non pornografico (vedi quadro §7.2) |
 | Classificazione videogioco | D.lgs. 203/2017 art. 10; AGCOM 74/19/CONS | Obbligo a prescindere dal prezzo. IARC o PEGI **prima** del go-live pubblico. Pittogrammi in landing e in `/play` |
-| IA | AI Act art. 50 (dal 2 agosto 2026); L. 132/2025 | Dichiarare che i video sono sintetici. Contratto col provider sulla marcatura machine-readable. Prompt policy, coda `banned`, log. Personaggi inventati, adulti 25+ |
+| IA | AI Act art. 50 (dal 2 agosto 2026); L. 132/2025 | Dichiarare che i video sono sintetici. Contratto col provider sulla marcatura machine-readable. Prompt policy, coda `banned`, log. Personaggi inventati, adulti 25+. Tetto settimanale di *nuove* clip (default 7). Cache hit non conta |
 | Penale contenuti | Artt. 600-quater.1, 612-quater, 528 c.p. | Invariato rispetto al quadro. Il fatto che sia gratis non abbassa la soglia |
 | DSA (hosting) | Artt. 11-16 | Punto di contatto, notice-and-action anche se i "contenuti utente" sono solo i save. Comunicazione AGCOM quando il servizio è pubblico |
 | Sicurezza dati | GDPR art. 32, 33 | Stesse basi della proposta. Procedura breach 72h scritta prima del go-live |
@@ -42,6 +42,7 @@ Sanzioni GDPR, AI Act, classificazione, penale: le stesse del quadro. Il fatto c
 | Tema | Perché è inerte | Cosa si prepara comunque |
 |---|---|---|
 | Partita IVA, OSS, registro corrispettivi | Non c'è cessione a titolo oneroso | Colloquio col commercialista **prima** di Fase B, non il giorno del primo checkout |
+| Abbonamento Visioni | Non si vende. Nessun CTA Abbonati | Checkout in preview/test. Tetto 7 già attivo in beta, così il passaggio non è un taglio a sorpresa |
 | Codice del consumo su recesso, art. 59 lett. o), pulsante 54-bis | Non c'è contratto a titolo oneroso | Codice del checkout già scritto in preview, spento in prod |
 | Prezzo IVA inclusa, conferma d'ordine, fattura | Non c'è ordine | — |
 | PSD2 / SCA / webhook live | Stripe assente | Webhook in test mode |
@@ -56,7 +57,7 @@ Attenzione: se in landing scrivi "compra a 14,99 €" con bottone che non funzio
 
 Testo da usare, in italiano chiaro, in T&C e in landing:
 
-> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai acquistare o esportare il save e uscire. Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
+> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco né una sezione extra. Ogni account ha un limite settimanale di clip IA *nuove*; le già generate si rivedono. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare il GDD senza pagare, oppure abbonarti. Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
 
 Quello che **non** si scrive:
 
@@ -65,6 +66,7 @@ Quello che **non** si scrive:
 - "posto Founders già pagato"
 - "beta fino al GG/MM/AAAA"
 - "90 giorni di prova"
+- "collega il tuo Grok / la tua API key"
 - qualsiasi frase che faccia credere che il gioco resti gratis dopo una data X, o che i pagamenti partano in una data X già nota
 
 Una beta **invite-only** è più facile da difendere di un open server: meno minori casuali, meno tetti D1, community tracciabile. È il default della proposta.
@@ -143,12 +145,18 @@ Checklist che **blocca** l'accensione:
 - [ ] Tua conferma esplicita: Approva sulla card `preavviso_pagamenti` in dashboard. Non un KPI e non una data in agenda
 - [ ] Piano Hobby Vercel riletto / upgrade se i ToS lo chiedono
 - [ ] Riclassificazione se gli "acquisti nel videogioco" cambiano i descrittori
+- [ ] T&C Visioni: prezzo 9,99 € IVA incl., disdetta, tetto 7 vs 40, Santuario non è pay-to-win, art. 54-bis sul primo periodo
 
-Cosa succede al giocatore che non compra:
+Cosa succede al giocatore che **non** si abbona, default v2.4:
+
+- `/play` resta. Il GDD resta. Tetto generazione resta 7 job/settimana.
+- Il Santuario resta chiuso.
+- Niente addebito automatico. Niente carta "già in archivio": in Fase 0 non l'abbiamo chiesta.
+
+Se un giorno scegli il paywall sul GDD intero (SKU Standard/Founders, non il default):
 
 - `/play` → 402 + pagina "esporta il save / acquista".
 - Save in sola lettura per 60 giorni, poi solo export a richiesta per altri 30, poi cancellazione con preavviso.
-- Niente addebito automatico. Niente carta "già in archivio": in Fase 0 non l'abbiamo chiesta.
 
 ---
 
@@ -161,7 +169,7 @@ In Fase 0 la crescita è lenta e voluta. Cursor tiene il git (bug, cap, tetti). 
 | Invite | Ogni `beta_active` ha 0 invite all'inizio. Tu ne dai a mano | tu | Niente viralità incontrollata |
 | Waitlist | Email + consenso. Quando si libera un posto, magic link | GrokBot bozza, tu Approvi in dashboard | Non è una newsletter di prodotto se non hanno spuntato marketing |
 | Capture reale / patch gioco | Sostituisce Trailer 0, sistema drop-off | Cursor, PR | Resta SFW |
-| Metriche interne | D1: D1/D7, drop tutorial, 429, tetto video | Cursor in issue | Niente GA/Meta pixel in Fase 0 |
+| Metriche interne | D1: D1/D7, drop tutorial, 429, tetto video settimanale | Cursor in issue | Niente GA/Meta pixel in Fase 0 |
 | Ricerca legale / policy | Memo con fonti | GrokBot | Non è un parere; non accende Stripe |
 | Discord / chat pubblica | **No** in Fase 0 | — | Altrimenti scatta la riqualificazione DSA "piattaforma online" |
 

@@ -4,7 +4,7 @@
 **Fonte design:** *Fantasy Empire – Game Design Document (SFW)* — perimetro completo dal giorno uno
 **Stack:** GitHub · Vercel · Cloudflare D1 · Stripe (spento in Fase 0)
 **Tipo documento:** proposta (nessun codice, nessun deploy)
-**Versione proposta:** 2.3 — 28 agosto 2026
+**Versione proposta:** 2.4 — 28 agosto 2026
 **Ops (Cursor + GrokBot):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Dashboard sì/no:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, dettaglio:** `Fantasy_Empire_Grok_Bot_Ops.md`
@@ -38,14 +38,14 @@ Fantasy Empire è un web game persistente: città e edifici, produzione/fusione 
 
 **Verso i giocatori, adesso.** Accesso gratuito con account, gate 18+, cap di posti. Si gioca il GDD intero. Non si compra nulla. Non si chiede un metodo di pagamento "per dopo".
 
-**Verso i giocatori, dopo.** Non c'è un "dopo" in agenda. Se e quando tu vuoi vendere, *e* P.IVA / T&C a pagamento / Stripe sono pronti, *e* è partito e scaduto il preavviso di 30 giorni, la stessa installazione accende il paywall. Chi era in beta tiene il save. Il prezzo Founders glielo si può bloccare. Niente pay-to-win, mai. Se quelle cose non succedono, si resta in Fase 0. Il profitto alza il rischio legale: non si entra in quel rischio per una scadenza.
+**Verso i giocatori, dopo.** Non c'è un "dopo" in agenda. Se e quando tu vuoi vendere, *e* P.IVA / T&C a pagamento / Stripe sono pronti, *e* è partito e scaduto il preavviso di 30 giorni, si vende l'abbonamento **Visioni**: sezione extra + generazione a nostro carico. Il GDD resta giocabile senza pagare. Standard e Founders restano SKU opzionali se un giorno chiudi *tutto* il gioco. Niente pay-to-win, mai. Se quelle cose non succedono, si resta in Fase 0. Il profitto alza il rischio legale: non si entra in quel rischio per una scadenza.
 
 **Verso di te (infra e ops).**
 
 | Fase | Quando | Cosa paghi tu | Cosa paga il giocatore | Chi tiene in vita |
 |---|---|---|---|---|
 | **0 — Beta legale, gratis** | Go-live, senza data di fine | 0 € fissi (free tier) + i piani che hai già (Cursor Pro+, GrokBot) | 0 € | Cursor sul git. GrokBot a chiamata. Sì/no in dashboard |
-| **B — Prime vendite** | Evento: Approva preavviso + checklist verde + 30 giorni | Commissioni Stripe | Standard / Founders | Uguale. Più checklist su ogni card che tocca soldi |
+| **B — Prime vendite** | Evento: Approva preavviso + checklist verde + 30 giorni | Commissioni Stripe + credito xAI dei video | Abbonamento Visioni (e, se li tieni, Standard / Founders) | Uguale. Più checklist su ogni card che tocca soldi |
 | **C — C'è margine** | Entrate nette sopra una soglia che *osservi*, non un trigger | Piani paid solo se i free tier non bastano | Stessi SKU + season/cosmetic | Uguale. Ogni publish è una card |
 
 La vecchia "Fase A — Zero burn con paywall" non esiste più come lancio. Lo zero burn resta. Il paywall slitta.
@@ -138,6 +138,10 @@ Nuovo mostro: 5 carte normali + 1 Origin. Origin cresce da solo, +1 SP cost a og
 | Save | 1 slot in Fase 0 per tutti; 3 slot restano lo SKU Founders, non si regalano in beta |
 | Burst bar | si riempie di `SP speso nella battaglia / 10` (cap 1 Essence a fight) |
 
+### 3.11 Santuario delle Visioni
+
+Zona extra (palazzo in città o dungeon dedicato). Stesso combat, niente carte più forti. In Fase 0 è in mappa come **chiusa**. Si apre solo con l'abbonamento Visioni, in Fase B.
+
 UI/UX: web desktop-first, playable su mobile browser. Nessun client Steam/mobile store in questa proposta.
 
 ---
@@ -153,23 +157,44 @@ Flusso utente in Fase 0:
 3. Crea account (email). Consenso privacy. Consenso marketing **separato e spento di default**.
 4. Se c'è posto nel cap (o ha un invite): `entitlements.status = beta_active`.
 5. `/play` e le API città/dungeon/combat rispondono 200.
-6. Overlay video IA: sì, perché l'entitlement è attivo. Non perché ha pagato.
-7. Se il cap è pieno: waitlist, niente gioco. Niente "lascia la carta, ti avvisiamo e addebitiamo".
+6. Overlay video IA: sì, con **limite settimanale** di *nuove* generazioni (default 7). Cache hit non conta. Oltre il tetto: animazione 2D, il gioco continua.
+7. Se il cap di posti è pieno: waitlist, niente gioco. Niente "lascia la carta, ti avvisiamo e addebitiamo".
 
-| SKU | Prezzo | Quando esiste |
-|---|---|---|
-| Beta | 0 € | Fase 0. Non è uno SKU Stripe. È un grant lato server. |
-| Standard | 14,99 € IVA incl. (indicativo) | Fase B. Accesso GDD, 1 slot save |
-| Founders | 24,99 € IVA incl. (indicativo) | Fase B. 3 slot, tema UI, credits. Prezzo bloccabile per chi ha un save beta |
-| Season / cosmetic | dopo il profitto | Solo contenuto o cosmetici. Niente pay-to-win |
+| SKU | Prezzo | Quando esiste | Cosa sblocca |
+|---|---|---|---|
+| Beta | 0 € | Fase 0. Grant server, non Stripe | GDD, 1 slot, video IA fino al tetto settimanale |
+| **Visioni** (abbonamento) | 9,99 € / mese IVA incl. (indicativo) | Fase B, Stripe `mode=subscription` | Sezione speciale Santuario + i costi di generazione (tetto di sicurezza 40 job/settimana, a carico nostro) |
+| Standard | 14,99 € una tantum IVA incl. | Fase B, solo se chiudi il gioco dietro paywall | Accesso GDD, 1 slot. **Non** è il primo SKU: il gioco in questa v2.4 resta giocabile gratis |
+| Founders | 24,99 € una tantum IVA incl. | Fase B, opzionale | 3 slot, tema UI, credits |
+| Season / cosmetic | dopo il profitto | Solo contenuto o cosmetici. Niente pay-to-win | |
 
-In locale e in preview: Stripe **test mode** per costruire il checkout *senza* esporlo. In produzione Fase 0: Stripe **assente dal frontend**. Nessun pulsante Acquista. Nessun Price ID live.
+L'abbonamento **Visioni** è lo SKU a pagamento di questa proposta. Non si collegano le API Grok dei giocatori: genera sempre la nostra chiave, i soldi dell'abbonato coprono il credito xAI. Senza abbonamento il tetto settimanale è fisso, visibile, non "circa".
+
+Niente pay-to-win: il Santuario non vende carte più forti né SP extra. Stesso combat. Contenuto e cinematics in più, e generazione pagata da noi.
+
+In locale e in preview: Stripe **test mode** per costruire il checkout *senza* esporlo. In produzione Fase 0: Stripe **assente dal frontend**. Nessun pulsante Abbonati. Nessun Price ID live.
 
 Eccezione tecnica: un account `role=dev` sul tuo utente, in env, per QA. Non è in registrazione pubblica.
 
 ---
 
-## 4.1 Landing in Fase 0
+## 4.1 Abbonamento Visioni e tetto settimanale
+
+Due strati, sempre.
+
+**Senza abbonamento (Fase 0, e in Fase B chi non paga).** Ogni account ha un contatore `gen_jobs` per settimana solare, fuso `Europe/Rome`, reset lunedì 00:00. Default: **7** job. Un job è una chiamata Imagine che produce un file nuovo (cache miss). Rivedere un MP4 già in R2 **non** scala il contatore. A 7/7: overlay 2D, testo in UI "Limite settimanale. Si rinnova lunedì." Il GDD resta intero. Il Santuario è visibile in mappa come chiuso, non inesistente.
+
+**Con abbonamento Visioni (solo Fase B, Stripe live).** `entitlements.status = visions`. Entra nel **Santuario delle Visioni**: zona extra (palazzo in città o dungeon dedicato), eventi e clip sue, stesse regole di combattimento. I job Imagine di quel giocatore li paghi tu sul credito xAI. Tetto di sicurezza **40** job/settimana così un solo account non svuota il credito. Disdetta: dal periodo successivo torna il tetto da 7 e il Santuario si chiude. Save del Santuario resta esportabile.
+
+Il numero 7 e il 40 stanno in `config`. Non si "aggiusta in silenzio". Se li cambi, lo dici in-game e in T&C.
+
+Recurring: disdetta in `/account` (e Customer Portal Stripe). Pulsante recesso art. 54-bis sul primo periodo. Prezzo IVA inclusa. Classificazione: descrittore acquisti in-game da aggiornare in Fase B.
+
+Dettaglio file e R2: `Fantasy_Empire_Video_Storage_Generazione.md`.
+
+---
+
+## 4.2 Landing in Fase 0
 
 Pagine pubbliche: landing, login/registrazione, privacy, cookie, termini, contatti, (poi) classificazione.
 
@@ -181,13 +206,13 @@ Pagine pubbliche: landing, login/registrazione, privacy, cookie, termini, contat
 4. Tre pill: Gestione città · Carte & Bond · Dungeon / mondo infinito.
 5. Banda beta: "Accesso gratuito, senza una data di fine. Non si paga. Se attiveremo i pagamenti te lo diciamo almeno 30 giorni prima. Il tuo save resta."
 6. CTA "Crea account e gioca" → registrazione, **non** Checkout.
-7. FAQ: è davvero gratis? c'è una data di fine? (no.) cosa succede ai save se un giorno si pagherà? niente pay-to-win; i video sono generati da IA.
+7. FAQ: è davvero gratis? c'è una data di fine? (no.) quante clip IA a settimana? (7 nuove. Le già generate si rivedono sempre.) se un giorno ci sarà un abbonamento? (Santuario + generazione a nostro carico, te lo diciamo 30 giorni prima.) niente pay-to-win; i video sono generati da IA.
 8. Footer legale (dati art. 7 d.lgs. 70/2003, per quanto disponibili prima della P.IVA).
 
 **Cosa non stare sulla landing in Fase 0**
 
-- Prezzo 14,99 / 24,99 come offerta acquistabile.
-- "Acquista e gioca".
+- Prezzo 9,99 / 14,99 / 24,99 come offerta acquistabile.
+- "Abbonati" / "Acquista e gioca".
 - Clip-azione live per i visitatori. Eventuale reel di 3 clip precache con watermark "in-game", se la policy contenuti lo regge.
 
 I prezzi indicativi possono stare in una pagina "Dopo la beta", scritta come **intenzione**, non come offerta al pubblico. Se li metti in homepage con un bottone spento, sembri un negozio chiuso. Meglio non farlo.
@@ -268,7 +293,8 @@ GDPR art. 32 non aspetta Stripe.
 ## 7. Schema D1 (stesso scheletro in tutte le fasi)
 
 - `users`
-- `entitlements` (`beta_active` | `active` | `revoked` | `refunded`). In Fase 0 esiste solo `beta_active`.
+- `entitlements` (`beta_active` | `active` | `visions` | `revoked` | `refunded`). In Fase 0 esiste solo `beta_active`.
+- `gen_quota` (user_id, week_id, jobs_used)
 - `saves`
 - `audit_payments` (vuota in Fase 0)
 - `consents` (età, T&C, privacy, marketing)
@@ -292,7 +318,7 @@ Restare a costo infra zero non accorcia lo sviluppo. Accorcia la bolletta. La Fa
 | Build 4 — Dungeon + mondo + multi-città | Fog, founding, invasion, shrine | Free | — |
 | Build 5 — Evocazione, Influence, eventi, KO | Default §3.10 | Free | — |
 | **Go-live Fase 0** | Gioco ai beta, Stripe assente dal frontend | Free | 0 € |
-| Fase B | Stesso gioco, paywall on, Stripe live. **Nessuna data in questo piano.** | Free + fee | SKU |
+| Fase B | Stesso GDD gratis. Stripe live, checkout Visioni. **Nessuna data in questo piano.** | Free + fee + credito xAI | Visioni (e SKU opzionali) |
 | C'è margine | Upgrade piano se i tetti saltano | Piani paid mirati | SKU + cosmetic |
 
 Stima onesta per un solo sviluppatore: mesi, non settimane. Cursor Pro+ accorcia le PR, non il perimetro GDD.
@@ -309,8 +335,8 @@ Ordine obbligato, quando (se) lo vuoi:
 2. Tu premi Approva sulla card `preavviso_pagamenti`. Non basta un KPI. Non basta una chat.
 3. Preavviso **≥ 30 giorni** a tutti i `beta_active`. I 30 giorni partono da quell'invio.
 4. Banner in-game e landing, stesso contenuto. Niente countdown messi mesi prima. Niente "ultimi giorni" se non è vero.
-5. Checkout on solo a preavviso scaduto. Conversione consigliata: Founders a prezzo bloccato per chi ha save recente, scadenza reale *di quell'offerta*, non della beta. Chi non compra: fuori da `/play`, save esportabile.
-6. I `beta_active` non diventano `active` in silenzio.
+5. Checkout on solo a preavviso scaduto. Default di questa proposta: si vende **Visioni**. `/play` resta aperto a chi non abbona. Cambia il tetto generazione e si apre il Santuario. Se un giorno scegli il paywall sul GDD intero (SKU Standard/Founders), allora sì: chi non compra esce da `/play`, save esportabile. Quella è una seconda decisione, non il default.
+6. I `beta_active` non diventano `visions` in silenzio. Serve webhook Stripe.
 
 Dettaglio: `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` §8. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md` §6.
 
@@ -321,7 +347,7 @@ Dettaglio: `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` §8. Ops: `Fantasy_Empire
 - I video sulle azioni restano una feature del **sito**, per chi ha entitlement (`beta_active` o `active`). Policy SFW, adulti 25+, coda `banned`: file video, invariati nel merito.
 - In Fase 0: Grok Imagine (precache), file su R2 privato, miss = 2D + coda. GIF non è il master. Clip nuove in dashboard `video_new`. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 - **Cursor Pro+** tiene il prodotto: branch, test, flag, bozze. Già in Fase 0. Non mergea da solo.
-- **GrokBot** è a chiamata già in Fase 0 per mail, X/Twitter in sola lettura, ricerca legale. Niente post live, niente ads, niente accensione Stripe se la card è rossa.
+- **GrokBot** è a chiamata già in Fase 0 per mail, X/Twitter in sola lettura, ricerca legale, job Imagine. Niente post live, niente ads, niente accensione Stripe se la card è rossa. Non usa le chiavi Grok dei giocatori.
 - **Dashboard.** Una coda. Approva o Scarta. Push, invio mail, publish, flag, invite, ban video. Non apri git. Specifica: `Fantasy_Empire_Dashboard_Approvazioni.md`.
 
 Specifica: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
@@ -340,23 +366,25 @@ Specifica: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 | Hobby Vercel | Tollerabile in beta non commerciale. Prima di incassare, ToS. |
 | Contenuto vs classificazione | Senza IARC/PEGI un gioco pubblico in Italia è scoperto. Va fatto in Fase 0, non in Fase B. |
 | Approva a occhi chiusi | La dashboard toglie git dalla faccia, non toglie il cervello. Test fail = tasto spento. Soldi/legale = box verdi o tasto spento. |
+| Visioni a 9,99 € vs 40 job a 0,25 $ | Senza precache un abbonato brucia il margine. Il tetto 40 e il catalogo 80–150 chiavi esistono per questo. |
 
 ---
 
 ## 12. Cosa chiedo a te adesso
 
-Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.3, se non mi dici il contrario:
+Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.4, se non mi dici il contrario:
 
 1. Fase 0 invite + cap 40, non open registration.
 2. 18+ dichiarato. Territorio: Italia + UE. Niente UK/USA in beta.
 3. Tono SFW sexy tenuto in beta. Prima di Stripe, si rivede.
 4. Classificazione IARC (gratis, browser) in Fase 0.
-5. Preavviso 30 giorni *quando tu Approvi quella card*, Founders bloccato per i beta, save esportabile se non comprano. Nessuna data oggi.
+5. Preavviso 30 giorni *quando tu Approvi quella card*. Default: si vende Visioni, `/play` resta. Nessuna data oggi.
 6. Trailer 0 subito. Trailer 1 quando c'è lo slice.
 7. URL `*.vercel.app` fino a P.IVA + dominio.
 8. 1 slot save in beta. I 3 slot restano Founders.
 9. Cursor sul git. GrokBot su mail / X / legale, a chiamata.
 10. Dashboard unica Approva/Scarta per git e per tutte le cose come questa. Non apri GitHub per il push.
 11. Video: Grok Imagine → R2. Master MP4, non GIF.
+12. Abbonamento Visioni 9,99 €/mese: Santuario + generazione a nostro carico (40 job/sett.). Senza: 7 job/sett. fissi. Niente chiavi Grok dei giocatori.
 
 Rispondi puntando ai numeri. Cambio il file e rialzo la versione.

@@ -1,8 +1,8 @@
 # Fantasy Empire — Generazione e storage dei video/gif
 
 **Tipo documento:** proposta. Nessun job IA, nessun bucket creato.
-**Versione:** 1.0 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.3
+**Versione:** 1.1 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.4
 
 Questa è la soluzione consigliata. Le alternative stanno in fondo e in `Fantasy_Empire_Decisioni_Aperte.md` §13, §17, §18.
 
@@ -89,6 +89,8 @@ La generazione vera impiega decine di secondi. Il turn-based non può restare fe
 
 Live generate senza tetto è la scelta che brucia i 30 $ in una serata di dungeon. Non è il default.
 
+Oltre al tetto *giornaliero* di coda (infra), ogni *account* ha un tetto **settimanale** di job. Dettaglio §9. Chiave xAI: sempre la nostra. Nessuna API key del giocatore.
+
 ---
 
 ## 5. Flusso tecnico (da costruire dopo, non ora)
@@ -98,13 +100,16 @@ azione ok sul Worker
   → D1 cinematics by video_key
       ready   → URL firmato R2 → <video>
       pending_review / generating → 2D
-      miss e tetto ok → enqueue job_id, 2D adesso
+      miss e tetto settimanale account ok e budget mese ok
+           → enqueue job_id, 2D adesso
            Worker/GrokBot: Imagine Image (se manca poster)
                          → Imagine Video I2V 5s
                          → GET url xAI (scade) → R2.put master + poster
                          → status pending_review
                          → riga dashboard video_new
-      miss e tetto pieno → solo 2D, basta
+                         → gen_quota.jobs_used += 1
+      miss e tetto pieno o budget pieno → solo 2D, basta
+           (UI: "Limite settimanale. Si rinnova lunedì.")
 ```
 
 Prompt versionato (`sfw_sexy_v1`) dentro la chiave, come già nel file video. Cambio mood = nuove chiavi, i vecchi file restano finché non li cancelli tu da dashboard.
@@ -119,6 +124,7 @@ Prompt versionato (`sfw_sexy_v1`) dentro la chiave, come già nel file video. Ca
 - Bucket R2 pubblico listabile.
 - Far aspettare il combat sul job IA.
 - Auto-Approva delle clip. Il tono è il punto legale più caldo del progetto.
+- Chiedere al giocatore una API key Grok / xAI. Genera sempre il progetto. L'abbonamento Visioni paga *noi*, non il provider al posto suo.
 
 ---
 
@@ -136,6 +142,23 @@ Storage: R2 resta in A–E come archivio. Stream è un *delivery* opzionale, non
 
 ---
 
-## 8. Fuori scope
+## 8. Quota settimanale e chi paga xAI
 
-Nessuna `XAI_API_KEY` usata qui. Nessun bucket. Nessun MP4. Quando vorrai il primo batch, è un giro a parte: Worker + R2 + una Routine GrokBot + tipo `video_new` in dashboard.
+Due contatori, non uno.
+
+| Contatore | Cosa misura | Default | Se è pieno |
+|---|---|---|---|
+| Budget mese progetto | Spend xAI sul *nostro* account | 80 USD | Nessun job, anche per gli abbonati. Log `BUDGET_BLOCK` |
+| `gen_quota` per account | Job Imagine di quella settimana (`week_id` = lunedì ISO, `Europe/Rome`) | 7 senza Visioni, 40 con Visioni | Overlay 2D. Log `QUOTA_WEEK`. Testo in UI |
+
+Un job è una chiamata che produce un file nuovo. Cache hit su R2: zero. Precache catalogo (80–150 chiavi prima del go-live): a tuo carico, non scala `gen_quota` dei giocatori.
+
+Abbonamento Visioni (Fase B, 9,99 €/mese IVA incl.). Non è un ricarico a clip. È un forfait: Santuario aperto + tetto 40. Se un abbonato brucia 40 job a 0,25 USD, xAI costa circa 10 USD. Sta sotto i 9,99 € solo se il catalogo cache tiene. Per questo il 40 esiste e il precache è obbligatorio *prima* di vendere Visioni.
+
+D1: `gen_quota (user_id, week_id, jobs_used)`. I numeri 7 e 40 stanno in `config`. Cambio = disclosure in-game e T&C.
+
+---
+
+## 9. Fuori scope
+
+Nessuna `XAI_API_KEY` usata qui. Nessun bucket. Nessun MP4. Nessuna chiave del giocatore. Quando vorrai il primo batch, è un giro a parte: Worker + R2 + una Routine GrokBot + tipo `video_new` in dashboard.

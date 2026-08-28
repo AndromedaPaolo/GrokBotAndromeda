@@ -1,10 +1,10 @@
 # Fantasy Empire — Dashboard approvazioni
 
 **Tipo documento:** proposta. Nessun codice, nessuna pagina, nessun webhook creato.
-**Versione:** 1.0 — 28 agosto 2026
+**Versione:** 1.1 — 28 agosto 2026
 **Perché esiste:** non devi aprire GitHub, Gmail o X per ogni ok. Una coda. Due tasti. Vale per il push e per **tutte le cose dello stesso tipo**: mail, post, flag, preavviso, ban video, invite.
 
-**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.3 · `Fantasy_Empire_Video_Storage_Generazione.md`
+**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.4 · `Fantasy_Empire_Video_Storage_Generazione.md`
 
 ---
 
@@ -34,7 +34,8 @@ Regola: se oggi dovresti andare su un sito a cliccare, domani sta qui.
 | `mail_massa` | Conteggio destinatari, oggetto, corpo, consenso filtrato | Invia a quel set | Elimina bozza |
 | `preavviso_pagamenti` | Testo email 30 giorni, numero `beta_active`, checklist Fase B (deve essere verde) | Manda il preavviso. **Non** accende Stripe | Elimina. Fase 0 resta |
 | `stripe_live` | Checklist Fase B, data invio preavviso, giorni scaduti | `STRIPE_LIVE=on` solo se i box sono verdi. Altrimenti il tasto è morto e spiega perché | Lascia off |
-| `prezzo` | Vecchio / nuovo, SKU | Patch + push del prezzo | Niente |
+| `prezzo` | Vecchio / nuovo, SKU (Visioni 9,99 o altro) | Patch + push del prezzo | Niente |
+| `quota_week` | Vecchio / nuovo tetto 7 o 40 | Patch `config` + disclosure in-game | Niente |
 | `post_x` / `post_ig` / `post_altro` | Testo, clip, disclosure IA | Pubblica | Elimina bozza |
 | `ads` | Copy, budget, targeting | **Mai** da solo in Fase 0. Dopo, solo se budget e account esistono; comunque Approva qui | Elimina |
 | `memo_legale` | Fonti, cosa cambierebbe | Non pubblica legge. Apre/accoda un `git_pr` con la patch di `docs/` o delle pagine | Archivia il memo |

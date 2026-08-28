@@ -1,8 +1,8 @@
 # Fantasy Empire — Ops: Cursor prima, GrokBot a supporto
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
-**Versione:** 1.1 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.2 · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Versione:** 1.2 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.4 · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---
@@ -117,7 +117,7 @@ Se il punto 2 è rosso, GrokBot può fare ricerca e Cursor può preparare le pag
 
 Landing e T&C, formula:
 
-> Accesso gratuito, senza una data di fine. Non è una promessa di gratis per sempre. Se attiveremo i pagamenti, lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai acquistare o esportare il save.
+> Accesso gratuito, senza una data di fine. Non è una promessa di gratis per sempre. Ogni account ha un limite settimanale di clip IA nuove. Se attiveremo i pagamenti, lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare, abbonarti, o esportare il save.
 
 Vietato in landing: "beta fino al GG/MM/AAAA", countdown, "ultimi giorni".
 
