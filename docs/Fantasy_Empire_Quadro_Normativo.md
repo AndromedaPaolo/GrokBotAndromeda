@@ -1,7 +1,7 @@
 # Fantasy Empire — Quadro normativo per realizzare il progetto
 
 **Documento separato dalla proposta commerciale.**
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.2) · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.3) · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
 **Versione:** 1.2 — 28 agosto 2026
 **Oggetto:** tutte le norme che l'idea descritta nei file di proposta deve rispettare per esistere legalmente.
 **Ipotesi di base:** titolare stabilito in Italia, *poi* vendita a consumatori (B2C), gioco web, stack GitHub · Vercel · Cloudflare D1/R2 · Stripe, video generati da IA con tono "SFW sexy", bot ops post-profitto.

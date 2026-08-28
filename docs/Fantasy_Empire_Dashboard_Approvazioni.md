@@ -4,7 +4,7 @@
 **Versione:** 1.0 — 28 agosto 2026
 **Perché esiste:** non devi aprire GitHub, Gmail o X per ogni ok. Una coda. Due tasti. Vale per il push e per **tutte le cose dello stesso tipo**: mail, post, flag, preavviso, ban video, invite.
 
-**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.2
+**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.3 · `Fantasy_Empire_Video_Storage_Generazione.md`
 
 ---
 
@@ -39,6 +39,7 @@ Regola: se oggi dovresti andare su un sito a cliccare, domani sta qui.
 | `ads` | Copy, budget, targeting | **Mai** da solo in Fase 0. Dopo, solo se budget e account esistono; comunque Approva qui | Elimina |
 | `memo_legale` | Fonti, cosa cambierebbe | Non pubblica legge. Apre/accoda un `git_pr` con la patch di `docs/` o delle pagine | Archivia il memo |
 | `memo_twitter` | Riassunto sola lettura | Archivia (non c'è niente da pubblicare) | Archivia |
+| `video_new` | Player della clip, `video_key`, prompt version | `ready` in D1, resta su R2 | Cancella oggetti R2, riga `banned` |
 | `video_ban` / `video_unban` | `video_key`, motivo, frame | Segna `banned` / `ready` | Lascia com'è |
 | `invite` / `cap` | Email o nuovo cap | Grant o cambio cap | Niente |
 | `upgrade_piano` | Servizio, costo, perché | Non paga da solo. Ti lascia un reminder e un link al billing. Il click sulla carta resta tuo | Archivia |
@@ -69,7 +70,7 @@ Il browser non ha chiavi. Il browser parla col server della dashboard. Il server
 | `git_pr`, `prezzo`, patch da memo, flag nel repo | **Cursor** (merge/push sul repo). La dashboard non sostituisce git, nasconde git a te |
 | `mail`, `mail_massa`, `preavviso_pagamenti`, `post_*` | **GrokBot** |
 | `stripe_live` | Cursor cambia il flag **solo** se la riga porta i vincoli verdi. GrokBot non lo tocca |
-| `upgrade_piano` | Nessun agent. Link a te |
+| `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. GrokBot non mergea; ha già messo il file |
 
 Un click, un job. Se il job fallisce, la riga resta in coda con errore visibile. Non si ritenta in loop.
 

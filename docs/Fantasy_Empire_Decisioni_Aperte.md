@@ -1,7 +1,7 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.2 — 28 agosto 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.2.
+**Versione:** 1.3 — 28 agosto 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.3.
 
 I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, e **nessuna data** da gratis a pagato.
 
@@ -120,13 +120,11 @@ B e C riqualificano il servizio verso "piattaforma online" DSA. In Fase 0 è pes
 
 ---
 
-## 13. Tetto video IA in beta
+## 13. Tetto e modo dei video in beta
 
-- **A (default).** Precache 80–150 chiavi. Live generate con tetto basso. Fallback 2D.
-- **B.** Solo libreria precotta. Zero generate live.
-- **C.** Generate live senza tetto.
-
-C brucia il free tier e, se il provider è a consumo, brucia te. B è più sicuro, meno "wow".
+- **A (default).** Precache 80–150 chiavi. Live generate con tetto basso. Fallback 2D. Master MP4 su R2.
+- **B.** Solo libreria 2D / poster. Zero video IA.
+- **C.** Generate live senza tetto. Brucia il credito xAI. No.
 
 ---
 
@@ -158,12 +156,32 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 
 ---
 
+## 17. Chi genera i video
+
+- **A (default).** xAI Grok Imagine (image poi image-to-video). Hai già GrokBot. ~0,25 $ a clip da 5 s. Copia subito su R2 perché l'URL xAI scade.
+- **B.** Solo still + animazione 2D. Zero video IA.
+- **C.** fal/Kling (o altro) al posto di Grok, stesso R2.
+- **D.** Asset fatti a mano / commissionati.
+
+---
+
+## 18. Dove stanno i file
+
+- **A (default).** Cloudflare R2 privato. Worker, URL firmati. 10 GB free, egress 0. Path `{video_key}/master.mp4`.
+- **B.** R2 + Cloudflare Stream per il delivery. Ha senso con volume, non con 40 beta.
+- **C.** File in `/public` su Vercel o su GitHub. No. Peso e bucket di fatto pubblico.
+- **D.** Lasciare i file su `vidgen.x.ai`. No. Scadono.
+
+Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
+
+---
+
 ## Come ti rispondo io
 
 Mandami un elenco tipo:
 
 ```
-1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A
+1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A 17A 18A
 ```
 
-oppure mescola (`3B 6B 9B`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia in landing, D1 e checklist. Niente codice finché non lo chiedi.
+oppure mescola (`3B 17B 18A`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia. Niente codice finché non lo chiedi.

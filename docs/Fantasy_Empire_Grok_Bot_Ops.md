@@ -1,7 +1,8 @@
 # Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.2)
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.3)
+**Video generazione:** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **Versione:** 2.1 — 28 agosto 2026
@@ -16,7 +17,7 @@ Hai già l'abbonamento. Questo file dice *a cosa serve* e *a cosa non serve*. Il
 
 Due strati, non uno.
 
-**Da Fase 0, a chiamata, poi card in dashboard.** Mail, analisi X/Twitter, ricerca legale, triage supporto. Output: bozza in coda, non invio diretto. Tu Approvi o Scarti. Non PR di combat.
+**Da Fase 0, a chiamata, poi card in dashboard.** Mail, analisi X/Twitter, ricerca legale, triage supporto, **job Grok Imagine** (still + video). Output: bozza o clip in coda, non invio/publish diretto. Tu Approvi o Scarti. Non PR di combat.
 
 **Dopo che *tu* hai acceso i pagamenti e c'è margine, ancora card.** Draft marketing, caption, calendario, report canali. Publish = Approva su quella riga. Ads budget: mai da solo.
 
@@ -62,6 +63,12 @@ Output: memo in dashboard (tipo `memo_twitter`). Approva = archivia. Zero like, 
 Usi: delibere AGCOM, Garante cookie, AI Act art. 50, policy Stripe adult content, ToS Vercel Hobby, classificazione IARC/PEGI.
 
 Output: memo `memo_legale` in dashboard, con fonti e data. Scritto in cima: "non è un parere legale". Approva = Cursor apre un `git_pr`. Scarta = archivia. Non "aggiusta" i T&C in produzione da solo.
+
+### 3.4 Clip di gioco (Grok Imagine)
+
+GrokBot lancia Imagine Image + Imagine Video (I2V). Non tiene il file: il Worker lo copia su R2 perché l'URL xAI scade. Poi card `video_new` in dashboard. Approva = `ready`. Scarta = delete R2.
+
+Non genera in loop. Precache o tetto giornaliero. Il combat non aspetta il job. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 ---
 

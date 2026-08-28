@@ -2,7 +2,8 @@
 
 **Documento separato dalla proposta commerciale.**
 **Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.2)
-**Versione:** 1.2 — 28 agosto 2026
+**Versione:** 1.3 — 28 agosto 2026
+**Storage e generazione (scelta chiusa in proposta):** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).
 
@@ -103,7 +104,17 @@ TTL: permanente finché non cambia `mood` o il prompt version. Rigenera solo se:
 
 ## 5. Generazione (prima volta)
 
-Clip: **3–6 secondi**, 16:9 o 9:16 (sito usa 16:9 in overlay; 9:16 eventualmente per social *dopo* il profitto, file bot).
+Clip master: **3–5 secondi, MP4 H.264, 16:9, 720p, muto.** GIF non è il master. Eventuale `loop.webp` / GIF si ricava dal master.
+
+Provider di default: **xAI Grok Imagine** (image → image-to-video), già nello stack GrokBot. Costo indicativo Fase 0: ~0,25 $ a clip da 5 s (`grok-imagine-video`) più lo still. Precache 120 chiavi ≈ 30 $.
+
+L'URL che restituisce xAI **scade**. Appena il job finisce si scarica e si copia su R2. Il player non punta mai a `vidgen.x.ai`.
+
+Flusso in partita: hit cache → play. Miss → animazione 2D subito, generazione in coda se il tetto giornaliero non è pieno. Il combat non aspetta.
+
+Ogni clip nuova entra in dashboard come `video_new`. Approva = `ready`. Scarta = file cancellato, riga `banned`.
+
+Dettaglio (perché R2, perché non Stream, alternative): `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 Prompt di sistema (vincoli, non sceneggiatura esplicita):
 
@@ -114,14 +125,11 @@ Prompt di sistema (vincoli, non sceneggiatura esplicita):
 - Nessun minore, nessuno "young", no school uniform.
 - Nessun volto o voce di persona reale.
 
-Provider (scelta in implementazione, non in lancio gratis illimitato):
+Provider (scelta in implementazione, non in lancio gratis illimitato): default Grok Imagine + R2, vedi file storage. Alternative: solo 2D, oppure fal/Kling se Grok filtra troppo.
 
-- coda su Worker + provider video IA esterno, **oppure**
-- libreria precotta (centinaia di clip) e generazione live solo per chiavi nuove rare.
+Contratto col provider, prima di generare in pubblico: marcatura AI Act art. 50, liceità del training, licenza d'uso commerciale degli output, manleva. Senza queste tre righe si resta sulla libreria 2D.
 
-Contratto col provider, prima di generare in pubblico: marcatura AI Act art. 50, liceità del training, licenza d'uso commerciale degli output, manleva. Senza queste tre righe si resta sulla libreria precotta.
-
-**Costo in Fase 0:** la generazione video IA **non** sta nel free tier. Precache delle ~80–150 chiavi più frequenti. Live generate solo per chiavi nuove, tetto giornaliero **più basso** che in Fase B (non c'è un 14,99 € a coprire). Se il tetto è pieno: fallback animazione 2D, niente attesa infinita.
+**Costo in Fase 0:** la generazione **non** sta nel free Cloudflare. Sta sul credito xAI, a batch. Precache 80–150 chiavi. Live generate solo per chiavi nuove, tetto giornaliero basso. Se il tetto è pieno: fallback animazione 2D, niente attesa infinita.
 
 ---
 
@@ -136,7 +144,7 @@ D1 tabella `cinematics`:
 - `created_at`
 - `moderation_log` (chi ha flaggato, quando; niente payload utente)
 
-File: Cloudflare R2 o Stream. Il browser del sito riceve URL firmati a scadenza breve, non un bucket pubblico listabile.
+File: Cloudflare R2 privato, path `{video_key}/master.mp4` (+ poster, eventuale webp). Il browser riceve URL firmati a scadenza breve, non un bucket pubblico. Non si usa l'URL temporaneo xAI. Stream è un'opzione di delivery *dopo*, copiando da R2, non l'archivio.
 
 GitHub: **zero** mp4 di azione nel repo (peso + moderazione).
 
@@ -174,7 +182,7 @@ Questa policy è anche la prova che **non** si è nel perimetro pornografico del
 ## 9. Relazione con entitlement e infra
 
 - Utenti `beta_active` o `active`.
-- Fase 0: precache + tetto generate stretto, storage R2 free finché entra.
+- Fase 0: precache + tetto generate stretto, oggetti su R2 free (10 GB). Stream no.
 - Fase B: stesso player, tetto alzabile quando c'è margine.
 - Fase C (profitto): eventuale Stream. Il bot **riusa la cache del sito** e carica le clip sui canali del progetto. Non si rigenera un video nuovo per ogni social. Il video social non sblocca il gioco.
 
