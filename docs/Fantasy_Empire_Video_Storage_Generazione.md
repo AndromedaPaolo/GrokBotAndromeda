@@ -1,8 +1,8 @@
 # Fantasy Empire — Generazione e storage dei video/gif
 
 **Tipo documento:** proposta. Nessun job IA, nessun bucket creato.
-**Versione:** 1.1 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.5
+**Versione:** 1.2 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.6
 
 Questa è la soluzione consigliata. Le alternative stanno in fondo e in `Fantasy_Empire_Decisioni_Aperte.md` §13, §17, §18.
 
@@ -54,7 +54,7 @@ D1 `cinematics` resta l'indice (`ready` / `failed` / `banned` / `pending_review`
 
 ## 3. Chi genera
 
-**Default: xAI Grok Imagine**, che hai già con GrokBot.
+**Default: xAI Grok Imagine, lanciato da Cursor.** La chiave sta nei secret del Worker. GrokBot non la vede.
 
 | Passo | Modello (agosto 2026) | Costo indicativo |
 |---|---|---|
@@ -66,11 +66,13 @@ Precache di 120 chiavi con il modello da 0,05 $/s: circa **30 $ una tantum**, pi
 
 Perché Grok e non Runway/fal/Kling come default:
 
-- Hai già l'account e GrokBot. Un provider in meno.
+- Hai già un account xAI. Un provider in meno.
 - Image-to-video nativo: stesso volto/armatura sulla carta, poi il movimento. Text-to-video da solo fa personaggi che saltano da una clip all'altra.
 - Il tono SFW sexy è più a rischio di filtro su fal/Runway. Grok è meno prudente. Resta **obbligatoria** la coda `pending_review` in dashboard: un output esplicito o "young" non diventa `ready`.
 
-GrokBot lancia il job (ha la chiave). Cursor non chiama xAI. Il Worker, a job finito, copia su R2. Tu in dashboard vedi la clip e Approvi (`ready`) o Scarti (delete oggetto + `banned`).
+Perché Cursor e non GrokBot: il tubo è codice (Worker, coda, R2, `gen_quota`). Sta nel git. GrokBot tiene mail e X, non i secret xAI.
+
+L'agent Cursor Imagine accoda il precache. In partita il miss lo processa il Worker, stesso codice. Tu in dashboard vedi la clip e Approvi (`ready`) o Scarti (delete oggetto + `banned`).
 
 Contratto/ToS xAI da rileggere prima del primo batch: uso commerciale dell'output, marcatura AI Act art. 50 (dichiarazione in player c'è già; la marcatura machine-readable va verificata sul file o in overlay). Senza quella verifica si resta sulla libreria 2D.
 
@@ -83,7 +85,7 @@ La generazione vera impiega decine di secondi. Il turn-based non può restare fe
 **In Fase 0 il default è precache, non live in partita.**
 
 1. Prima del go-live (o a cap basso): lista delle 80–150 chiavi più frequenti (carte GDD × pochi archetipi × zone).
-2. GrokBot le accoda, una alla volta, tetto tipo 20/giorno se vuoi spalmare il credito.
+2. Cursor Imagine le accoda, una alla volta, tetto tipo 20/giorno se vuoi spalmare il credito.
 3. Ogni clip finita → R2 → card dashboard `video_new` con player. Approva = `ready`. Scarta = via.
 4. In `/play`, cache hit: play immediato. Cache miss: **animazione 2D subito**, job in coda se il tetto giornaliero non è pieno. Il giocatore corrente non aspetta. Il prossimo che fa la stessa azione trova l'MP4.
 
@@ -102,7 +104,7 @@ azione ok sul Worker
       pending_review / generating → 2D
       miss e tetto settimanale account ok e budget mese ok
            → enqueue job_id, 2D adesso
-           Worker/GrokBot: Imagine Image (se manca poster)
+           Worker (Cursor Imagine / coda miss): Imagine Image (se manca poster)
                          → Imagine Video I2V 5s
                          → GET url xAI (scade) → R2.put master + poster
                          → status pending_review
@@ -132,7 +134,7 @@ Prompt versionato (`sfw_sexy_v1`) dentro la chiave, come già nel file video. Ca
 
 | Codice | Generazione | Storage | Quando ha senso |
 |---|---|---|---|
-| **A (default)** | Grok Imagine I2V, precache, miss → 2D + coda | R2 privato | Hai già Grok, Fase 0, 30 $ di batch |
+| **A (default)** | Grok Imagine I2V, Cursor + Worker, miss → 2D + coda | R2 privato | Hai xAI, Fase 0, 30 $ di batch. GrokBot fuori |
 | **B** | Solo still Grok + animazione CSS/canvas. Zero video IA | R2 solo poster | Credito xAI a zero, o policy troppo stretta |
 | **C** | fal/Kling al posto di Grok | R2 uguale | Grok rifiuta i prompt o il prezzo xAI sale |
 | **D** | Libreria fatta a mano / commissionata, zero API | R2 uguale | Vuoi controllo totale, tempi lunghi |
@@ -161,4 +163,4 @@ D1: `gen_quota (user_id, week_id, jobs_used)`. I numeri 7 e 40 stanno in `config
 
 ## 9. Fuori scope
 
-Nessuna `XAI_API_KEY` usata qui. Nessun bucket. Nessun MP4. Nessuna chiave del giocatore. Quando vorrai il primo batch, è un giro a parte: Worker + R2 + una Routine GrokBot + tipo `video_new` in dashboard.
+Nessuna `XAI_API_KEY` usata qui. Nessun bucket. Nessun MP4. Nessuna chiave del giocatore. Quando vorrai il primo batch, è un giro a parte: Worker + R2 + agent Cursor Imagine + tipo `video_new` in dashboard. GrokBot non lancia il job.

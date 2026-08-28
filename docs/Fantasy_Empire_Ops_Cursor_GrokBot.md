@@ -1,8 +1,8 @@
 # Fantasy Empire — Ops: Cursor prima, GrokBot a supporto
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
-**Versione:** 1.3 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.5 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Versione:** 1.4 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.6 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---
@@ -37,14 +37,15 @@ Il profitto alza il rischio legale (recesso, IVA, policy Stripe, classificazione
 | Pagine privacy, T&C *bozza*, landing, pittogrammi | **Cursor** | PR sul sito | Pubblicare testi "ufficiali" senza avvocato dove serve |
 | Test, 429, tetti D1, cap beta | **Cursor** | PR + report in issue | Alzare i piani a pagamento da solo |
 | Checklist Fase B (P.IVA, Stripe, recesso) tenuta aggiornata nel repo | **Cursor** | Issue permanente, box rossi/verdi | Mettere un box verde perché "è passato abbastanza tempo" |
+| Tradurre un memo legale in patch del repo | **Cursor** | PR che cita il memo | Inventarsi norme |
+| Job Grok Imagine (still + I2V), precache, coda miss | **Cursor** | Worker + secret xAI. Card `video_new` | GrokBot che tiene la chiave |
 | Mail a un giocatore, magic link di supporto, preavviso (il giorno in cui *tu* lo chiedi) | **GrokBot** | Inbox / AgentMail / Gmail, su tuo ordine | Newsletter a raffica, soft spam in Fase 0 |
 | Analisi X/Twitter, thread, sentiment, account da non citare | **GrokBot** | Ricerca + memo in chat o issue | Post live, ads, reply automatiche |
 | Ricerca legale (AGCOM, Garante, AI Act, policy Stripe, ToS Vercel) | **GrokBot** | Memo con fonti. Non è un parere | Cambiare i T&C in produzione da solo |
-| Tradurre un memo legale in patch del repo | **Cursor** | PR che cita il memo | Inventarsi norme |
 | Upgrade Vercel / D1 / dominio | nessuno in autonomia | Proposta in issue, click billing tuo | — |
 | Accensione `STRIPE_LIVE` | **tu, da dashboard** | Riga in coda. Approva solo se checklist verde + preavviso scaduto | Automazione, cron, "è ora" |
 
-Regola corta: **git = Cursor. Mondo fuori dal git = GrokBot. Sì/no = dashboard. Soldi sul billing dei fornitori = tu.** I nomi dei posti: `Fantasy_Empire_Squadra_Agenti.md`.
+Regola corta: **git e Imagine = Cursor. Mondo fuori dal git (mail, X, legale) = GrokBot. Sì/no = dashboard. Soldi sul billing dei fornitori = tu.** I nomi dei posti: `Fantasy_Empire_Squadra_Agenti.md`.
 
 ---
 

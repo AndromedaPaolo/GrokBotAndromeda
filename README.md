@@ -2,12 +2,12 @@
 
 Repo di lavoro per Fantasy Empire. Per ora solo documenti di proposta. Nessun gioco deployato da questi file.
 
-Parti da `docs/Fantasy_Empire_Proposta_Commerciale.md` (v2.5).
+Parti da `docs/Fantasy_Empire_Proposta_Commerciale.md` (v2.6).
 
 | File | Contenuto |
 |---|---|
 | `docs/Fantasy_Empire_Proposta_Commerciale.md` | Proposta: GDD intero, Fase 0 gratuita, tetto 7 job/settimana, abbonamento Visioni in Fase B |
-| `docs/Fantasy_Empire_Squadra_Agenti.md` | Roster: 8 Cursor, 9 GrokBot. Panchina della fase a pagamento già scritta |
+| `docs/Fantasy_Empire_Squadra_Agenti.md` | Roster: 9 Cursor (Imagine incluso), 8 GrokBot. Panchina della fase a pagamento già scritta |
 | `docs/Fantasy_Empire_Ops_Cursor_GrokBot.md` | Cursor Pro+ tiene il git. GrokBot a chiamata |
 | `docs/Fantasy_Empire_Dashboard_Approvazioni.md` | Coda Approva/Scarta: push, mail, post, flag. Non apri git |
 | `docs/Fantasy_Empire_Fase_0_Accesso_Gratuito.md` | Cosa è legale fare a zero euro in Italia |

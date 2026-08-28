@@ -1,8 +1,8 @@
 # Fantasy Empire — Video IA sulle azioni (sito)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.5)
-**Versione:** 1.4 — 28 agosto 2026
+**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.6)
+**Versione:** 1.5 — 28 agosto 2026
 **Storage e generazione (scelta chiusa in proposta):** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).
@@ -106,7 +106,7 @@ TTL: permanente finché non cambia `mood` o il prompt version. Rigenera solo se:
 
 Clip master: **3–5 secondi, MP4 H.264, 16:9, 720p, muto.** GIF non è il master. Eventuale `loop.webp` / GIF si ricava dal master.
 
-Provider di default: **xAI Grok Imagine** (image → image-to-video), già nello stack GrokBot. Costo indicativo Fase 0: ~0,25 $ a clip da 5 s (`grok-imagine-video`) più lo still. Precache 120 chiavi ≈ 30 $.
+Provider di default: **xAI Grok Imagine** (image → image-to-video). Job sul Worker, Cursor Imagine. Costo indicativo Fase 0: ~0,25 $ a clip da 5 s (`grok-imagine-video`) più lo still. Precache 120 chiavi ≈ 30 $. GrokBot non lancia.
 
 L'URL che restituisce xAI **scade**. Appena il job finisce si scarica e si copia su R2. Il player non punta mai a `vidgen.x.ai`.
 

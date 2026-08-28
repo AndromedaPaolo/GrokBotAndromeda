@@ -1,7 +1,7 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.5 — 28 agosto 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.5.
+**Versione:** 1.6 — 28 agosto 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.6.
 
 I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, tetto settimanale sulle clip nuove, e **nessuna data** da gratis a pagato. Niente chiavi Grok dei giocatori.
 
@@ -159,10 +159,11 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 
 ## 17. Chi genera i video
 
-- **A (default).** xAI Grok Imagine (image poi image-to-video). Hai già GrokBot. ~0,25 $ a clip da 5 s. Copia subito su R2 perché l'URL xAI scade.
+- **A (default).** xAI Grok Imagine (image poi image-to-video). Job sul Worker, agent Cursor Imagine (C8). ~0,25 $ a clip da 5 s. Copia subito su R2 perché l'URL xAI scade. GrokBot non tiene la chiave.
 - **B.** Solo still + animazione 2D. Zero video IA.
-- **C.** fal/Kling (o altro) al posto di Grok, stesso R2.
+- **C.** fal/Kling (o altro) al posto di Grok, stesso R2, stessa casa Cursor.
 - **D.** Asset fatti a mano / commissionati.
+- **E.** ~~GrokBot lancia Imagine~~ **Scartata.** La generazione sta nel git.
 
 ---
 
@@ -203,7 +204,7 @@ I numeri stanno in `config`. Se li cambi, lo dici in-game e in T&C. Non "circa s
 
 ## 21. Squadra agenti
 
-- **A (default).** I 17 posti di `Fantasy_Empire_Squadra_Agenti.md`. Cursor: Patcher, Sito, Numeri, Checkout, Santuario, Bandiere, Verbale, Stagione. GrokBot: Inbox, Ascolto, Gazzetta, Imagine, Corriere, Sportello, Promo, Bacheca, Spesa. I ruoli a pagamento stanno in panchina o preview da subito.
+- **A (default).** I 17 posti di `Fantasy_Empire_Squadra_Agenti.md`. Cursor (9): Patcher, Sito, Numeri, Checkout, Santuario, Bandiere, Verbale, Imagine, Stagione. GrokBot (8): Inbox, Ascolto, Gazzetta, Corriere, Sportello, Promo, Bacheca, Spesa. Imagine è Cursor. I ruoli a pagamento stanno in panchina o preview da subito.
 - **B.** Solo i posti accesi di Fase 0. I panchina li nominiamo il giorno in cui vendi. Sconsigliato: li inventi sotto chargeback.
 - **C.** Meno posti, un agent "fa tutto" per casa. No. È come non avere dashboard.
 
