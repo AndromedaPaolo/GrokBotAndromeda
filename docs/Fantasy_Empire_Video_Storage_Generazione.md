@@ -1,10 +1,10 @@
 # Fantasy Empire — Generazione e storage dei video/gif
 
 **Tipo documento:** proposta. Nessun job IA, nessun bucket creato.
-**Versione:** 1.2 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.6
+**Versione:** 1.3 — 28 agosto 2026
+**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.7
 
-Questa è la soluzione consigliata. Le alternative stanno in fondo e in `Fantasy_Empire_Decisioni_Aperte.md` §13, §17, §18.
+Questa è la soluzione consigliata. Le alternative stanno in fondo e in `Fantasy_Empire_Decisioni_Aperte.md` §13, §17, §18, §22.
 
 ---
 
@@ -62,7 +62,7 @@ D1 `cinematics` resta l'indice (`ready` / `failed` / `banned` / `pending_review`
 | Anima lo still, 5 s, 720p, muto | `grok-imagine-video` | 0,05 $ / s → **0,25 $** a clip |
 | Stesso, qualità più alta | `grok-imagine-video-1.5` | 0,08 $ / s → 0,40 $ a clip |
 
-Precache di 120 chiavi con il modello da 0,05 $/s: circa **30 $ una tantum**, più ~3 $ di still. Non è un canone. Non sta nel free tier Cloudflare, sta sul credito xAI.
+Un lotto di 120 chiavi uniche costa circa **30 $** più still, a 0,05 $/s. Non è un canone. Non sta nel free tier Cloudflare, sta sul credito xAI. Quante chiavi escono nel lotto lo decide la coda richieste, non un precache obbligatorio.
 
 Perché Grok e non Runway/fal/Kling come default:
 
@@ -70,28 +70,26 @@ Perché Grok e non Runway/fal/Kling come default:
 - Image-to-video nativo: stesso volto/armatura sulla carta, poi il movimento. Text-to-video da solo fa personaggi che saltano da una clip all'altra.
 - Il tono SFW sexy è più a rischio di filtro su fal/Runway. Grok è meno prudente. Resta **obbligatoria** la coda `pending_review` in dashboard: un output esplicito o "young" non diventa `ready`.
 
-Perché Cursor e non GrokBot: il tubo è codice (Worker, coda, R2, `gen_quota`). Sta nel git. GrokBot tiene mail e X, non i secret xAI.
+Perché Cursor e non GrokBot: il tubo è codice (Worker, coda richieste, R2, `gen_quota`). Sta nel git. GrokBot tiene mail e X, non i secret xAI.
 
-L'agent Cursor Imagine accoda il precache. In partita il miss lo processa il Worker, stesso codice. Tu in dashboard vedi la clip e Approvi (`ready`) o Scarti (delete oggetto + `banned`).
+Le clip escono spesso storte. Quindi **non** si genera in combattimento e **non** si pubblica da sole. Il giocatore chiede. Tu (poi un agent, una volta al giorno) generi. Tu Approvi o Scarti. Solo allora il file è `ready`.
 
 Contratto/ToS xAI da rileggere prima del primo batch: uso commerciale dell'output, marcatura AI Act art. 50 (dichiarazione in player c'è già; la marcatura machine-readable va verificata sul file o in overlay). Senza quella verifica si resta sulla libreria 2D.
 
 ---
 
-## 4. Quando si genera (per non far aspettare il combattimento)
+## 4. Quando si genera: richiesta, poi lotto
 
-La generazione vera impiega decine di secondi. Il turn-based non può restare fermo.
+Il combat non chiama xAI. Mai. Miss = 2D, si gioca.
 
-**In Fase 0 il default è precache, non live in partita.**
+1. Il giocatore, su un'azione senza clip `ready`, può **chiedere** quella chiave. Bottone tipo "Richiedi clip". Non parte un loading di 40 secondi sul turno.
+2. Il Worker accetta se: entitlement ok, chiave non già `ready`, chiave non già in coda, tetto settimanale ok, budget mese ok. Stessa `video_key` già richiesta da un altro: "già in coda", **non** brucia un posto a chi arriva dopo.
+3. UI: "In coda. Arriva col lotto." Overlay resta 2D finché tu non Approvi il file.
+4. **All'inizio lo fai tu a mano.** Dashboard: lista `video_req` (chiave, prompt, quanti l'hanno chiesta). Generi still + video come preferisci, carichi su R2, compare `video_new`. Approva = `ready`. Scarta = via, chiave `banned`.
+5. **Dopo, quando tu sblocchi il posto,** l'agent Cursor Imagine gira **una volta al giorno** (proposta: 04:00 `Europe/Rome`). Conta le richieste in coda, genera *tutte* le chiavi uniche, scarica, mette su R2, apre una `video_new` per ciascuna. Non mette `ready` da solo. La qualità è il motivo per cui il tasto resta tuo.
+6. Quel giro giornaliero non tocca Stripe, non tocca i flag, non è "si paga". È solo il lotto media.
 
-1. Prima del go-live (o a cap basso): lista delle 80–150 chiavi più frequenti (carte GDD × pochi archetipi × zone).
-2. Cursor Imagine le accoda, una alla volta, tetto tipo 20/giorno se vuoi spalmare il credito.
-3. Ogni clip finita → R2 → card dashboard `video_new` con player. Approva = `ready`. Scarta = via.
-4. In `/play`, cache hit: play immediato. Cache miss: **animazione 2D subito**, job in coda se il tetto giornaliero non è pieno. Il giocatore corrente non aspetta. Il prossimo che fa la stessa azione trova l'MP4.
-
-Live generate senza tetto è la scelta che brucia i 30 $ in una serata di dungeon. Non è il default.
-
-Oltre al tetto *giornaliero* di coda (infra), ogni *account* ha un tetto **settimanale** di job. Dettaglio §9. Chiave xAI: sempre la nostra. Nessuna API key del giocatore.
+Precache 80–150 resta *opzionale*, a tuo carico, se vuoi un catalogo prima dei beta. Non è più il default. Il catalogo cresce da quello che la gente chiede.
 
 ---
 
@@ -100,18 +98,26 @@ Oltre al tetto *giornaliero* di coda (infra), ogni *account* ha un tetto **setti
 ```
 azione ok sul Worker
   → D1 cinematics by video_key
-      ready   → URL firmato R2 → <video>
-      pending_review / generating → 2D
-      miss e tetto settimanale account ok e budget mese ok
-           → enqueue job_id, 2D adesso
-           Worker (Cursor Imagine / coda miss): Imagine Image (se manca poster)
-                         → Imagine Video I2V 5s
-                         → GET url xAI (scade) → R2.put master + poster
-                         → status pending_review
-                         → riga dashboard video_new
-                         → gen_quota.jobs_used += 1
-      miss e tetto pieno o budget pieno → solo 2D, basta
-           (UI: "Limite settimanale. Si rinnova lunedì.")
+      ready           → URL firmato R2 → <video>
+      pending_review  → 2D  (file c'è, aspetti il tuo Approva)
+      miss            → 2D. Eventuale CTA "Richiedi clip"
+
+POST /api/cinematics/request  { video_key }
+  → già ready o queued globale → 200, niente quota
+  → tetto settimana o budget pieni → 429, testo limite
+  → insert video_requests queued, gen_quota += 1
+
+Lotto (tu a mano, poi C8 1×/giorno)
+  → SELECT DISTINCT video_key FROM video_requests WHERE queued
+  → per chiave: Imagine Image (se manca poster)
+              → Imagine Video I2V 5s
+              → GET url xAI (scade) → R2.put master + poster
+              → cinematics pending_review
+              → card dashboard video_new
+  → richieste di quella chiave: fulfilled
+
+tu Approvi video_new → ready. Chiunque ha quella chiave la vede.
+tu Scarti → delete R2, banned. Non si ripubblica da sola.
 ```
 
 Prompt versionato (`sfw_sexy_v1`) dentro la chiave, come già nel file video. Cambio mood = nuove chiavi, i vecchi file restano finché non li cancelli tu da dashboard.
@@ -125,7 +131,8 @@ Prompt versionato (`sfw_sexy_v1`) dentro la chiave, come già nel file video. Ca
 - Generare una GIF da zero per ogni azione.
 - Bucket R2 pubblico listabile.
 - Far aspettare il combat sul job IA.
-- Auto-Approva delle clip. Il tono è il punto legale più caldo del progetto.
+- Generare in partita su cache miss. Il miss è 2D. La generazione è un lotto.
+- Auto-Approva delle clip. Escono storte. Il tasto resta tuo.
 - Chiedere al giocatore una API key Grok / xAI. Genera sempre il progetto. L'abbonamento Visioni paga *noi*, non il provider al posto suo.
 
 ---
@@ -134,7 +141,7 @@ Prompt versionato (`sfw_sexy_v1`) dentro la chiave, come già nel file video. Ca
 
 | Codice | Generazione | Storage | Quando ha senso |
 |---|---|---|---|
-| **A (default)** | Grok Imagine I2V, Cursor + Worker, miss → 2D + coda | R2 privato | Hai xAI, Fase 0, 30 $ di batch. GrokBot fuori |
+| **A (default)** | Richiesta giocatore → lotto (prima a mano, poi C8 1×/giorno) → tu Approvi | R2 privato | Le clip escono storte. Combat sempre 2D sul miss |
 | **B** | Solo still Grok + animazione CSS/canvas. Zero video IA | R2 solo poster | Credito xAI a zero, o policy troppo stretta |
 | **C** | fal/Kling al posto di Grok | R2 uguale | Grok rifiuta i prompt o il prezzo xAI sale |
 | **D** | Libreria fatta a mano / commissionata, zero API | R2 uguale | Vuoi controllo totale, tempi lunghi |
@@ -151,16 +158,16 @@ Due contatori, non uno.
 | Contatore | Cosa misura | Default | Se è pieno |
 |---|---|---|---|
 | Budget mese progetto | Spend xAI sul *nostro* account | 80 USD | Nessun job, anche per gli abbonati. Log `BUDGET_BLOCK` |
-| `gen_quota` per account | Job Imagine di quella settimana (`week_id` = lunedì ISO, `Europe/Rome`) | 7 senza Visioni, 40 con Visioni | Overlay 2D. Log `QUOTA_WEEK`. Testo in UI |
+| `gen_quota` per account | Richieste *accettate* di chiavi nuove, quella settimana (`week_id` = lunedì ISO, `Europe/Rome`) | 7 senza Visioni, 40 con Visioni | Niente nuova richiesta. 2D. Log `QUOTA_WEEK` |
 
-Un job è una chiamata che produce un file nuovo. Cache hit su R2: zero. Precache catalogo (80–150 chiavi prima del go-live): a tuo carico, non scala `gen_quota` dei giocatori.
+Una richiesta accettata è una chiave che non era `ready` e non era già in coda. Cache hit: zero. "Già in coda" da un altro: zero. Lotto a mano tuo (o precache che fai tu): a tuo carico, non scala `gen_quota`.
 
-Abbonamento Visioni (Fase B, 9,99 €/mese IVA incl.). Non è un ricarico a clip. È un forfait: Santuario aperto + tetto 40. Se un abbonato brucia 40 job a 0,25 USD, xAI costa circa 10 USD. Sta sotto i 9,99 € solo se il catalogo cache tiene. Per questo il 40 esiste e il precache è obbligatorio *prima* di vendere Visioni.
+Abbonamento Visioni (Fase B, 9,99 €/mese IVA incl.). Non è un ricarico a clip. È un forfait: Santuario aperto + tetto 40 richieste/settimana. Il lotto giornaliero e il tuo Approva restano. Senza catalogo che tiene, 40 job a 0,25 USD bruciano il margine: per questo il 40 esiste.
 
-D1: `gen_quota (user_id, week_id, jobs_used)`. I numeri 7 e 40 stanno in `config`. Cambio = disclosure in-game e T&C.
+D1: `gen_quota (user_id, week_id, jobs_used)` e `video_requests (video_key, user_id, status)`. I numeri 7 e 40 stanno in `config`. Cambio = disclosure in-game e T&C.
 
 ---
 
 ## 9. Fuori scope
 
-Nessuna `XAI_API_KEY` usata qui. Nessun bucket. Nessun MP4. Nessuna chiave del giocatore. Quando vorrai il primo batch, è un giro a parte: Worker + R2 + agent Cursor Imagine + tipo `video_new` in dashboard. GrokBot non lancia il job.
+Nessuna `XAI_API_KEY` usata qui. Nessun bucket. Nessun MP4. Nessuna chiave del giocatore. Il primo lotto lo fai tu a mano dalla dashboard. L'agent giornaliero è un giro dopo, se Approvi `imagine_batch`. GrokBot non lancia il job.

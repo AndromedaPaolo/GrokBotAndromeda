@@ -1,12 +1,12 @@
 # Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.6)
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.7)
 **Squadra (nomi GrokBot):** `Fantasy_Empire_Squadra_Agenti.md`
 **Video generazione:** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
-**Versione:** 2.4 — 28 agosto 2026
+**Versione:** 2.5 — 28 agosto 2026
 **Video in-sito:** `Fantasy_Empire_Video_IA_Azioni.md`
 **Stato di questo file:** specifica. Nessuna Routine, nessuna Automation, nessun post.
 
@@ -67,7 +67,7 @@ Output: memo `memo_legale` in dashboard, con fonti e data. Scritto in cima: "non
 
 ### 3.4 Clip di gioco
 
-Non è GrokBot. Still + I2V: agent Cursor Imagine (C8) e Worker. Chiave xAI nei secret del Worker. Card `video_new` in dashboard. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
+Non è GrokBot. Il giocatore chiede. Lotto: prima a mano tua, poi Cursor Imagine 1×/giorno. Tu Approvi `video_new`. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 GrokBot, in Fase C se sblocchi Bacheca, **riusa** le clip già in cache. Non ne genera di nuove per un post.
 

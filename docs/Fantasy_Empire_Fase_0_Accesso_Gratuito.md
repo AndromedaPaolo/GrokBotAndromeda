@@ -1,6 +1,6 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.6. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Documento operativo.** Completa la proposta v2.7. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
 **Versione:** 1.2 — 28 agosto 2026
 **Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.
@@ -57,7 +57,7 @@ Attenzione: se in landing scrivi "compra a 14,99 €" con bottone che non funzio
 
 Testo da usare, in italiano chiaro, in T&C e in landing:
 
-> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco né una sezione extra. Ogni account ha un limite settimanale di clip IA *nuove*; le già generate si rivedono. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare il GDD senza pagare, oppure abbonarti. Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
+> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco né una sezione extra. Ogni account può chiedere un numero limitato di clip IA a settimana; le già generate si rivedono. Arrivano col lotto, non in combattimento. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare il GDD senza pagare, oppure abbonarti. Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
 
 Quello che **non** si scrive:
 
@@ -149,7 +149,7 @@ Checklist che **blocca** l'accensione:
 
 Cosa succede al giocatore che **non** si abbona, default di questa proposta:
 
-- `/play` resta. Il GDD resta. Tetto generazione resta 7 job/settimana.
+- `/play` resta. Il GDD resta. Tetto richieste clip resta 7/settimana. Miss = 2D.
 - Il Santuario resta chiuso.
 - Niente addebito automatico. Niente carta "già in archivio": in Fase 0 non l'abbiamo chiesta.
 

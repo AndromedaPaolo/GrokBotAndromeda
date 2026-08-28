@@ -1,7 +1,7 @@
 # Fantasy Empire — Quadro normativo per realizzare il progetto
 
 **Documento separato dalla proposta commerciale.**
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.6) · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.7) · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` · `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Grok_Bot_Ops.md`
 **Versione:** 1.3 — 28 agosto 2026
 **Oggetto:** tutte le norme che l'idea descritta nei file di proposta deve rispettare per esistere legalmente.
 **Ipotesi di base:** titolare stabilito in Italia, *poi* vendita a consumatori (B2C), gioco web, stack GitHub · Vercel · Cloudflare D1/R2 · Stripe, video generati da IA con tono "SFW sexy", bot ops post-profitto.
@@ -312,7 +312,7 @@ Utile sapere cosa **escludere**, per non pagare conformità inutile.
 
 ## 14. Checklist per fase
 
-Allineata alla proposta v2.6. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`. Squadra: `Fantasy_Empire_Squadra_Agenti.md`. Coda sì/no: `Fantasy_Empire_Dashboard_Approvazioni.md`.
+Allineata alla proposta v2.7. Il dettaglio operativo della beta gratuita è in `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`. Ops: `Fantasy_Empire_Ops_Cursor_GrokBot.md`. Squadra: `Fantasy_Empire_Squadra_Agenti.md`. Coda sì/no: `Fantasy_Empire_Dashboard_Approvazioni.md`.
 
 ### Fase 0 — go-live pubblico senza pagamenti
 

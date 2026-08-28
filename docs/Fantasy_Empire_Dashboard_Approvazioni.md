@@ -1,10 +1,10 @@
 # Fantasy Empire — Dashboard approvazioni
 
 **Tipo documento:** proposta. Nessun codice, nessuna pagina, nessun webhook creato.
-**Versione:** 1.3 — 28 agosto 2026
+**Versione:** 1.4 — 28 agosto 2026
 **Perché esiste:** non devi aprire GitHub, Gmail o X per ogni ok. Una coda. Due tasti. Vale per il push e per **tutte le cose dello stesso tipo**: mail, post, flag, preavviso, ban video, invite.
 
-**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.6 · `Fantasy_Empire_Video_Storage_Generazione.md`
+**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.7 · `Fantasy_Empire_Video_Storage_Generazione.md`
 
 ---
 
@@ -41,7 +41,9 @@ Regola: se oggi dovresti andare su un sito a cliccare, domani sta qui.
 | `ads` | Copy, budget, targeting | Tipo panchina (G8 Spesa). Anche dopo, Approva qui non paga da solo | Elimina |
 | `memo_legale` | Fonti, cosa cambierebbe | Non pubblica legge. Apre/accoda un `git_pr` con la patch di `docs/` o delle pagine | Archivia il memo |
 | `memo_twitter` | Riassunto sola lettura | Archivia (non c'è niente da pubblicare) | Archivia |
+| `video_req` | Chiave, prompt, n. richieste, tetto | In manuale: segna che la prendi in carico. Non pubblica | Scarta la richiesta |
 | `video_new` | Player della clip, `video_key`, prompt version | `ready` in D1, resta su R2 | Cancella oggetti R2, riga `banned` |
+| `imagine_batch` | Quante `video_req` in coda, ora del lotto (04:00 Rome) | Sblocca l'agent C8 1×/giorno. **Non** auto-Approva le clip | Lascia il lotto a mano tua |
 | `video_ban` / `video_unban` | `video_key`, motivo, frame | Segna `banned` / `ready` | Lascia com'è |
 | `invite` / `cap` | Email o nuovo cap | Grant o cambio cap | Niente |
 | `upgrade_piano` | Servizio, costo, perché | Non paga da solo. Ti lascia un reminder e un link al billing. Il click sulla carta resta tuo | Archivia |
@@ -72,7 +74,8 @@ Il browser non ha chiavi. Il browser parla col server della dashboard. Il server
 | `git_pr`, `prezzo`, patch da memo, flag nel repo | **Cursor** (merge/push sul repo). La dashboard non sostituisce git, nasconde git a te |
 | `mail`, `mail_massa`, `mail_visioni`, `preavviso_pagamenti`, `post_*` | **GrokBot** |
 | `stripe_live` | Cursor cambia il flag **solo** se la riga porta i vincoli verdi. GrokBot non lo tocca |
-| `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. Job lanciato da **Cursor Imagine** (C8). GrokBot non c'entra |
+| `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. File messo da te a mano o da **Cursor Imagine** (C8) nel lotto. GrokBot non c'entra |
+| `imagine_batch` | Cursor accende il giro 1×/giorno. Il tasto non pubblica clip |
 
 Un click, un job. Se il job fallisce, la riga resta in coda con errore visibile. Non si ritenta in loop.
 
@@ -115,6 +118,7 @@ La dashboard è comoda. Non è un bypass.
 - `mail_massa` in Fase 0: solo se c'è consenso o è transazionale del servizio (waitlist, magic link, preavviso). Altrimenti tasto spento.
 - `post_*` in Fase 0: default **coda spenta** per il live. I memo Twitter sì, i post no, finché non sblocchi tu il tipo.
 - Combat / auth / entitlement: Approva consentito (altrimenti non shippi), ma il tag `rischio` è grosso. Non auto-approva.
+- `imagine_batch` accende il lotto 1×/giorno. Non pubblica clip. `video_new` resta il click sulla qualità.
 - Niente auto-Approva. Niente "se i test passano, merge da solo". Il punto della dashboard è il **tuo** click, non togliere il click.
 
 Un click su Scarta è definitivo per quella riga. Se Cursor deve rifare, apre una riga nuova.

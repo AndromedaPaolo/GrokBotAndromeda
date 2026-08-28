@@ -4,7 +4,7 @@
 **Fonte design:** *Fantasy Empire – Game Design Document (SFW)* — perimetro completo dal giorno uno
 **Stack:** GitHub · Vercel · Cloudflare D1 · Stripe (spento in Fase 0)
 **Tipo documento:** proposta (nessun codice, nessun deploy)
-**Versione proposta:** 2.6 — 28 agosto 2026
+**Versione proposta:** 2.7 — 28 agosto 2026
 **Ops (Cursor + GrokBot):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Squadra agenti (nomi, panchina inclusa):** `Fantasy_Empire_Squadra_Agenti.md`
 **Dashboard sì/no:** `Fantasy_Empire_Dashboard_Approvazioni.md`
@@ -158,12 +158,12 @@ Flusso utente in Fase 0:
 3. Crea account (email). Consenso privacy. Consenso marketing **separato e spento di default**.
 4. Se c'è posto nel cap (o ha un invite): `entitlements.status = beta_active`.
 5. `/play` e le API città/dungeon/combat rispondono 200.
-6. Overlay video IA: sì, con **limite settimanale** di *nuove* generazioni (default 7). Cache hit non conta. Oltre il tetto: animazione 2D, il gioco continua.
+6. Overlay video IA: se c'è il file `ready`, play. Se manca, 2D e si può **richiedere** la clip (tetto settimanale, default 7). Il lotto lo fai tu a mano, poi un agent 1×/giorno. Tu Approvi la qualità. Il combat non aspetta.
 7. Se il cap di posti è pieno: waitlist, niente gioco. Niente "lascia la carta, ti avvisiamo e addebitiamo".
 
 | SKU | Prezzo | Quando esiste | Cosa sblocca |
 |---|---|---|---|
-| Beta | 0 € | Fase 0. Grant server, non Stripe | GDD, 1 slot, video IA fino al tetto settimanale |
+| Beta | 0 € | Fase 0. Grant server, non Stripe | GDD, 1 slot, 7 richieste clip/settimana |
 | **Visioni** (abbonamento) | 9,99 € / mese IVA incl. (indicativo) | Fase B, Stripe `mode=subscription` | Sezione speciale Santuario + i costi di generazione (tetto di sicurezza 40 job/settimana, a carico nostro) |
 | Standard | 14,99 € una tantum IVA incl. | Fase B, solo se chiudi il gioco dietro paywall | Accesso GDD, 1 slot. **Non** è il primo SKU: il gioco in questa proposta resta giocabile gratis |
 | Founders | 24,99 € una tantum IVA incl. | Fase B, opzionale | 3 slot, tema UI, credits |
@@ -183,9 +183,9 @@ Eccezione tecnica: un account `role=dev` sul tuo utente, in env, per QA. Non è 
 
 Due strati, sempre.
 
-**Senza abbonamento (Fase 0, e in Fase B chi non paga).** Ogni account ha un contatore `gen_jobs` per settimana solare, fuso `Europe/Rome`, reset lunedì 00:00. Default: **7** job. Un job è una chiamata Imagine che produce un file nuovo (cache miss). Rivedere un MP4 già in R2 **non** scala il contatore. A 7/7: overlay 2D, testo in UI "Limite settimanale. Si rinnova lunedì." Il GDD resta intero. Il Santuario è visibile in mappa come chiuso, non inesistente.
+**Senza abbonamento (Fase 0, e in Fase B chi non paga).** Ogni account ha un contatore `gen_jobs` per settimana solare, fuso `Europe/Rome`, reset lunedì 00:00. Default: **7** *richieste* accettate. Una richiesta è una chiave nuova, non già `ready` e non già in coda. Rivedere un MP4 già in R2 **non** scala. Chiedere una chiave che sta già aspettando il lotto **non** scala. A 7/7: niente nuove richieste, overlay 2D, testo "Limite settimanale. Si rinnova lunedì." Il GDD resta intero. Il Santuario è visibile in mappa come chiuso, non inesistente.
 
-**Con abbonamento Visioni (solo Fase B, Stripe live).** `entitlements.status = visions`. Entra nel **Santuario delle Visioni**: zona extra (palazzo in città o dungeon dedicato), eventi e clip sue, stesse regole di combattimento. I job Imagine di quel giocatore li paghi tu sul credito xAI. Tetto di sicurezza **40** job/settimana così un solo account non svuota il credito. Disdetta: dal periodo successivo torna il tetto da 7 e il Santuario si chiude. Save del Santuario resta esportabile.
+**Con abbonamento Visioni (solo Fase B, Stripe live).** `entitlements.status = visions`. Entra nel **Santuario delle Visioni**. Tetto **40** richieste/settimana. I job del lotto li paghi tu sul credito xAI. Il lotto e il tuo Approva restano: le clip escono storte, non si pubblicano da sole. Disdetta: dal periodo successivo torna il tetto da 7 e il Santuario si chiude. Save del Santuario resta esportabile.
 
 Il numero 7 e il 40 stanno in `config`. Non si "aggiusta in silenzio". Se li cambi, lo dici in-game e in T&C.
 
@@ -207,7 +207,7 @@ Pagine pubbliche: landing, login/registrazione, privacy, cookie, termini, contat
 4. Tre pill: Gestione città · Carte & Bond · Dungeon / mondo infinito.
 5. Banda beta: "Accesso gratuito, senza una data di fine. Non si paga. Se attiveremo i pagamenti te lo diciamo almeno 30 giorni prima. Il tuo save resta."
 6. CTA "Crea account e gioca" → registrazione, **non** Checkout.
-7. FAQ: è davvero gratis? c'è una data di fine? (no.) quante clip IA a settimana? (7 nuove. Le già generate si rivedono sempre.) se un giorno ci sarà un abbonamento? (Santuario + generazione a nostro carico, te lo diciamo 30 giorni prima.) niente pay-to-win; i video sono generati da IA.
+7. FAQ: è davvero gratis? c'è una data di fine? (no.) quante clip IA a settimana? (7 richieste. Le già generate si rivedono. Arrivano col lotto, non in combattimento.) se un giorno ci sarà un abbonamento? (Santuario + più richieste a nostro carico, te lo diciamo 30 giorni prima.) niente pay-to-win; i video sono generati da IA.
 8. Footer legale (dati art. 7 d.lgs. 70/2003, per quanto disponibili prima della P.IVA).
 
 **Cosa non stare sulla landing in Fase 0**
@@ -296,6 +296,7 @@ GDPR art. 32 non aspetta Stripe.
 - `users`
 - `entitlements` (`beta_active` | `active` | `visions` | `revoked` | `refunded`). In Fase 0 esiste solo `beta_active`.
 - `gen_quota` (user_id, week_id, jobs_used)
+- `video_requests` (video_key, user_id, status queued/fulfilled)
 - `saves`
 - `audit_payments` (vuota in Fase 0)
 - `consents` (età, T&C, privacy, marketing)
@@ -346,7 +347,7 @@ Dettaglio: `Fantasy_Empire_Fase_0_Accesso_Gratuito.md` §8. Ops: `Fantasy_Empire
 ## 10. Video IA, Cursor, GrokBot
 
 - I video sulle azioni restano una feature del **sito**, per chi ha entitlement (`beta_active` o `visions`). Policy SFW, adulti 25+, coda `banned`: file video, invariati nel merito.
-- In Fase 0: Grok Imagine (precache), file su R2 privato, miss = 2D + coda. GIF non è il master. Clip nuove in dashboard `video_new`. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
+- In Fase 0: il giocatore *chiede* la clip. Miss in fight = 2D. Lotto: prima a mano tua, poi Cursor Imagine 1×/giorno. File su R2. Tu Approvi (`video_new`) perché escono storte. GIF non è il master. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 - **Cursor Pro+** tiene il prodotto e i job Imagine: Patcher, Sito, Numeri, Imagine, Bandiere, Verbale. Checkout e Santuario in preview, spenti in prod. Non mergea da solo.
 - **GrokBot** è a chiamata: Inbox, Ascolto, Gazzetta, Corriere (preavviso con tasto morto se checklist rossa). Sportello, Promo, Bacheca, Spesa sono in panchina da subito. **Non** lancia Imagine.
 - **Dashboard.** Una coda. Approva o Scarta. Non apri git. Specifica: `Fantasy_Empire_Dashboard_Approvazioni.md`.
@@ -374,7 +375,7 @@ Specifica di principio: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
 ## 12. Cosa chiedo a te adesso
 
-Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.6, se non mi dici il contrario:
+Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.7, se non mi dici il contrario:
 
 1. Fase 0 invite + cap 40, non open registration.
 2. 18+ dichiarato. Territorio: Italia + UE. Niente UK/USA in beta.
@@ -386,7 +387,7 @@ Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa
 8. 1 slot save in beta. I 3 slot restano Founders.
 9. Cursor sul git **e** sui job Imagine (Worker + xAI). GrokBot su mail / X / legale, a chiamata. I posti a pagamento (Checkout preview, Santuario locked, Sportello, Promo, Bacheca, Spesa, Stagione) stanno in formazione da subito, in panchina o preview.
 10. Dashboard unica Approva/Scarta per git e per tutte le cose come questa. Non apri GitHub per il push.
-11. Video: Grok Imagine → R2. Master MP4, non GIF.
+11. Video: richiesta giocatore → lotto (prima a mano, poi agent 1×/giorno) → tu Approvi. Grok Imagine → R2. Master MP4, non GIF. Niente generazione in combattimento.
 12. Abbonamento Visioni 9,99 €/mese: Santuario + generazione a nostro carico (40 job/sett.). Senza: 7 job/sett. fissi. Niente chiavi Grok dei giocatori.
 13. Squadra: i 17 posti di `Fantasy_Empire_Squadra_Agenti.md` (9 Cursor, 8 GrokBot). Imagine è C8, non GrokBot. Non un mega-agent.
 

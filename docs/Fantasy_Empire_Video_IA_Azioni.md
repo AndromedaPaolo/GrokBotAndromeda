@@ -1,8 +1,8 @@
 # Fantasy Empire — Video IA sulle azioni (sito)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.6)
-**Versione:** 1.5 — 28 agosto 2026
+**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.7)
+**Versione:** 1.6 — 28 agosto 2026
 **Storage e generazione (scelta chiusa in proposta):** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).
@@ -16,8 +16,8 @@ Nessun codice in questo file. Specifica di prodotto + cache + policy.
 Ogni volta che un giocatore **con entitlement attivo** (`beta_active` in Fase 0, `beta_active` o `visions` in Fase B) compie un'azione di gioco, nel sito compare un **video breve generato da IA**.
 
 - Tono: **SFW ma sexy** — suggestivo, fantasy, camera vicina, vestiti aderenti / armature "fan service", niente nudo esplicito, niente sesso, niente minori.
-- Se quella azione (stessa chiave, vedi §4) ha **già** un video, **non si rigenera**: si riproduce il file in cache.
-- Prima generazione: loading nel player del sito, poi playback. Le volte dopo: playback immediato.
+- Se quella azione (stessa chiave, vedi §4) ha **già** un video `ready`, **non si rigenera**: si riproduce il file in cache.
+- Se manca: animazione 2D, niente attesa. Il giocatore può **richiedere** quella clip. Arriva col lotto, dopo il tuo Approva.
 
 Obiettivo in Fase 0: differenziare il titolo e misurare se la gente resta. Obiettivo in Fase B: vendere Visioni (Santuario + più job), non chiudere `/play`. Il combat resolver resta sul server; il video è **presentazione**, non regola.
 
@@ -87,11 +87,9 @@ Flusso sito:
 ```
 azione confermata (server ok)
   → GET /api/cinematics/:video_key
-      hit  → URL firmato R2/Stream → <video> nel DOM
-      miss → 202 + job_id → polling
-           → worker genera clip
-           → salva R2 + riga D1 `cinematics`
-           → stesso player
+      hit ready → URL firmato R2 → <video> nel DOM
+      miss / pending_review → 2D
+           CTA "Richiedi clip" se tetto ok e chiave non già in coda
 ```
 
 TTL: permanente finché non cambia `mood` o il prompt version. Rigenera solo se:
@@ -99,6 +97,7 @@ TTL: permanente finché non cambia `mood` o il prompt version. Rigenera solo se:
 - patch art direction (`sfw_sexy_v2`)
 - asset flaggato (policy)
 - clip corrotta
+- tu Scarti e poi unban + nuova richiesta
 
 ---
 
@@ -106,11 +105,11 @@ TTL: permanente finché non cambia `mood` o il prompt version. Rigenera solo se:
 
 Clip master: **3–5 secondi, MP4 H.264, 16:9, 720p, muto.** GIF non è il master. Eventuale `loop.webp` / GIF si ricava dal master.
 
-Provider di default: **xAI Grok Imagine** (image → image-to-video). Job sul Worker, Cursor Imagine. Costo indicativo Fase 0: ~0,25 $ a clip da 5 s (`grok-imagine-video`) più lo still. Precache 120 chiavi ≈ 30 $. GrokBot non lancia.
+Provider di default: **xAI Grok Imagine** (image → image-to-video). Job sul Worker, casa Cursor. Costo indicativo: ~0,25 $ a clip da 5 s più lo still. GrokBot non lancia.
 
 L'URL che restituisce xAI **scade**. Appena il job finisce si scarica e si copia su R2. Il player non punta mai a `vidgen.x.ai`.
 
-Flusso in partita: hit cache → play. Miss → animazione 2D subito, generazione in coda se il tetto giornaliero non è pieno. Il combat non aspetta.
+Flusso in partita: hit `ready` → play. Miss → 2D. Richiesta opzionale. Lotto (prima a mano tua, poi agent 1×/giorno) → `video_new` → tu Approvi. Le clip escono storte: niente auto-ready.
 
 Ogni clip nuova entra in dashboard come `video_new`. Approva = `ready`. Scarta = file cancellato, riga `banned`.
 
@@ -129,7 +128,7 @@ Provider (scelta in implementazione, non in lancio gratis illimitato): default G
 
 Contratto col provider, prima di generare in pubblico: marcatura AI Act art. 50, liceità del training, licenza d'uso commerciale degli output, manleva. Senza queste tre righe si resta sulla libreria 2D.
 
-**Costo in Fase 0:** la generazione **non** sta nel free Cloudflare. Sta sul credito xAI, a batch. Precache 80–150 chiavi. Live generate solo per chiavi nuove, tetto giornaliero basso. Se il tetto è pieno: fallback animazione 2D, niente attesa infinita.
+**Costo in Fase 0:** la generazione **non** sta nel free Cloudflare. Sta sul credito xAI, a lotto. Il giocatore chiede, tu (o l'agent 1×/giorno) generi, tu Approvi. Tetto 7 richieste/settimana. Miss = 2D, sempre.
 
 ---
 
@@ -140,7 +139,7 @@ D1 tabella `cinematics`:
 - `video_key` (unique)
 - `action_type`, `prompt_version`
 - `storage_url`, `poster_url`
-- `duration_ms`, `status` (`ready` / `failed` / `banned`)
+- `duration_ms`, `status` (`ready` / `pending_review` / `failed` / `banned`)
 - `created_at`
 - `moderation_log` (chi ha flaggato, quando; niente payload utente)
 
@@ -182,15 +181,15 @@ Questa policy è anche la prova che **non** si è nel perimetro pornografico del
 ## 9. Relazione con entitlement e infra
 
 - Utenti `beta_active` o `visions`.
-- Fase 0: precache + **7 job Imagine / settimana** a persona. Cache hit non conta. Oggetti su R2 free (10 GB). Stream no. Santuario visibile e chiuso.
-- Fase B senza Visioni: stesso tetto 7. Con Visioni: tetto 40, Santuario aperto, job a carico nostro.
+- Fase 0: **7 richieste / settimana** a persona. Cache hit e "già in coda" non contano. Miss = 2D. Oggetti su R2 free (10 GB). Stream no. Santuario visibile e chiuso.
+- Fase B senza Visioni: stesso tetto 7. Con Visioni: tetto 40, Santuario aperto, richieste a carico nostro. Lotto e Approva restano.
 - Fase C (profitto): eventuale Stream. Il bot **riusa la cache del sito** e carica le clip sui canali del progetto. Non si rigenera un video nuovo per ogni social. Il video social non sblocca il gioco.
 
-Il resolver di danno/SP **ignora** il video. Cheat sul client non sblocca clip nuove senza l'azione validata dal Worker.
+Il resolver di danno/SP **ignora** il video. Cheat sul client non crea una richiesta senza l'azione validata dal Worker.
 
 ---
 
 ## 10. Fuori scope di questo file
 
 Nessun mp4 allegato, nessun job IA lanciato, nessun bucket creato.
-Implementazione: quando si costruisce il sito, player in `/play` + tabella `cinematics` + coda miss.
+Implementazione: quando si costruisce il sito, player in `/play` + tabella `cinematics` + `video_requests`. Niente generazione in combattimento.

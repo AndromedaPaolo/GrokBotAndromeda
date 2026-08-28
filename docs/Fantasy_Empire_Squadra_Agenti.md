@@ -1,8 +1,8 @@
 # Fantasy Empire — Squadra agenti
 
 **Tipo documento:** proposta. Nessun agent creato, nessuna Automation, nessuna Routine.
-**Versione:** 1.1 — 28 agosto 2026
-**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.6
+**Versione:** 1.2 — 28 agosto 2026
+**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.7
 **Ops (principio):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, mandato:** `Fantasy_Empire_Grok_Bot_Ops.md`
@@ -57,7 +57,7 @@ Nessuno di questi posti accende i pagamenti da solo. Nessuno fissa una data.
 | C5 | Santuario | preview | `git_pr` | Zona extra locked in Fase 0. Si apre con `entitlements.status = visions`. Stesso combat. |
 | C6 | Bandiere | acceso | `stripe_live` (tasto morto se checklist rossa), flag nel repo | `PAYWALL`, `STRIPE_LIVE`, `BETA_ACCESS`. Mai un cron. |
 | C7 | Verbale | acceso | `git_pr` da `memo_legale` | Checklist Fase B nel repo. Box rossi/verdi. Non li mette verdi perché "è passato un po'". |
-| C8 | Imagine | acceso | `video_new` | Still + I2V via Worker. Chiave xAI nei secret del Worker. Precache e miss. |
+| C8 | Imagine | acceso, prima a mano | `video_req`, `video_new` | Lotto still+I2V. All'inizio tu. Poi 1×/giorno, tu Approvi la qualità. |
 | C9 | Stagione | panchina | `git_pr` (tipo spento) | Season e cosmetic. Niente pay-to-win. Si siede quando c'è margine *e* tu sblocchi. |
 
 ### GrokBot (fuori dal git)
@@ -139,18 +139,18 @@ Non mette un box verde perché è agosto.
 
 ### C8 Imagine
 
-Still e video. Stessa casa del git perché il tubo è codice: Worker, secret, coda, R2.
+Still e video. Stessa casa del git perché il tubo è codice: Worker, secret, coda richieste, R2.
 
 `XAI_API_KEY` sta nei secret del Worker. Non in GrokBot. Non nel browser. Non in una chat.
 
-Due modi, stesso codice:
+Le clip escono storte. Quindi due tempi, stesso posto:
 
-1. Precache. L'agent Cursor accoda 80–150 chiavi, tetto tipo 20/giorno. Ogni clip finita → R2 → `video_new`.
-2. Miss in `/play`. Il Worker enqueue da solo, 2D adesso, job dopo. GrokBot non entra.
+1. **A mano, all'inizio.** Lista `video_req` in dashboard. Tu generi, carichi, `video_new`. Approva = `ready`. Scarta = via.
+2. **Lotto 1×/giorno, dopo che tu sblocchi `imagine_batch`.** L'agent conta le chiavi in coda, le genera tutte, carica su R2, apre `video_new`. Non mette `ready`. Il tasto resta tuo.
 
-Mai una chiave del giocatore. `gen_quota` la scala il Worker. Combat non aspetta. Approva = `ready`. Scarta = delete.
+Niente generazione in combattimento. Miss = 2D. Il giocatore *chiede*. `gen_quota` scala sulla richiesta accettata, non sul click in fight.
 
-Se il player in `/play` è rotto, è Patcher. Imagine non tocca lo SP.
+Mai una chiave del giocatore. Se il player in `/play` è rotto, è Patcher. Imagine non tocca lo SP.
 
 ### C9 Stagione
 
@@ -214,9 +214,11 @@ Ascolto vede un pattern
   → G2 memo_twitter → tu archivi
   → se è prodotto: issue → C1 Patcher
 
-Imagine (C8) finisce una clip
-  → Worker R2 → video_new → tu Approvi/Scarti
-  → GrokBot non c'entra. Patcher solo se il player è rotto
+giocatore richiede una clip
+  → Worker: quota, dedup chiave → video_req
+  → combat resta 2D
+  → tu a mano, poi C8 1×/giorno: genera, R2, video_new
+  → tu Approvi/Scarti (qualità). GrokBot non c'entra
 
 tu vuoi i pagamenti
   → C7 Verbale verde

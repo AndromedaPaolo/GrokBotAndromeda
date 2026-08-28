@@ -1,7 +1,7 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.6 — 28 agosto 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.6.
+**Versione:** 1.7 — 28 agosto 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.7.
 
 I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, tetto settimanale sulle clip nuove, e **nessuna data** da gratis a pagato. Niente chiavi Grok dei giocatori.
 
@@ -123,9 +123,10 @@ B e C riqualificano il servizio verso "piattaforma online" DSA. In Fase 0 è pes
 
 ## 13. Tetto e modo dei video in beta
 
-- **A (default).** Precache 80–150 chiavi. Live generate con tetto settimanale per account (decisione 20). Fallback 2D. Master MP4 su R2.
+- **A (default).** Il giocatore chiede. Miss = 2D. Lotto: prima a mano tua, poi agent Cursor 1×/giorno. Tu Approvi. Tetto settimanale (decisione 20). Master MP4 su R2.
 - **B.** Solo libreria 2D / poster. Zero video IA.
-- **C.** Generate live senza tetto. Brucia il credito xAI. No.
+- **C.** Generate live in combattimento, anche con tetto. No. Le clip escono storte e il turno non aspetta.
+- **D.** Precache 80–150 chiavi a tuo carico, più le richieste. Opzionale, non il default.
 
 ---
 
@@ -159,11 +160,12 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 
 ## 17. Chi genera i video
 
-- **A (default).** xAI Grok Imagine (image poi image-to-video). Job sul Worker, agent Cursor Imagine (C8). ~0,25 $ a clip da 5 s. Copia subito su R2 perché l'URL xAI scade. GrokBot non tiene la chiave.
+- **A (default).** xAI Grok Imagine (image poi image-to-video). Casa Cursor. Lotto su richiesta, non in fight. ~0,25 $ a clip da 5 s. Copia subito su R2. GrokBot non tiene la chiave.
 - **B.** Solo still + animazione 2D. Zero video IA.
-- **C.** fal/Kling (o altro) al posto di Grok, stesso R2, stessa casa Cursor.
+- **C.** fal/Kling (o altro) al posto di Grok, stesso R2, stessa casa Cursor, stesso lotto.
 - **D.** Asset fatti a mano / commissionati.
-- **E.** ~~GrokBot lancia Imagine~~ **Scartata.** La generazione sta nel git.
+- **E.** ~~GrokBot lancia Imagine~~ **Scartata.**
+- **F.** ~~Miss in combat → coda job~~ **Scartata.** Le clip escono storte. Si chiede, si lotta, si Approva.
 
 ---
 
@@ -192,7 +194,7 @@ Non si chiede al giocatore di collegare Grok, Imagine, o una API key. Quella ide
 
 ## 20. Quanti job Imagine a settimana
 
-Settimana solare, fuso `Europe/Rome`, reset lunedì 00:00. Un job = cache miss che produce un file nuovo. Rivedere un MP4 già in R2 non conta.
+Settimana solare, fuso `Europe/Rome`, reset lunedì 00:00. Conta la *richiesta accettata* di una chiave nuova. Cache hit e "già in coda" non contano.
 
 - **A (default).** 7 senza abbonamento. 40 con Visioni (tetto di sicurezza, così un account non svuota il credito).
 - **B.** 3 / 20. Più stretto, meno burn, overlay 2D prima.
@@ -212,12 +214,22 @@ A è più nomi da ricordare. Costa zero finché non li accendi. B ti fa scrivere
 
 ---
 
+## 22. Da mano tua al lotto giornaliero
+
+- **A (default).** All'inizio generi tu dalla lista `video_req`. L'agent C8 1×/giorno parte solo se Approvi `imagine_batch`. Anche allora tu Approvi ogni clip (`video_new`). Le clip escono storte.
+- **B.** Agent giornaliero acceso dal primo go-live. Tu resti solo su Approva/Scarta. Meno lavoro, stesso tasto qualità.
+- **C.** Sempre a mano. Niente agent. Tiene se i beta sono pochi. Si rompe a 40 persone × 7 richieste.
+
+A è la rampa. B salta il "lo faccio io". C è onesto per una settimana, non per un mese.
+
+---
+
 ## Come ti rispondo io
 
 Mandami un elenco tipo:
 
 ```
-1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A 17A 18A 19A 20A 21A
+1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A 12A 13A 14A 15A 16A 17A 18A 19A 20A 21A 22A
 ```
 
-oppure mescola (`3B 19B 21B`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia. Niente codice finché non lo chiedi.
+oppure mescola (`3B 13A 22B`). Aggiorno i file di proposta, alzo le versioni, e ti dico cosa cambia. Niente codice finché non lo chiedi.
