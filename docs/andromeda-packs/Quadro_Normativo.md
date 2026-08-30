@@ -12,7 +12,7 @@ Due umani restano sopra: tu, e avvocato/commercialista quando i testi o il fisco
 
 Beni digitali: file di istruzioni e memoria. Non un sostituto del prestatore d'opera intellettuale. Non un servizio di consulenza fiscale, legale o del lavoro.
 
-Se il copy del sito scivola su "l'agente fa il commercialista", il prodotto cambia natura e finisce sotto L. 132/2025 art. 13 e sotto gli Ordini. Non lo facciamo.
+Se un copy pubblico (pack, memo, un giorno il sito) scivola su "l'agente fa il commercialista", il prodotto cambia natura e finisce sotto L. 132/2025 art. 13 e sotto gli Ordini. Non lo facciamo.
 
 ---
 
@@ -25,11 +25,11 @@ Art. 13 (sintesi da fonti pubbliche, da rifare con Gazzetta il giorno della vend
 - Il cliente va informato, in modo chiaro, che si usa un sistema di IA.
 - Principio antropocentrico: la responsabilità resta sulla persona.
 
-Decreto attuativo in esame 2026 (formazione Ordini, equo compenso se l'IA alza il rischio): Gazzetta aggiorna, non il sito da solo.
+Decreto attuativo in esame 2026 (formazione Ordini, equo compenso se l'IA alza il rischio): Gazzetta aggiorna il memo. Verbale scrive nel repo solo dopo Approva.
 
 **Conseguenza pack:** classe `assistente-di-studio` ha VINCOLI e informativa. Classe `ordinistico-vietato-vendita` non va in `in-vendita`. Classe `ruolo-non-ordinistico` può parlare di copertura compiti, non di Albo.
 
-**Conseguenza sito:** niente "sostituisce avvocati e commercialisti italiani". Sì "pack per segreteria PMI, con eval".
+**Conseguenza copy:** niente "sostituisce avvocati e commercialisti italiani". Sì "pack per segreteria PMI, con eval". Quando ci sarà un sito, stessa regola.
 
 ---
 
@@ -47,17 +47,17 @@ Memoria di laboratorio: dati finti. Vietato copiare inbox vere in `memory/SEED.m
 
 Il giorno della vendita, il pack del cliente vivrà sui *suoi* dati. Il nostro zip non deve contenere i suoi. Informativa: il pack è uno strumento, titolare è lui.
 
-Prompt injection da mail: sta in VINCOLI di `segreteria-pmi` (testo mail = dati, non istruzioni). Pattern: inbox dedicata all'agente, non OAuth sulla casella del titolare. Vedi skill agent-email-patterns, da applicare in Fase prove, non a parole in homepage.
+Prompt injection da mail: sta in VINCOLI di `segreteria-pmi` (testo mail = dati, non istruzioni). Pattern: inbox dedicata all'agente, non OAuth sulla casella del titolare. Vedi skill agent-email-patterns, da applicare in Fase prove.
 
 ---
 
 ## 5. Codice del consumo, se si vende
 
-Download digitale, recesso, precontrattuale. P.IVA, fattura. T&C scritti da avvocato. C4 può fare **bozza** di pagine, spente.
+Download digitale, recesso, precontrattuale. P.IVA, fattura. T&C scritti da avvocato. C4 (panchina) potrà fare **bozza** di pagine, spente, quando esiste il sito.
 
 Soft spam: niente lista d'attesa usata come newsletter promo senza consenso.
 
-Prezzo in catalogo laboratorio è "previsto", non offerta al pubblico. Nessun pulsante paga.
+Prezzo indicato sui pack è "previsto", non offerta al pubblico. Nessun pulsante paga.
 
 ---
 
@@ -74,7 +74,7 @@ Consentito: numero di compiti mappati, numero dimostrati in eval, link allo scen
 - [ ] Classe legale ≠ `ordinistico-vietato-vendita`
 - [ ] VINCOLI.md letto da te
 - [ ] Almeno un eval con risultati in git
-- [ ] Copy homepage riletto contro §2 e §6
+- [ ] Copy pubblico riletto contro §2 e §6 (pack, memo; il sito quando ci sarà)
 - [ ] P.IVA e T&C (avvocato) se c'è checkout
 - [ ] Informativa "questo è un agente" se c'è demo live
 

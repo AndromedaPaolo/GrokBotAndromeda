@@ -7,7 +7,7 @@ Un pack è una cartella. È il prodotto. Se non sta in git in questa forma, non 
 
 ```
 packs/<id>/
-  pack.json              # metadati macchina (catalogo, validatore, sito)
+  pack.json              # metadati macchina (validatore, catalogo futuro)
   ISTRUZIONI.md          # mandato dell'agente di ruolo (AGENTS.md del pack)
   SKILL.md               # skill Cursor da copiare in .cursor/skills/<id>/
   GROK_BOT.md            # description + routine da incollare in un Grok Bot
@@ -66,9 +66,9 @@ Ogni scenario:
 - Esito atteso (rubrica).
 - Firma umana sì/no.
 
-Punteggio: percentuale di compiti `dimostrato` sul totale mappato. Si pubblica in catalogo solo se C3 ha scritto `eval/risultati/` e tu hai approvato la PR.
+Punteggio: percentuale di compiti `dimostrato` sul totale mappato. Si scrive in git solo se C3 ha messo `eval/risultati/` e tu hai approvato la PR.
 
-In laboratorio il punteggio può essere `null`. Il sito mostra "non ancora misurato", non "100%".
+In laboratorio il punteggio può essere `null`. Non si inventa un 100%.
 
 ---
 

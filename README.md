@@ -1,10 +1,8 @@
 # GrokBot Andromeda — Andromeda Packs
 
-Laboratorio: **istruzioni + memoria** per agenti, su ruoli di lavoro italiani. Poi, se le prove reggono, si vendono i file sul sito.
+Proposta: **istruzioni + memoria** per agenti, su ruoli di lavoro italiani. Un giorno si vendono i file. Il sito non è in questo ramo.
 
-Branch di questo lavoro: `GrokBotWork`.
-
-Non è Fantasy Empire (quello sta su altri PR). Non è ancora un negozio.
+Branch: `GrokBotWork`. Non è Fantasy Empire (altri PR).
 
 ## Parti da qui
 
@@ -13,24 +11,19 @@ Non è Fantasy Empire (quello sta su altri PR). Non è ancora un negozio.
 3. Formato del prodotto: [`docs/andromeda-packs/Formato_Pack.md`](docs/andromeda-packs/Formato_Pack.md)
 4. Quadro normativo (non è un parere): [`docs/andromeda-packs/Quadro_Normativo.md`](docs/andromeda-packs/Quadro_Normativo.md)
 
-## Sito laboratorio
+## Pack di esempio (non in vendita)
 
-```bash
-npm test
-npm start
-```
-
-Apri http://localhost:4173 — catalogo generato dai `pack.json`. Niente checkout.
-
-## Pack in repo
-
-| id | Stato | Eval |
+| id | Stato | Note |
 |---|---|---|
-| `segreteria-pmi` | laboratorio | 3 scenari, punteggio non ancora misurato con un agente |
+| `segreteria-pmi` | laboratorio | istruzioni + memoria + 3 scenari |
 | `customer-care-ecommerce` | laboratorio | stub |
 | `assistente-studio` | laboratorio | stub, classe `assistente-di-studio` |
 
-`npm test` valida il formato e gira una prova a tavolino (injection IBAN + chiusura Ferragosto) senza LLM.
+```bash
+npm test
+```
+
+Valida il formato e gira una prova a tavolino (injection IBAN + chiusura Ferragosto) senza LLM.
 
 ## Automation e GrokBot
 
@@ -39,4 +32,4 @@ Ricette spente, da incollare quando lo chiedi:
 - Cursor: [`docs/andromeda-packs/Automazioni.md`](docs/andromeda-packs/Automazioni.md)
 - Profili: [`squadra/grok-bots/`](squadra/grok-bots/)
 
-Tu Approvi. Nessun auto-merge.
+Tu Approvi. Nessun auto-merge. Nessun sito in questo PR.

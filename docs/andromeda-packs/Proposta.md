@@ -1,7 +1,8 @@
 # Andromeda Packs — proposta
 
 **Tipo documento:** proposta di sviluppo. Le Automation Cursor e i GrokBot non sono accesi da questo file.
-**Versione:** 1.0 — 30 agosto 2026
+**Versione:** 1.1 — 30 agosto 2026
+**Nota:** proposta. Nessun sito in questo ramo.
 **Branch:** `GrokBotWork`
 **Repo:** GrokBotAndromeda
 
@@ -21,7 +22,7 @@ Un agente nudo non fa la segretaria di una PMI di Brescia. Fa la segretaria se g
 
 Quello si vende. Non l'abbonamento a un chatbot generico. Un pack. File. Versione. Punteggio di copertura compiti.
 
-Il sito non promette. Mostra la cartella del pack e il risultato dell'eval. Chi compra prende i file e li carica sul proprio agente (Cursor Cloud, GrokBot, o entrambi).
+Quando (se) ci sarà un sito, non promette: mostra la cartella del pack e il risultato dell'eval. Chi compra prende i file e li carica sul proprio agente (Cursor Cloud, GrokBot, o entrambi). Questo PR non lo costruisce.
 
 ---
 
@@ -29,19 +30,19 @@ Il sito non promette. Mostra la cartella del pack e il risultato dell'eval. Chi 
 
 | Prodotto | Dove sta oggi | Cosa è |
 |---|---|---|
-| **Andromeda Packs** | questo branch | Laboratorio + catalogo + (poi) vendita di pack |
+| **Andromeda Packs** | questo branch | Proposta + pack di esempio. Sito e vendita: dopo, se Approvi |
 | **Fantasy Empire** | PR #2 e branch `cursor/fantasy-empire-*` | Gioco. Non si tocca da qui |
 | **Chatbot scaffold** | PR #1 | Chat Grok di prova. Si potrà riusare come "prova un pack" dopo il merge. Non è il catalogo |
 
-Finché i PR non sono mergiati, questo ramo parte da `main` vuoto. Va bene: i pack sono markdown e json. Il sito laboratorio è statico. Non aspettiamo il chatbot per dimostrare il formato.
+Finché i PR non sono mergiati, questo ramo parte da `main` vuoto. Va bene: la proposta è markdown. I pack di esempio sono cartelle, non un negozio.
 
-Quando (se) mergi PR #1, la chat diventa il banco di prova live di un pack, non la vetrina.
+Quando (se) mergi PR #1, la chat potrà diventare il banco di prova live di un pack. Non è il catalogo. Non è questo giro.
 
 ---
 
 ## 3. Cosa *non* stiamo dicendo
 
-"Gli agenti sostituiscono varie categorie di lavoro italiano" è la domanda di ricerca. Non è la frase in homepage.
+"Gli agenti sostituiscono varie categorie di lavoro italiano" è la domanda di ricerca. Non è una frase da mettere in un sito.
 
 La frase vera, dimostrabile:
 
@@ -59,7 +60,7 @@ Cartella `packs/<id>/` a una versione semver. Contenuto minimo in `Formato_Pack.
 
 Prezzo previsto (non live, non Stripe):
 
-| Pack | Prezzo indicato in catalogo | Perché quel numero |
+| Pack | Prezzo previsto | Perché quel numero |
 |---|---|---|
 | Segreteria PMI | 149 € una tantum | Un mese di part-time di segreteria, una volta |
 | Customer care e-commerce | 149 € | Stesso taglio |
@@ -71,10 +72,10 @@ Panchina: abbonamento "aggiornamenti pack" (scadenze fiscali, festività, CCNL).
 
 ## 5. Fasi. Non un calendario
 
-| Fase | Sito | Pack | Soldi |
+| Fase | Cosa esiste | Pack | Soldi |
 |---|---|---|---|
-| **Laboratorio** (ora) | Catalogo, dossier, eval a vista, disclaimer | Stato `laboratorio`. Primo pack scritto | Zero checkout |
-| **Prove pubbliche** | Stesso sito + registrazioni eval | Punteggio su almeno 1 pack | Lista d'attesa, niente carta |
+| **Laboratorio** (ora) | Proposta + pack di esempio in git | Stato `laboratorio`. Primo pack scritto | Zero checkout. Zero sito |
+| **Prove pubbliche** | Sito (da fare) + registrazioni eval | Punteggio su almeno 1 pack | Lista d'attesa, niente carta |
 | **Vendita** | Checkout, download zip firmato, fattura | Stato `in-vendita` dopo il tuo Approva | Stripe, P.IVA, T&C. Altro giro |
 
 Niente countdown. Niente "lanciamo a ottobre". Laboratorio dura finché un pack ha prove e tu dici sì alla vendita.
@@ -91,9 +92,10 @@ G1 Analista mappa un ruolo (ISTAT, CCNL, compiti)
 C1 Autore scrive ISTRUZIONI.md + SKILL.md
 C2 Memoria scrive SEED + VINCOLI + glossario
 C3 Eval scrive scenari e gira le prove
-C4 Sito aggiorna il catalogo
   → git_pr
   → tu Approvi
+
+C4 Sito (panchina): non gira finché non lo chiedi. Nessuna cartella `sito/` in questo PR.
 
 G2 Gazzetta, se il pack tocca un Ordine o dati personali
   → memo_legale
@@ -102,7 +104,7 @@ G2 Gazzetta, se il pack tocca un Ordine o dati personali
 
 G3 Demo (quando lo chiedi) gira uno scenario con computer
   → artifact in dashboard
-  → tu Approvi la pubblicazione sul sito
+  → tu Approvi. Non pubblica da solo.
 ```
 
 Automation Cursor proposte (spente): `squadra/automazioni/`.
@@ -113,11 +115,12 @@ Nomi e stati: `Squadra.md`.
 
 ## 7. Prima settimana di lavoro vero, quando lo chiederai
 
-Non "accendiamo tutti". Tre cose:
+Non "accendiamo tutti". Due cose, quando lo chiedi:
 
-1. **C4 Sito** già in questo PR: catalogo laboratorio.
-2. **Pack `segreteria-pmi`** già in questo PR: istruzioni + memoria + 3 scenari. Eval ancora a mano.
-3. **Una Automation** `pack-review` su PR che toccano `packs/`. Una. Poi si vede.
+1. **Una Automation** `pack-review` su PR che toccano `packs/`. Una. Poi si vede.
+2. Eval a mano dei 3 scenari di `segreteria-pmi`.
+
+Il sito (C4) resta panchina. Non è in questo PR.
 
 GrokBot: accendi **G1 Analista** e **G2 Gazzetta** a chiamata. Inbox clienti (G4) panchina fino alla vendita.
 
@@ -131,3 +134,4 @@ GrokBot: accendi **G1 Analista** e **G2 Gazzetta** a chiamata. Inbox clienti (G4
 - Agent che parla con l'Agenzia delle Entrate.
 - Mescolare Fantasy Empire in questi file.
 - Accendere le Automation da questo markdown.
+- Costruire il sito.

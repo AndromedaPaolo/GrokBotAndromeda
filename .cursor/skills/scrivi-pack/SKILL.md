@@ -14,5 +14,4 @@ description: >-
 4. Memoria finta. Nessun dato personale vero.
 5. ISTRUZIONI senza "sostituisce [Albo]".
 6. `npm test`.
-7. `npm run catalogo` è già in test.
-8. PR. Non mergiare. Non `in-vendita`.
+7. PR. Non mergiare. Non `in-vendita`. Non aprire `sito/`.

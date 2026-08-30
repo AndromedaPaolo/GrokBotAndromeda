@@ -27,7 +27,7 @@
 | C1 | Autore | acceso | `git_pr` su `packs/` | Istruzioni, skill, profilo GrokBot del *pack* (non della squadra) |
 | C2 | Memoria | acceso | `git_pr` su `packs/*/memory/` | SEED, glossario, vincoli. Niente dati veri di clienti |
 | C3 | Eval | acceso | `git_pr` su `eval/` + `copertura` in `pack.json` | Scenari, rubrica, punteggio. Non alza lo stato a `in-vendita` |
-| C4 | Sito | acceso | `git_pr` su `sito/` | Catalogo laboratorio. Niente CTA "compra" finché Fase vendita |
+| C4 | Sito | panchina | `git_pr` (tipo spento) | Catalogo e pagine. Non esiste finché non lo chiedi. Niente CTA "compra" |
 | C5 | Verbale | acceso | `git_pr` su docs/vincoli | Traduce un `memo_legale` approvato in testo nel pack. Non "diventa legge" |
 
 ### GrokBot (fuori dal git)
@@ -36,27 +36,28 @@
 |---|---|---|---|---|
 | G1 | Analista | acceso | `memo_ruolo` | ISTAT, CCNL, compiti reali di un ruolo italiano. Fonti e data |
 | G2 | Gazzetta | acceso | `memo_legale` | L. 132/2025, AI Act, Codice consumo, GDPR sul pack in vendita. In cima: "non è un parere" |
-| G3 | Demo | preview | artifact / registrazione | Gira uno scenario del pack sul computer. Non pubblica sul sito da solo |
+| G3 | Demo | preview | artifact / registrazione | Gira uno scenario del pack sul computer. Non pubblica da solo |
 | G4 | Sportello | panchina | `mail` tag `pack` | Dopo la vendita: "ho pagato, dov'è lo zip". Bozza. Non tocca i fondi |
 
 ---
 
 ## 3. Chi gira già, chi sta seduto
 
-**Accesi o in preview, laboratorio.** Autore, Memoria, Eval, Sito, Verbale, Analista, Gazzetta, Demo (solo se glielo chiedi, niente publish).
+**Accesi o in preview, laboratorio.** Autore, Memoria, Eval, Verbale, Analista, Gazzetta, Demo (solo se glielo chiedi, niente publish).
 
-**Panchina.** Sportello. Checkout (non ha nemmeno un id Cursor: è un pezzo di C4 che si sblocca in Fase vendita, altro giro).
+**Panchina.** Sito (C4). Sportello. Checkout (è un pezzo di C4 che si sblocca in Fase vendita, altro giro).
 
 ---
 
 ## 4. Vietato a tutti
 
 - Dichiarare un pack `in-vendita`.
-- Scrivere in homepage "sostituisce [professione ordinistica]".
+- Copy da vetrina: "sostituisce [professione ordinistica]".
 - Mettere in `memory/SEED.md` dati personali veri (usa sempre finti, laboratorio).
 - Merge su `main`.
 - Accendere Stripe.
 - Un agent ibrido "fa l'Analista e poi mergea il pack".
+- Aprire una cartella `sito/` in questo giro.
 
 ---
 
@@ -66,4 +67,4 @@
 2. GrokBot: Bot con la description in `squadra/grok-bots/<id>.md`. Invio mail / publish = tu.
 3. Panchina: non creare la Routine. Il file del mandato basta.
 
-Niente "accendiamoli tutti sabato". Autore + Memoria + Sito bastano per il primo pack. Eval la settimana in cui vuoi un numero in catalogo. Gazzetta prima di qualsiasi frase su commercialisti o avvocati.
+Niente "accendiamoli tutti sabato". Autore + Memoria bastano per il primo pack. Eval la settimana in cui vuoi un numero. Gazzetta prima di qualsiasi frase su commercialisti o avvocati. Sito: panchina.
