@@ -109,6 +109,7 @@ Finché il requisito è “realmente”, salta lo step 1. Un solo passaggio: doc
 ## Collegamenti
 
 - Piano prodotto: `docs/come-ricreare-un-sistema-tipo-flingster.md` (il gate è questo; sesso/tag restano sulla ricerca).
+- Come fanno *davvero* Flingster/Chatroulette in live: `docs/come-i-siti-videochat-rilevano-minori.md` (spoiler: quasi non lo fanno).
 - Liveness e quote free: `docs/ricerca-liveness-gratuito.md`.
 - Classificatori sesso dal viso: irrilevanti per l’età. Vedi `docs/ricerca-app-rilevamento-sesso.md`.
 
