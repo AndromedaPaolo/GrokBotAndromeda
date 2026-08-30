@@ -1,0 +1,15 @@
+{
+  "name": "grokbot-andromeda-packs",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "catalogo": "node scripts/build-catalogo.mjs",
+    "validate": "node scripts/validate-packs.mjs",
+    "test": "node scripts/validate-packs.mjs && node scripts/build-catalogo.mjs && node scripts/prova-tavolino.mjs",
+    "start": "node scripts/build-catalogo.mjs && node scripts/serve.mjs",
+    "prova-tavolino": "node scripts/prova-tavolino.mjs"
+  }
+}

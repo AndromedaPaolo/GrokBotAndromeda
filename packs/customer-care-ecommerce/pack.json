@@ -1,0 +1,55 @@
+{
+  "id": "customer-care-ecommerce",
+  "nome": "Customer care e-commerce",
+  "versione": "0.1.0",
+  "stato": "laboratorio",
+  "istat": "4.2.2.2",
+  "istat_nota": "CP2021 indicativo: informatori e assistenti clienti. Non certificazione ISTAT.",
+  "classe_legale": "ruolo-non-ordinistico",
+  "prezzo_previsto_eur": 149,
+  "sommario": "Ticket resi, tracking, FAQ. Non rimborsa da solo. Stub: istruzioni corte, eval da scrivere meglio.",
+  "compiti": [
+    {
+      "id": "triage-ticket",
+      "nome": "Triage ticket (tracking, reso, pagamento, altro)",
+      "dimostrato": false,
+      "firma_umana": false
+    },
+    {
+      "id": "stato-spedizione",
+      "nome": "Risposta stato spedizione da dati in input, senza inventare tracking",
+      "dimostrato": false,
+      "firma_umana": false
+    },
+    {
+      "id": "reso",
+      "nome": "Istruzioni di reso secondo policy in memoria",
+      "dimostrato": false,
+      "firma_umana": false
+    },
+    {
+      "id": "rimborso",
+      "nome": "Proposta rimborso: sempre firma umana",
+      "dimostrato": false,
+      "firma_umana": true
+    },
+    {
+      "id": "faq",
+      "nome": "FAQ da SEED, niente sconti inventati",
+      "dimostrato": false,
+      "firma_umana": false
+    },
+    {
+      "id": "escalation-legale",
+      "nome": "Reclamo legale / AGCM: fermo",
+      "dimostrato": false,
+      "firma_umana": true
+    }
+  ],
+  "vietato": [
+    "Autorizzare rimborsi o note di credito",
+    "Inventare un tracking",
+    "Promesse sul Codice del consumo non scritte in VINCOLI",
+    "Dati di carte di pagamento"
+  ]
+}
