@@ -120,3 +120,5 @@ Siti web “passport OCR gratis, carica qui”: non usarli. Stai mandando passap
 | Gay / trans | Nessuna app | Tag dichiarati |
 
 Non c’è un’app gratuita che “capisce il sesso”. C’è software gratis che **indovina l’aspetto**, e software gratis che **legge la MRZ senza sapere se il documento è vero**. Per assegnare il sesso in ingresso come nel piano del prodotto, Yoti (o un IDV pagato) resta la riga che chiude; il resto è ricerca o prototipo.
+
+Liveness (persona viva, non foto) con piano free per chi adotta: `docs/ricerca-liveness-gratuito.md`. In sintesi Didit 500 sessioni/mese forever (ID + liveness passive + face match), oppure MiniFASNet self-host Apache. La liveness da sola non dà il sesso.

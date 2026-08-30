@@ -14,6 +14,8 @@
 
 Ricerca su app/API gratuite che pretendono di “capire il sesso”: `docs/ricerca-app-rilevamento-sesso.md`. Spoiler: nessuna sostituisce Yoti sul documento; i classificatori sul viso indovinano l’aspetto, non il sesso.
 
+Liveness gratis per chi integra: `docs/ricerca-liveness-gratuito.md` (Didit 500/mese forever, o MiniFASNet self-host).
+
 Il servizio non è “tutto gratis”: Yoti, TURN e moderazione costano; un piano a pagamento può coprire extra (priorità, no ads, reconnect). La coda 1:1 no. Questo file non è consulenza legale e non è un’implementazione.
 
 ---
