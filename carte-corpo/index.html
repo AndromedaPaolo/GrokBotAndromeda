@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="css/game.css" />
   </head>
   <body>
-    <div id="gate" class="gate">
+    <div id="gate" class="gate is-on">
       <div class="gate-card">
         <p class="gate-kicker">Gioco erotico</p>
         <h1>Solo per adulti</h1>
         <p>
-          Personaggio fittizio. Donna adulta (28 anni). Contenuto sessuale esplicito.
-          Continuando dichiari di avere almeno 18 anni.
+          Personaggio fittizio. Donna adulta (Giulia, 28 anni). Contenuto sessuale esplicito sul
+          corpo nudo. Continuando dichiari di avere almeno 18 anni.
         </p>
         <div class="gate-actions">
           <button type="button" id="gate-yes">Ho 18 anni o più</button>
@@ -40,11 +40,12 @@
       <section class="stage">
         <div class="stage-frame">
           <div id="touch-burst" class="touch-burst" hidden></div>
+          <p id="hit-label" class="hit-label" hidden></p>
           <svg
             id="body"
             viewBox="0 0 360 780"
             role="img"
-            aria-label="Giulia nuda, in piedi, in attesa delle tue carte"
+            aria-label="Giulia, donna adulta nuda, in piedi, in attesa delle tue carte"
           >
             <defs>
               <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
@@ -64,6 +65,11 @@
                 <stop offset="0%" stop-color="#c46b5a" />
                 <stop offset="100%" stop-color="#a85045" />
               </radialGradient>
+              <radialGradient id="breast-shade" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#efd0b8" />
+                <stop offset="70%" stop-color="#d4a07e" />
+                <stop offset="100%" stop-color="#b56d52" />
+              </radialGradient>
               <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
                 <feGaussianBlur stdDeviation="6" result="b" />
                 <feMerge>
@@ -73,7 +79,6 @@
               </filter>
             </defs>
 
-            <!-- hair back -->
             <path
               fill="url(#hair)"
               d="M86 118 C70 200 58 310 72 430 C90 520 70 600 96 680 L118 678 C98 580 120 500 108 400 C122 280 118 190 132 128 C120 108 96 96 86 118 Z"
@@ -83,21 +88,23 @@
               d="M268 112 C292 190 300 300 286 410 C274 500 298 590 270 678 L248 676 C272 580 250 500 262 400 C248 290 250 190 230 126 C248 98 262 96 268 112 Z"
             />
 
-            <!-- legs -->
-            <path
-              class="zone"
-              data-zone="coscia"
-              fill="url(#skin)"
-              d="M128 448 C118 520 116 590 122 660 C126 700 118 738 128 768 L168 768 C172 730 166 700 170 640 C174 560 176 500 168 448 Z"
-            />
-            <path
-              class="zone"
-              data-zone="coscia"
-              fill="url(#skin-shadow)"
-              d="M192 448 C184 500 186 560 190 640 C194 700 188 730 192 768 L232 768 C242 738 234 700 238 660 C244 590 242 520 232 448 Z"
-            />
+            <g id="leg-l">
+              <path
+                class="zone"
+                data-zone="coscia"
+                fill="url(#skin)"
+                d="M128 448 C118 520 116 590 122 660 C126 700 118 738 128 768 L168 768 C172 730 166 700 170 640 C174 560 176 500 168 448 Z"
+              />
+            </g>
+            <g id="leg-r">
+              <path
+                class="zone"
+                data-zone="coscia"
+                fill="url(#skin-shadow)"
+                d="M192 448 C184 500 186 560 190 640 C194 700 188 730 192 768 L232 768 C242 738 234 700 238 660 C244 590 242 520 232 448 Z"
+              />
+            </g>
 
-            <!-- hips + pubis -->
             <path
               class="zone"
               data-zone="fianco"
@@ -115,40 +122,44 @@
               opacity="0.72"
               d="M158 408 C166 430 174 438 180 440 C186 438 194 430 202 408 C190 422 170 422 158 408 Z"
             />
+            <path
+              id="wet"
+              fill="#7a3030"
+              opacity="0.2"
+              d="M176 424 C178 432 180 436 180 438 C180 436 182 432 184 424 C182 428 178 428 176 424 Z"
+            />
 
-            <!-- torso / belly -->
             <path
               class="zone"
               data-zone="ventre"
               fill="url(#skin)"
               d="M132 248 C126 300 128 338 138 362 L222 362 C232 338 234 300 228 248 C200 268 160 268 132 248 Z"
             />
+            <ellipse cx="180" cy="318" rx="4" ry="3" fill="#b56d52" opacity="0.55" />
 
-            <!-- breasts -->
             <ellipse
               class="zone"
               data-zone="seno"
-              cx="148"
-              cy="222"
-              rx="38"
-              ry="36"
-              fill="url(#skin)"
+              cx="146"
+              cy="220"
+              rx="42"
+              ry="38"
+              fill="url(#breast-shade)"
             />
             <ellipse
               class="zone"
               data-zone="seno"
-              cx="212"
-              cy="222"
-              rx="38"
-              ry="36"
-              fill="url(#skin)"
+              cx="214"
+              cy="220"
+              rx="42"
+              ry="38"
+              fill="url(#breast-shade)"
             />
-            <circle class="zone" data-zone="capezzoli" cx="148" cy="230" r="7" fill="url(#areola)" />
-            <circle class="zone" data-zone="capezzoli" cx="212" cy="230" r="7" fill="url(#areola)" />
-            <circle cx="148" cy="230" r="2.6" fill="#6b2e2a" />
-            <circle cx="212" cy="230" r="2.6" fill="#6b2e2a" />
+            <circle class="zone" data-zone="capezzoli" cx="148" cy="230" r="9" fill="url(#areola)" />
+            <circle class="zone" data-zone="capezzoli" cx="212" cy="230" r="9" fill="url(#areola)" />
+            <circle cx="148" cy="230" r="3.2" fill="#6b2e2a" />
+            <circle cx="212" cy="230" r="3.2" fill="#6b2e2a" />
 
-            <!-- arms -->
             <path
               class="zone"
               data-zone="fianco"
@@ -162,7 +173,6 @@
               d="M252 168 C272 230 282 300 276 370 C274 400 286 430 272 438 C258 428 252 400 254 368 C258 300 248 230 232 176 Z"
             />
 
-            <!-- neck + shoulders -->
             <path
               class="zone"
               data-zone="collo"
@@ -170,10 +180,8 @@
               d="M150 128 C146 150 138 168 128 176 L232 176 C222 168 214 150 210 128 C198 138 162 138 150 128 Z"
             />
 
-            <!-- head -->
-            <ellipse cx="180" cy="88" rx="52" ry="62" fill="url(#skin)" />
+            <ellipse cx="180" cy="86" rx="50" ry="60" fill="url(#skin)" />
 
-            <!-- hair front -->
             <path
               fill="url(#hair)"
               d="M128 70 C132 28 168 8 180 8 C210 8 238 32 236 72 C250 90 248 120 230 128 C226 84 210 48 180 46 C154 48 140 74 138 118 C122 108 118 88 128 70 Z"
@@ -183,10 +191,11 @@
               d="M122 88 C118 140 128 170 142 176 L150 128 C138 120 128 110 122 88 Z"
             />
 
-            <!-- face -->
             <g id="face">
-              <ellipse id="blush-l" cx="150" cy="102" rx="14" ry="8" fill="#e07070" opacity="0.15" />
-              <ellipse id="blush-r" cx="210" cy="102" rx="14" ry="8" fill="#e07070" opacity="0.15" />
+              <ellipse id="blush-l" cx="150" cy="102" rx="14" ry="8" fill="#e07070" opacity="0.18" />
+              <ellipse id="blush-r" cx="210" cy="102" rx="14" ry="8" fill="#e07070" opacity="0.18" />
+              <path d="M146 74 Q158 70 168 74" stroke="#3a2218" stroke-width="2.2" fill="none" />
+              <path d="M192 74 Q202 70 214 74" stroke="#3a2218" stroke-width="2.2" fill="none" />
               <g id="eyes-open">
                 <ellipse cx="158" cy="86" rx="8" ry="5.2" fill="#fff" />
                 <ellipse cx="202" cy="86" rx="8" ry="5.2" fill="#fff" />
@@ -208,7 +217,7 @@
                 id="mouth-calm"
                 d="M170 118 Q180 124 190 118"
                 stroke="#8a3d3a"
-                stroke-width="2"
+                stroke-width="2.4"
                 fill="none"
                 stroke-linecap="round"
               />
@@ -231,11 +240,14 @@
     </main>
 
     <div id="climax" class="climax" hidden>
-      <p>Giulia viene</p>
-      <button type="button" id="again">Ancora</button>
+      <div>
+        <p>Giulia viene</p>
+        <button type="button" id="again">Ancora</button>
+      </div>
     </div>
 
     <script src="js/cards.js"></script>
+    <script src="js/engine.js"></script>
     <script src="js/game.js"></script>
   </body>
 </html>

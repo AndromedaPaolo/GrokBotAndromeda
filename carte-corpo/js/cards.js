@@ -6,6 +6,7 @@ const DECK = [
     power: 10,
     text: "Labbra aperte sotto l’orecchio, un morso leggero.",
     line: "«Lì… continua.»",
+    touch: "bocca",
   },
   {
     id: "respiro",
@@ -14,6 +15,7 @@ const DECK = [
     power: 8,
     text: "Aria calda, quasi nessuna pressione.",
     line: "«Mi viene la pelle d’oca.»",
+    touch: "bocca",
   },
   {
     id: "bocca",
@@ -22,6 +24,7 @@ const DECK = [
     power: 12,
     text: "Lingua lenta. Lei risponde.",
     line: "«Più a fondo.»",
+    touch: "bocca",
   },
   {
     id: "palmo-seno",
@@ -30,6 +33,7 @@ const DECK = [
     power: 14,
     text: "Tutta la mano, pollice che gira.",
     line: "«Stringi.»",
+    touch: "mano",
   },
   {
     id: "lingua-seno",
@@ -38,6 +42,7 @@ const DECK = [
     power: 16,
     text: "Umido, dal solco verso l’esterno.",
     line: "«Non staccarti.»",
+    touch: "bocca",
   },
   {
     id: "capezzolo",
@@ -46,6 +51,7 @@ const DECK = [
     power: 18,
     text: "Succhi e denti appena accennati.",
     line: "«Ah— così.»",
+    touch: "bocca",
   },
   {
     id: "pizzico",
@@ -54,6 +60,7 @@ const DECK = [
     power: 15,
     text: "Due dita, ritmo. Lei inarca la schiena.",
     line: "«Ancora. Più forte.»",
+    touch: "dita",
   },
   {
     id: "unghie-ventre",
@@ -62,6 +69,7 @@ const DECK = [
     power: 9,
     text: "Disegni lenti verso il pube, senza arrivarci.",
     line: "«Scendi.»",
+    touch: "dita",
   },
   {
     id: "bacio-ombelico",
@@ -70,6 +78,7 @@ const DECK = [
     power: 11,
     text: "Bocca aperta, un po’ di saliva.",
     line: "«Più in basso.»",
+    touch: "bocca",
   },
   {
     id: "mani-fianchi",
@@ -78,6 +87,7 @@ const DECK = [
     power: 10,
     text: "La tiri contro di te. Pelle su pelle.",
     line: "«Tenermi stretta.»",
+    touch: "mano",
   },
   {
     id: "morso-anca",
@@ -86,6 +96,7 @@ const DECK = [
     power: 13,
     text: "Denti e lingua a coprire il segno.",
     line: "«Segnami.»",
+    touch: "bocca",
   },
   {
     id: "interno-coscia",
@@ -94,6 +105,7 @@ const DECK = [
     power: 17,
     text: "Baci umidi che salgono. Lei apre le gambe.",
     line: "«Non fermarti a metà.»",
+    touch: "bocca",
   },
   {
     id: "coscia-aperta",
@@ -102,6 +114,7 @@ const DECK = [
     power: 12,
     text: "Palmo che spinge il ginocchio verso fuori.",
     line: "«Guardami.»",
+    touch: "mano",
   },
   {
     id: "dita-pube",
@@ -110,6 +123,7 @@ const DECK = [
     power: 20,
     text: "Pressione ferma, niente fretta.",
     line: "«Dentro il ritmo, non dentro ancora.»",
+    touch: "dita",
   },
   {
     id: "lingua-pube",
@@ -118,6 +132,7 @@ const DECK = [
     power: 22,
     text: "Lenta, larga, poi stretta.",
     line: "«Lì. Esatto lì.»",
+    touch: "bocca",
   },
   {
     id: "due-dita",
@@ -126,5 +141,6 @@ const DECK = [
     power: 24,
     text: "Entri bagnato. Pollice sul clitoride.",
     line: "«Non togliere il pollice.»",
+    touch: "dita",
   },
 ];

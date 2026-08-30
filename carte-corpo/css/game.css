@@ -12,6 +12,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   margin: 0;
@@ -26,11 +30,23 @@ button {
   cursor: pointer;
 }
 
+.refused {
+  padding: 40px;
+  color: var(--muted);
+}
+
 .gate {
-  min-height: 100vh;
-  display: grid;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
   place-items: center;
   padding: 24px;
+  background: rgba(12, 6, 6, 0.96);
+}
+
+.gate.is-on {
+  display: grid;
 }
 
 .gate-card {
@@ -67,7 +83,11 @@ button {
   background: var(--accent);
   color: #fff;
   border: 0;
-  padding: 10px 16px;
+  padding: 12px 20px;
+  min-height: 44px;
+  min-width: 140px;
+  position: relative;
+  z-index: 31;
 }
 
 .gate-actions .ghost {
@@ -128,9 +148,11 @@ button {
 
 .stage-frame {
   position: relative;
-  background: var(--panel);
+  background:
+    radial-gradient(ellipse at 50% 30%, #3a2220 0%, var(--panel) 70%);
   border: 1px solid #3d2a2a;
   padding: 8px 8px 16px;
+  overflow: hidden;
 }
 
 #body {
@@ -140,7 +162,11 @@ button {
 }
 
 .zone {
-  transition: filter 0.25s ease;
+  transition: filter 0.25s ease, fill 0.25s ease;
+}
+
+.zone.is-preview {
+  filter: brightness(1.18);
 }
 
 .zone.is-hit {
@@ -150,13 +176,41 @@ button {
 
 .touch-burst {
   position: absolute;
-  width: 70px;
-  height: 70px;
-  margin: -35px 0 0 -35px;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
   border-radius: 50%;
-  border: 2px solid rgba(228, 180, 140, 0.9);
   pointer-events: none;
-  animation: burst 0.55s ease-out forwards;
+  z-index: 2;
+  background: radial-gradient(circle, rgba(255, 180, 160, 0.55), transparent 70%);
+  animation: burst 0.65s ease-out forwards;
+}
+
+.touch-burst[data-kind="bocca"] {
+  box-shadow: inset 0 0 0 2px rgba(196, 92, 92, 0.8);
+}
+
+.touch-burst[data-kind="mano"] {
+  box-shadow: inset 0 0 0 2px rgba(228, 180, 140, 0.9);
+}
+
+.touch-burst[data-kind="dita"] {
+  box-shadow: inset 0 0 0 2px rgba(240, 216, 204, 0.95);
+}
+
+.hit-label {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  transform: translate(-50%, -100%);
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(40, 16, 16, 0.85);
+  padding: 4px 8px;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 @keyframes burst {
@@ -165,7 +219,7 @@ button {
     opacity: 1;
   }
   to {
-    transform: scale(1.6);
+    transform: scale(1.7);
     opacity: 0;
   }
 }
@@ -235,6 +289,11 @@ button {
   background: #352222;
 }
 
+.card[data-zone="pube"],
+.card[data-zone="capezzoli"] {
+  border-color: #c45c5c;
+}
+
 .card .zone-tag {
   font-family: system-ui, sans-serif;
   font-size: 0.68rem;
@@ -266,10 +325,14 @@ button {
   position: fixed;
   inset: 0;
   background: rgba(20, 8, 8, 0.88);
-  display: grid;
+  display: none;
   place-items: center;
   text-align: center;
-  z-index: 5;
+  z-index: 20;
+}
+
+.climax.is-on {
+  display: grid;
 }
 
 .climax p {
