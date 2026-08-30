@@ -18,7 +18,7 @@ Requisito principale: **18+ reale**, non un checkbox e non “sembra maggiorenne
 
 Strumenti: Didit ID (500/mese $0) o Yoti OVER 18 con **doc scan / Digital ID da documento**. In live i siti random **non** sanno l’età del peer (P2P + checkbox + report); questa proposta fa il documento in ingresso e il report umano in chiamata.
 
-Questo file non è consulenza legale e non è un’implementazione.
+Questo file non è consulenza legale e non è un’implementazione. I ToS **non** scaricano tutta la responsabilità sugli utenti: vedi sezione sotto.
 
 ---
 
@@ -353,6 +353,52 @@ Bot: rate limit, una sessione video per id verificato, captcha sull’enqueue.
 
 ---
 
+## Responsabilità: si può scaricare tutto sull’utente?
+
+**No.** Una clausola “l’utente è l’unico responsabile di tutto” nei ToS **non** ti toglie di mezzo. Serve comunque: avvocato, non questo paragrafo.
+
+### Cosa i ToS possono fare (civile, tra te e l’utente)
+
+Utile, e Flingster-class lo fa già:
+
+- L’utente **dichiara** di avere 18+, di non prestare l’account, di non registrare l’altro senza consenso, di non mostrare minori, di accettare di parlare con sconosciuti.
+- **Manleva** (indemnify): se combinano un illecito e qualcuno ti fa causa, chiedi a loro i costi. Spesso inesigibile (utente anonimo, estero, senza soldi). Non ferma il pm.
+- Limitazione di responsabilità verso l’utente per disservizi, match andati male, “non abbiamo visto il video P2P”.
+- Licenza sul poco che caricano (testo chat, report). Divieto di usare il servizio per reati.
+
+In Italia una clausola che esclude dolo o **colpa grave** è nulla (art. 1229 c.c.). Verso consumatori molte limitazioni preventive sono nulle (Codice del consumo). Clickwrap va accettato in modo specifico, non sepolto.
+
+### Cosa i ToS non possono fare
+
+Non si contrae via dal codice penale, dai regolatori e dai doveri di piattaforma.
+
+| Materia | Perché non si “scarica” |
+|---|---|
+| **CSAM / minori in contesto sessuale** | Reato. Se sai (report, evidenza manifesta) e non agisci, i ToS non coprono. Cassazione su hosting: persa l’esenzione quando hai consapevolezza della manifesta illiceità; non serve un ordine del giudice. Segnalazione autorità, non “è colpa dell’utente”. |
+| **Gate 18+ (UK OSA, analoghi UE/FR)** | Obbligo *tuo* di age assurance efficace. “L’utente ha spuntato 18+” è proprio il metodo che Ofcom considera inefficace. |
+| **DSA (UE)** | Piattaforma user-to-user: notice-and-action, punto di contatto, trasparenza. Niente obbligo generale di sorvegliare *tutte* le live; sì obbligo di togliere/disabilitare quando sai. Il matcher e il prodotto adult ti rendono più “attiva” di un mero tubo. |
+| **GDPR** | Sei (co)titolare del trattamento: cookie, IP, `over18`, report. L’utente non può “assumersi” i tuoi obblighi di informativa, base giuridica, DPA con Didit/Yoti, breach. |
+| **Pagamenti, marchio, server** | Stripe/Segpay, il registrar, l’host guardano la *società*. Un ToS interno non sposta la merchant of record. |
+| **Dolo / colpa grave** | 1229 c.c. Non disdiciabile. |
+
+Il safe harbour hosting (DSA art. 6 / vecchia e-commerce) vale se non sai e, quando sai, agisci. Non vale “abbiamo scritto che è tutto a carico vostro” e poi ignori i report “minore”.
+
+P2P aiuta sul piano *tecnico* (non memorizzi il sesso di default) e sul piano “niente sorveglianza generale”. Non trasforma il sito in un non-luogo giuridico: tu accoppi le persone, tieni gli account, vendi extra, scegli il gate.
+
+### Cosa mettere nei ToS (senza farsi illusioni)
+
+1. 18+; prestito account vietato; gate documento come condizione d’uso.
+2. Divieto minori in camera, anche “di passaggio”.
+3. Divieto registrare o ridistribuire la chiamata.
+4. Report: impegno *tuo* a prendere in carico “minore/abuso” in priorità (è un dovere, scrivilo anche per te).
+5. Manleva e limite danni verso l’utente per il resto (match, down, TURN).
+6. Privacy: chi è il titolare, Didit/Yoti processori, cosa tieni (`over18`, id, report).
+7. Legge e foro; se vendi a consumatori UE, non puoi sceglierti via dai diritti inderogibili.
+
+Questo **riduce** il contenzioso civile stupido (utente scontento del match). **Non** sostituisce gate, coda report, CSAM, GDPR. Chi opera solo con “sei responsabile tu” e un checkbox sta nella posizione di Omegle, non in una posizione coperta.
+
+---
+
 ## Liquidità
 
 Yoti riduce bot e spoof. Matching **gratis** aiuta la massa in coda (senza massa il matcher è vuoto). Il selettore M/F gratis sposta comunque quasi tutti gli uomini su “donne”: il p95 “cerca donne” resta il problema.
@@ -416,7 +462,7 @@ Non invertire: UI senza gate e senza ban è peggio di non lanciare.
 - Verificare “gay” o “trans” come fatto anagrafico universale.
 - Far scegliere uomini/donne a Yoti al posto dell’utente: Yoti non è un form di ricerca.
 - App Store / Play come app di sesso random.
-- Operare senza CSAM, senza 18+, senza base GDPR.
+- Scaricare **tutta** la responsabilità sull’utente via ToS (reati, 18+, DSA, GDPR restano tuoi).
 - Registrare o ridistribuire gli stream senza consenso di entrambi e base legale.
 
 ---
