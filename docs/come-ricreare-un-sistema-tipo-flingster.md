@@ -12,6 +12,8 @@
 
 **No, Yoti non ti dà** orientamento sessuale, identità “gay”, identità “trans” nella maggior parte dei casi, né il diritto di classificare i volti. Quei filtri sono tag dichiarati dall’utente, non campi del passaporto.
 
+Ricerca su app/API gratuite che pretendono di “capire il sesso”: `docs/ricerca-app-rilevamento-sesso.md`. Spoiler: nessuna sostituisce Yoti sul documento; i classificatori sul viso indovinano l’aspetto, non il sesso.
+
 Il servizio non è “tutto gratis”: Yoti, TURN e moderazione costano; un piano a pagamento può coprire extra (priorità, no ads, reconnect). La coda 1:1 no. Questo file non è consulenza legale e non è un’implementazione.
 
 ---
