@@ -1,7 +1,7 @@
 # Attività
 
 **Tipo documento:** proposte numerate. Nessun agent creato, nessuna Automation, nessuna pagina sito.
-**Versione:** 1.2 — 30 agosto 2026
+**Versione:** 1.3 — 30 agosto 2026
 
 Ogni numero è un’attività. Si scrive così, sempre:
 
@@ -10,8 +10,9 @@ Ogni numero è un’attività. Si scrive così, sempre:
 3. Ogni sezione ha gli agenti che toccano quel pezzo.
 4. Se lo stesso agente compare in due sezioni, la scheda completa sta in **Condivisi**, non copiata due volte.
 5. Nessun agente fa il mestiere di un altro. Fa e non fa a punti.
+6. Per ogni agente si decide: **Cursor** o **GrokBot**. Se Cursor: Automation sì/no, e quale. Se GrokBot: Routine sì/no, e quale. Niente ibridi. Niente auto-merge. Niente invio da soli.
 
-Laboratorio: dati finti. Tu Approvi.
+Laboratorio: dati finti. Tu Approvi. Nessuna Automation e nessuna Routine accese da questo file.
 
 ---
 
@@ -22,6 +23,24 @@ Arriva una mail di una persona con un problema. Arriva una PEC di controparte. A
 L’attrezzo copre supporto. Non copre parere, firma, pec dello studio, deposito, udienza. Dominus = iscritto all’Albo. L. 132/2025 art. 13.
 
 Vietato: “sostituisce l’avvocato”. Consentito: “questi compiti, poi firma lui”.
+
+Il mestiere dello studio (mail, ricerca, bozze, computer) sta su **GrokBot**. **Cursor** entra solo se si congela qualcosa nel git di laboratorio (qui: Archivio). Automation Cursor su questi agenti: nessuna. Routine GrokBot: solo dove l’arrivo è un evento (Casella) o un elenco già scritto (Agenda, opzionale e spenta).
+
+| Agente | Casa | Automation Cursor | Routine GrokBot |
+|---|---|---|---|
+| Casella | GrokBot | no | sì: nuovo messaggio → solo grezzo |
+| Etichette | GrokBot | no | no, a chiamata sull’id |
+| Scheda | GrokBot | no | no |
+| Conflitto | GrokBot | no | no |
+| Tariffe | GrokBot | no | no |
+| Fascicolo | GrokBot | no | no |
+| Fonti | GrokBot | no | no |
+| Lettere | GrokBot | no | no (vietato invio) |
+| Agenda | GrokBot | no | sì, opzionale, spenta: mattina elenco date già copiate |
+| Rilettura | GrokBot | no | no |
+| Atti | GrokBot | no | no (vietato accenderne una) |
+| Incarico | GrokBot | no | no |
+| Archivio | Cursor | no | — |
 
 ---
 
@@ -123,6 +142,14 @@ Schede complete. Usati in più sezioni.
 - Cercare norme, scrivere bozze, mettere date in agenda.
 - Condividere la casella con un’altra attività.
 
+**Casa:** GrokBot. L’inbox non sta in Cursor.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** sì (proposta, non accesa). Trigger: messaggio nuovo sulla casella dello strumento. Fa solo: conservare grezzo, assegnare id, avvisare. Non etichetta, non risponde, non inoltra.
+
+**A chiamata:** elenco id in attesa.
+
 Sezioni: Ingresso, Causa in corso.
 
 ---
@@ -144,6 +171,12 @@ Sezioni: Ingresso, Causa in corso.
 - Rispondere al mittente.
 - Decidere se prendere l’incarico.
 
+**Casa:** GrokBot.
+
+**Automation Cursor:** no. Un webhook che etichetta da solo è un ibrido e sbaglia in silenzio.
+
+**Routine GrokBot:** no. A chiamata sull’id Casella. Una routine qui marcherebbe da sola: no.
+
 Sezioni: Ingresso, Causa in corso.
 
 ---
@@ -163,6 +196,12 @@ Sezioni: Ingresso, Causa in corso.
 - Confrontare nomi col conflitto (Conflitto).
 - Riassumere un PDF di atto (Fascicolo).
 - Cercare giurisprudenza, scrivere lettere o atti, calcolare termini, preventivo.
+
+**Casa:** GrokBot.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. A chiamata sul protocollo già etichettato.
 
 Sezioni: Problema, Causa in corso.
 
@@ -184,6 +223,12 @@ Sezioni: Problema, Causa in corso.
 - Parere deontologico oltre il match.
 - Aprire il fascicolo.
 
+**Casa:** GrokBot. Lista finta in memoria del bot, non un cron sul git.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. A chiamata quando la Scheda ha i nomi.
+
 Sezioni: Incarico, Causa in corso.
 
 ---
@@ -203,6 +248,12 @@ Sezioni: Incarico, Causa in corso.
 - Dire se il compenso è “equo” per legge.
 - Incassare, FatturaPA, Stripe, bonifici.
 - Atti, fonti, fascicolo.
+
+**Casa:** GrokBot.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. Vietato un cron da parcelle. A chiamata.
 
 Sezioni: Incarico, Chiusura.
 
@@ -225,6 +276,12 @@ Sezioni: Incarico, Chiusura.
 - Tenere il calendario (Agenda legge le date *dal* pezzo; Fascicolo non è l’agenda).
 - Bozze, prezzi, pec.
 
+**Casa:** GrokBot (file sul computer, pezzi finti).
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. A chiamata quando tu o il dominus passate un pezzo. Nessun “ogni notte riassumi tutto”.
+
 Sezioni: Fascicolo, Causa in corso.
 
 ---
@@ -245,6 +302,12 @@ Sezioni: Fascicolo, Causa in corso.
 - Scrivere la memoria o il ricorso (Atti).
 - Scrivere alla controparte (Lettere).
 - Calcolare un termine.
+
+**Casa:** GrokBot (ricerca web).
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. Ogni ricerca è una richiesta. Vietato un cron “cerca sentenze”.
 
 Sezioni: Studio della questione, Scrittura (solo se chi scrive si è fermato perché manca una citazione).
 
@@ -267,6 +330,12 @@ Sezioni: Studio della questione, Scrittura (solo se chi scrive si è fermato per
 - Agenda, conflitto, etichette.
 - Inviare.
 
+**Casa:** GrokBot.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. Vietato routine di invio o “ogni lunedì scrivi ai clienti”. A chiamata, bozza, click tuo.
+
 Sezioni: Scrittura, Causa in corso, Chiusura.
 
 ---
@@ -286,6 +355,13 @@ Sezioni: Scrittura, Causa in corso, Chiusura.
 - Spostare udienze, scrivere al cancelliere, depositare.
 - Bozze, fonti, fascicolo (non è l’elenco pezzi).
 
+**Casa:** GrokBot.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** sì, opzionale, **spenta** finché non la chiedi. Cron tipo 8:30: elenca solo le date *già copiate* in agenda. Non calcola. Non manda mail. Card a te.
+**A chiamata:** copiare una data da un pezzo.
+
 Sezioni: Tempi, Causa in corso.
 
 ---
@@ -304,6 +380,12 @@ Sezioni: Tempi, Causa in corso.
 - Correggere riscrivendo il corpo (non è Lettere né Atti).
 - Approvare, spedire, depositare.
 - Protocollo, ricerca, agenda.
+
+**Casa:** GrokBot.
+
+**Automation Cursor:** no. Una review su PR è un altro mestiere (fabbrica), non questo agente.
+
+**Routine GrokBot:** no. A chiamata sulla bozza. Non approva da sola.
 
 Sezioni: Incarico, Scrittura, Causa in corso, Chiusura.
 
@@ -325,6 +407,12 @@ Sezioni: Incarico, Scrittura, Causa in corso, Chiusura.
 - Compilare il mandato (Incarico).
 - Deposito, pec, marca da bollo, firma.
 - Scegliere la strategia o i motivi.
+
+**Casa:** GrokBot.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. Vietato accenderne una. Solo a chiamata. Se la richiesta è deposito/notifica: stop, zero testo.
 
 Sezioni: Scrittura, Causa in corso.
 
@@ -351,6 +439,12 @@ Solo sezione Incarico.
 - Atti, deposito, pec.
 - Inviare.
 
+**Casa:** GrokBot.
+
+**Automation Cursor:** no.
+
+**Routine GrokBot:** no. A chiamata. Niente “mandato automatico al nuovo cliente”.
+
 ---
 
 ### Archivio
@@ -370,6 +464,14 @@ Solo sezione Chiusura.
 - Ultima lettera al cliente (Lettere).
 - Riaccendere la causa.
 - Ricalcolare termini.
+
+**Casa:** Cursor. Congela lo stato nel git di laboratorio, non nella pec.
+
+**Automation Cursor:** no. Vietato un cron che chiude le pratiche.
+
+**Routine GrokBot:** no (non gira su GrokBot).
+
+**A chiamata:** PR che marca `chiusa` e attacca lo snapshot. Merge = tu.
 
 ---
 
@@ -394,4 +496,4 @@ Non sono il lavoro dell’avvocato. Si girano dopo, se lo chiedi. Dati finti. So
 
 ## Fuori da questo numero
 
-Stripe, sito, Bot accesi, pec vera, udienza, parere su fascicolo vero, “Andromeda Avvocati”, un agente che fa due mestieri di questa lista.
+Stripe, sito, Bot accesi, Automation accese, Routine accese, pec vera, udienza, parere su fascicolo vero, “Andromeda Avvocati”, un agente che fa due mestieri di questa lista, un ibrido Cursor+GrokBot.
