@@ -1,24 +1,24 @@
-# Come ricreare un sistema tipo Flingster (a pagamento, con Yoti)
+# Come ricreare un sistema tipo Flingster (matching gratis, Yoti, ricerca M/F)
 
 ## Verdetto
 
-**Sì, è possibile** costruire un prodotto della stessa categoria: videochat 1:1 casuale tra adulti, con skip, scelta del sesso da incontrare e filtri per tag.
+**Sì, è possibile** costruire un prodotto della stessa categoria: videochat 1:1 casuale tra adulti, con skip, ricerca per sesso e filtri per tag.
 
 **No, non è possibile** clonare Flingster. Non hai il loro codice, il matching interno, il marchio, né la base di persone online. Quello che segue è un prodotto *equivalente per funzione*, non un reverse engineering.
 
-**Sì, è possibile** (ed è la scelta giusta) chiudere l’ingresso con Yoti e non lasciare il servizio completamente gratis.
+**Sì: il matching è gratis.** Dopo Yoti (18+) entri in coda senza pagare. Uomini/donne li scegli tu **ogni volta che fai una ricerca**, non li paga un piano VIP e non te li blocca il documento.
 
-**Sì, è possibile** assegnare il sesso da un documento verificato da Yoti, con i limiti descritti sotto. Non è “il sesso biologico in laboratorio”: è il sesso/genere stampato sul documento.
+**Sì, Yoti in ingresso** per l’età. Il sesso sul documento dice *chi sei* (anti-spoof: non ti dichiari donna se il documento dice uomo). *Chi cerchi* è un controllo sulla schermata di ricerca.
 
 **No, Yoti non ti dà** orientamento sessuale, identità “gay”, identità “trans” nella maggior parte dei casi, né il diritto di classificare i volti. Quei filtri sono tag dichiarati dall’utente, non campi del passaporto.
 
-Questo file è un piano di prodotto e di architettura. Non è consulenza legale e non è un’implementazione.
+Il servizio non è “tutto gratis”: Yoti, TURN e moderazione costano; un piano a pagamento può coprire extra (priorità, no ads, reconnect). La coda 1:1 no. Questo file non è consulenza legale e non è un’implementazione.
 
 ---
 
 ## Cosa fa Flingster oggi (superficie pubblica)
 
-Da [flingster.com](https://flingster.com/): videochat random 1:1 nel browser, Start, camera, match, Next. Genere dichiarato (uomo / donna / coppia). Filtri genere, paese e tag di interesse. Maschere AR. Base gratis, VIP a pagamento per i filtri. Account assente o leggerissimo.
+Da [flingster.com](https://flingster.com/): videochat random 1:1 nel browser, Start, camera, match, Next. Genere dichiarato (uomo / donna / coppia). Filtri genere, paese e tag di interesse. Maschere AR. Matching base gratis, VIP a pagamento per i filtri. Account assente o leggerissimo.
 
 Il valore non è il codec video. Il valore è *trovare subito qualcuno* e *cambiarlo in un click*.
 
@@ -26,13 +26,13 @@ Il valore non è il codec video. Il valore è *trovare subito qualcuno* e *cambi
 
 | Flingster | Tua variante |
 |---|---|
-| Entri e dichiari il genere | Non entri finché Yoti non ha detto età e sesso |
-| Sesso autodichiarato (spoofing massiccio) | Sesso assegnato dal documento, non editabile dall’utente |
-| Matching gratis, filtri a pagamento | Niente matching gratis: serve un piano a pagamento |
-| Tag di interesse opzionali | Filtri tag (gay, trans, …) come preferenza di coda |
+| Entri e dichiari il genere | Non entri finché Yoti non ha detto che hai 18+; il documento fissa *chi sei* |
+| Filtro M/F spesso dietro VIP | **Gratis, in ricerca:** prima di Start scegli uomini / donne / entrambi |
+| Matching gratis, filtri extra a pagamento | **Matching sempre gratis.** Extra (ads, priorità, reconnect) eventualmente a pagamento |
+| Tag di interesse | Filtri tag (gay, trans, …) sulla stessa schermata di ricerca |
 | App store assente, solo web | Stesso vincolo: sito/PWA. L’“app Yoti” è il wallet di identità, non il tuo client |
 
-Non è un dettaglio. Togli l’anonimato d’ingresso e il gratis, e il prodotto diventa un’altra cosa: meno volume, meno bot, più costo per utente, più dati personali, più obblighi GDPR.
+Yoti toglie i minori e lo spoof “io sono donna”. Non toglie il matching gratis né sposta uomini/donne in un abbonamento.
 
 ---
 
@@ -42,104 +42,107 @@ Yoti vende tre famiglie di prodotto. Non sono intercambiabili.
 
 ### 1. Age Verification (stima viso / “over 18”)
 
-Pensata proprio per i siti per adulti. Ti restituisce in sostanza `over18: true|false` (o un’età stimata). **Non restituisce il sesso.** Se usi solo questo, puoi chiudere i minori e **non** puoi assegnare uomo/donna.
+Pensata per i siti per adulti. Ti restituisce `over18: true|false` (o un’età stimata). **Non restituisce il sesso.** Basta per chiudere i minori. Non basta per sapere se l’altro è uomo o donna.
 
 ### 2. Digital ID (app Yoti)
 
-L’utente ha già l’app, ha caricato un documento una volta, inquadra un QR (desktop) o tocca Share (mobile). Tu chiedi gli attributi nella *share policy*:
+L’utente ha già l’app, ha caricato un documento una volta, inquadra un QR (desktop) o tocca Share (mobile). Tu chiedi nella *share policy*:
 
-- `age_over:18` → boolean
-- `gender` → `"MALE" | "FEMALE" | "TRANSGENDER" | "OTHER"` (sesso/genere sul documento registrato in app)
-- `remember_me_id` → stesso utente che torna, senza chiedere nome e codice fiscale
+- `age_over:18` → boolean (obbligatorio per entrare)
+- `gender` → `"MALE" | "FEMALE" | "TRANSGENDER" | "OTHER"` sul documento: serve a **chi sei**, non a compilare la ricerca
+- `remember_me_id` → stesso utente che torna, senza nome e codice fiscale
 
-Questo è il flusso che corrisponde a “riconoscimento tramite app Yoti prima di entrare”.
+Questo è il flusso “riconoscimento tramite app Yoti prima di entrare”.
 
 Non chiedere nome, indirizzo, selfie, numero documento, data di nascita esatta se ti basta `over18` + `gender`. Meno dati = meno GDPR.
 
 ### 3. Identity Verification (IDV / Doc Scan)
 
-Per chi non ha l’app: sul web, documento + selfie, liveness, face match, estrazione OCR. I campi documento includono `date_of_birth` e `gender` con lo stesso enum. Poi calcoli tu `età >= 18` dalla data e assegni il sesso.
-
-Serve come fallback. Costa di più, frizione più alta, trattiene (temporaneamente) immagini del documento. Cancellale da Yoti e da te appena hai derivato `over18` + `sex`.
+Per chi non ha l’app: sul web, documento + selfie, liveness, face match, estrazione OCR. Campi: `date_of_birth` e `gender`. Calcoli `età >= 18` e memorizzi *chi sei*. Fallback più caro; cancella i media appena hai `over18` + `sex`.
 
 ### Cosa non esce da Yoti
 
-- **Gay / lesbica / bi / etero.** Non sono sul documento. Filtrarli è un tag scelto in piattaforma.
-- **Trans, nella pratica quotidiana.** L’enum Yoti prevede `TRANSGENDER`, ma passaporti e carte d’identità (Italia: CIE e passaporto) stampano quasi sempre M o F. Una persona trans con rettifica anagrafica arriverà come M o F *nuovo*. Una senza rettifica arriverà come sesso anagrafico vecchio. Non inferire “è trans” dal volto.
-- **Coppia.** Un documento = una persona. “Coppia” non è un sesso verificabile. O è un tag, o entrambi verificano e si legano a un account coppia.
-- **Sesso “vero” al 100%.** Documenti senza campo sesso, OCR fallito, X/altro, errori di stato civile. Serve una policy di fallback (ripeti IDV, rifiuta, o coda “sesso non determinato” che non entra nei filtri M/F).
+- **Gay / lesbica / bi / etero.** Tag in piattaforma, scelti in ricerca o sul profilo.
+- **Trans, nella pratica.** L’enum Yoti prevede `TRANSGENDER`, ma CIE e passaporto italiani stampano quasi sempre M o F. Non inferire “è trans” dal volto. Tag `trans` in ricerca.
+- **Coppia.** Un documento = una persona. Tag, oppure due verifiche legate.
+- **Chi stai cercando.** Yoti non ha un campo “voglio vedere donne”. Quello lo seleziona l’utente sulla UI di ricerca.
 
-Yoti è usata da piattaforme adult per l’età. Il *sesso* richiede Digital ID o IDV, non la sola stima del viso. Prima di firmare, conferma con Yoti che il tuo caso (dating/webcam adult, richiesta `gender`) è accettato sul contratto, non solo sulla pagina marketing “adult content age verification”.
+Yoti è usata da piattaforme adult per l’età. Il *sesso documento* richiede Digital ID o IDV. Conferma sul contratto che dating/webcam adult + attributo `gender` è accettato.
 
 ---
 
 ## Gate d’ingresso (ordine giusto)
 
-Minori che pagano sono un problema peggiore dei minori che guardano. Quindi: **Yoti prima, soldi dopo, camera per ultima.**
-
 ```
-landing (ToS 18+, privacy, cosa viene letto da Yoti)
+landing (ToS 18+, privacy, cosa legge Yoti)
     → Yoti Digital ID  (o IDV se non ha l’app)
-    → server: over18? gender presente? rememberMeId già bannato?
+    → server: over18? rememberMeId già bannato?
     → se no: stop. Nessun cookie “sei dentro”.
-    → se sì: account interno { yotiRememberMeId, sex, over18, verifiedAt }
-    → paywall (abbonamento / crediti)
-    → lobby: lookingFor (uomini / donne / entrambi) + tag
+    → se sì: account { yotiRememberMeId, sexDocumento, over18, verifiedAt }
+    → schermata ricerca (gratis):
+         Voglio vedere:  ( ) uomini  ( ) donne  ( ) entrambi
+         Tag (opzionale): gay, trans, …
+         [ Start ]
     → getUserMedia + coda matching
 ```
 
+Niente paywall tra Yoti e la coda. Pagare, se esiste un piano, è per extra, non per matchare.
+
 Regole dure:
 
-- Senza sessione `verified && paid` il WebSocket di matching non accetta `enqueue`.
-- `sex` è read-only. L’utente non lo cambia dal profilo.
-- Rivalidazione: non a ogni Next. Sì se scade l’abbonamento, se Yoti revoca, se c’è un report grave, se `rememberMeId` è nuovo su un device già bannato.
-- Selfie authentication sulla share (Yoti) riduce il prestito dell’app a un minore. Non è infallibile.
+- Senza sessione `verified` il WebSocket non accetta `enqueue`. **Non** serve `paid`.
+- `sexDocumento` è read-only (anti-spoof su *chi sei*). Non è il selettore della ricerca.
+- `lookingFor` e i tag filtro arrivano **solo** dal form di ricerca, a ogni Start / cambio filtri. L’utente può cercare donne, poi Next, poi cercare uomini, senza rifare Yoti.
+- Rivalidazione Yoti: non a ogni Next. Sì se Yoti revoca, report grave, `rememberMeId` nuovo su device bannato.
+- Selfie sulla share Yoti riduce il prestito dell’app a un minore. Non è infallibile.
 
-### Assegnazione sesso
+### Chi sei (documento) vs chi cerchi (ricerca)
 
 ```
-Yoti gender     →  tuo sex (usato dal matcher)
+Yoti gender     →  sexDocumento (identità, non UI di ricerca)
 MALE            →  male
 FEMALE          →  female
-TRANSGENDER     →  policy: o categoria propria, o non entra nei bucket M/F
-OTHER / missing →  non matcha su filtri M/F finché non c’è un documento con M o F
+TRANSGENDER     →  policy (categoria propria o fuori dai bucket M/F)
+OTHER / missing →  policy di fallback; può comunque cercare M/F
 ```
 
-Mostra in UI: “Sesso verificato dal documento: donna”. Non scrivere “sesso biologico confermato”. È falso e ti espone.
-
-Tag `trans` (e `gay`, `bi`, …) restano **scelta dell’utente**, visibili solo per il matching, modificabili. Non arrivano da Yoti.
+Non mostrare “sesso biologico confermato”. Eventuale label: “Documento: donna”. Falso e rischioso il resto.
 
 ---
 
-## Scelta uomini/donne e filtri tag
+## Ricerca: uomini/donne e tag
 
-Due assi distinti. Non unirli in un unico dropdown.
+Due controlli sulla **stessa schermata di ricerca**, prima di Start. Non un profilo bloccato e non un paywall.
 
-### Asse 1 — sesso verificato (obbligatorio)
+### 1 — Voglio vedere (gratis, obbligatorio per Start)
 
-L’utente sceglie chi vuole vedere: uomini, donne, entrambi.
+Radio o multi-select:
 
-Il match è **reciproco**, altrimenti le donne verificate vengono inondate da uomini che “vogliono vedere donne” senza essere il target di lei.
+- Uomini
+- Donne
+- Entrambi
+
+Il client manda `lookingFor: ['male'] | ['female'] | ['male','female']` sull’`enqueue`. Il server **non** lo deriva da Yoti.
+
+Match **reciproco**, altrimenti chi è `female` sul documento viene inondato da chi ha spuntato solo “donne”:
 
 ```
 compatibili(A, B) se e solo se
-  sex(B) è in lookingFor.sexes(A)
-  AND sex(A) è in lookingFor.sexes(B)
+  sexDocumento(B) è in lookingFor(A)     // A ha chiesto di vedere il sesso di B
+  AND sexDocumento(A) è in lookingFor(B) // B ha chiesto di vedere il sesso di A
 ```
 
-Esempio: uomo verificato che cerca donne matcha solo donne verificate che accettano uomini.
+Esempio: documento uomo, in ricerca ha selezionato “donne” → solo documenti donna che in *quella* ricerca hanno selezionato “uomini” (o entrambi).
 
-### Asse 2 — tag dichiarati (filtro)
+Se A ha scelto “entrambi”, accetta male e female; B deve comunque aver incluso il sesso di A nel proprio `lookingFor`.
 
-Esempi di vocabolario chiuso (non testo libero: altrimenti è un cassonetto):
+### 2 — Tag (filtro di ricerca)
 
-`gay`, `lesbian`, `bi`, `trans`, `couple`, `straight` — più quelli che vuoi, tutti adulti, tutti 18+.
+Vocabolario chiuso, stessi 18+: `gay`, `lesbian`, `bi`, `trans`, `couple`, `straight`, …
 
-Semantica consigliata:
-
-- Nessun tag selezionato nel filtro = non filtrare su tag (resta solo il sesso).
-- Uno o più tag = la controparte deve averne **almeno uno** tra i propri tag (OR). Se vuoi AND (“gay E trans”), è un toggle a parte; l’OR è quello che la gente si aspetta da “voglio vedere i tag gay oppure trans”.
-- I tag dell’utente A devono essere accettati anche da B se B ha un filtro tag. Stessa reciprocità, o la coda si svuota in una direzione.
+- Nessun tag = non filtrare sui tag (resta solo “voglio vedere”).
+- Uno o più tag = la controparte ha **almeno uno** di quei tag (OR). AND (“gay E trans”) è un toggle a parte.
+- Reciprocità anche sui tag, o la coda si svuota in una direzione.
 
 ```
 tag_ok(A, B) se
@@ -147,32 +150,38 @@ tag_ok(A, B) se
   AND (filtroTag(B) vuoto OR intersezione(filtroTag(B), tag(A)) non vuota)
 ```
 
-`gay` non è un sesso. Un uomo gay verificato `male` che filtra `gay` incontra altri `male` (o chi ha scelto di vedere uomini) che hanno il tag `gay`. Una donna trans verificata `female` con tag `trans` entra nelle code “donne” e, se qualcuno filtra `trans`, anche in quelle.
+I tag sul *proprio* profilo (cosa sei disposto a far vedere) e i tag *filtro* (cosa cerchi adesso) sono due liste. Il filtro vive sulla ricerca; il profilo può avere default, sovrascrivibili prima di Start.
 
-Non costruire un classificatore “questo viso è uomo/donna/trans”. È inaccurato, discriminatorio, e non sostituisce il documento.
+Non classificare i volti uomo/donna/trans.
 
-### Code, non un SQL `WHERE` sul hot path
+### Code
 
 ```
-coda[sex][lookingForSex][tag|any]
+coda[sexDocumento][lookingForKey][tag|any]
 ```
 
-O un sorted set unico in Redis e uno script Lua che poppa il primo compatibile. Atomicità obbligatoria: due “Next” nello stesso millisecondo non devono matchare la stessa persona due volte.
+`lookingForKey` cambia quando l’utente cambia il selettore e preme Start di nuovo: dequeue dal bucket vecchio, enqueue in quello nuovo.
 
-VIP qui è ridondante se *tutti* pagano: la priorità in coda può dipendere dal piano (base vs plus) o dall’anzianità, non da “filtro genere sbloccato”.
+Redis + Lua, pop atomico. Due “Next” nello stesso ms non matchano la stessa persona due volte.
+
+Nessun “sblocca genere col VIP”: il selettore M/F è gratis. Un piano plus, se c’è, può dare priorità in coda o più tag, non il diritto di scegliere uomini/donne.
 
 ---
 
-## Non completamente gratuito
+## Gratis vs a pagamento
 
-Modello coerente con il gate Yoti:
+| Gratis (dopo Yoti 18+) | Eventuale piano a pagamento |
+|---|---|
+| Entrare in coda | Priorità in coda |
+| Selezionare uomini / donne / entrambi in ricerca | Niente (o pochi) ads |
+| Next / skip | Reconnect / Back |
+| Tag di ricerca (se li vuoi nel piano free) | Tag extra, location, maschere |
 
-1. **Abbonamento obbligatorio** per entrare in coda (settimanale / mensile, prezzi d’impulso come il resto del settore).
-2. Eventuale piano plus: priorità, più tag contemporanei, reconnect, niente ads residue.
-3. Yoti lo paghi tu a verifica. Scaricalo sul prezzo o sul primo mese, altrimenti i “provo e scappo” ti bruciano il margine.
-4. Processore **adult / high-risk** (CCBill, Segpay, Epoch, analoghi). Stripe su webcam sessuale random si fa chiudere. Chargeback alti. Niente claim “donne vere garantite”.
+Matching **mai** dietro abbonamento. Processore **adult / high-risk** (CCBill, Segpay, Epoch) solo se vendi extra. Stripe su webcam sessuale random si fa chiudere. Niente claim “donne vere garantite”.
 
-Landing pubblica senza login: marketing, ToS, bottone Yoti. Dietro il bottone, zero videochat.
+Yoti lo paghi tu a verifica. Matching gratis + verifica a pagamento tuo è un costo: rate-limit sugli account nuovi, `rememberMeId` per non rifare Yoti ogni visita.
+
+Landing: marketing, ToS, bottone Yoti. Dietro Yoti: ricerca e matching, non un checkout.
 
 ---
 
@@ -187,38 +196,39 @@ Quattro piani. Non mischiarli.
      v                                    v
 [signaling + matcher]
      |
-     +-- Postgres: utenti Yoti, sex, tag, pagamenti, ban
-     +-- Redis: code di match
+     +-- Postgres: utenti Yoti, sexDocumento, tag profilo, extra pagati, ban
+     +-- Redis: code di match (lookingFor arriva dall’enqueue)
      +-- TURN (NAT che non fa P2P)
      +-- Yoti (Digital ID + IDV)
-     +-- processore pagamenti adult
+     +-- processore pagamenti adult (solo extra)
      +-- moderazione / report / CSAM
 ```
 
 ### Media
 
-WebRTC 1:1 P2P. Il server non deve vedere i frame, salvo TURN. Un SFU (LiveKit, mediasoup) serve per stanze a più persone o registrazione server-side: qui non ti serve, e registrare è un problema legale.
+WebRTC 1:1 P2P. Il server non deve vedere i frame, salvo TURN. Un SFU serve per stanze o registrazione: qui no, e registrare è un problema legale.
 
 ### Signaling
 
-WebSocket: SDP offer/answer, ICE candidate. Node `ws` / Socket.IO, oppure Cloudflare Durable Objects. Pochi KB. Sticky session o Redis pub/sub tra nodi.
+WebSocket: SDP offer/answer, ICE candidate. Node `ws` / Socket.IO, oppure Cloudflare Durable Objects. Sticky session o Redis pub/sub.
 
 ### Matching
 
-Redis + Lua (o un solo writer). Heartbeat 15s. `ws.close` → togli dalla coda, avvisa il peer. “Next” = teardown completo della `RTCPeerConnection`, poi re-enqueue. Non è un mute.
+Redis + Lua. Heartbeat 15s. `ws.close` → togli dalla coda, avvisa il peer. “Next” = teardown `RTCPeerConnection`, poi re-enqueue **con gli stessi lookingFor/tag della ricerca in corso** (o rimostra il form se vuoi che li cambi).
 
-STUN per l’IP pubblico. TURN (coturn o Twilio / Cloudflare Calls) per il 15–30% di NAT/mobili che altrimenti vedono schermo nero. TURN è la voce di costo che scala.
+STUN per l’IP pubblico. TURN (coturn o Twilio / Cloudflare Calls) per il 15–30% di NAT/mobili. TURN è la voce di costo che scala col matching gratis: più gente in coda, più relay.
 
 ### Flusso chiamata
 
 ```
-1. Sessione cookie: verified + paid, altrimenti 401 sul WS
-2. getUserMedia → preview
-3. enqueue { lookingFor, tags }
-4. matcher emette "matched" a entrambi
-5. A crea offer, B answer, trickle ICE
-6. video remoto + DataChannel o WS per il testo
-7. Next / drop: close PC, peer_left, re-enqueue chi ha skippato
+1. Cookie: verified (18+). paid non serve per enqueue
+2. UI ricerca: lookingFor + tag → Start
+3. getUserMedia → preview
+4. enqueue { lookingFor, tags }     // scelti adesso, non da Yoti
+5. matcher emette "matched" a entrambi
+6. A crea offer, B answer, trickle ICE
+7. video remoto + DataChannel o WS per il testo
+8. Next / drop: close PC, peer_left, re-enqueue o torna al form ricerca
 ```
 
 Maschere volto: MediaPipe nel browser, canvas, `captureStream()`. Non in cloud.
@@ -230,75 +240,73 @@ Maschere volto: MediaPipe nel browser, canvas, `captureStream()`. Non in cloud.
 ```
 User {
   id
-  yotiRememberMeId   // chiave antiban / returning, non PII anagrafica
-  sex                // male | female | other   (da Yoti, immutabile)
-  over18             // sempre true se è in tabella
+  yotiRememberMeId   // antiban / returning
+  sexDocumento       // male | female | other  (Yoti, immutabile; chi sei)
+  over18
   verifiedAt
-  tags[]             // dichiarati
-  lookingForSexes[]  // male / female
-  lookingForTags[]   // filtro OR
-  plan, paidUntil
+  tags[]             // dichiarati sul profilo (cosa mostri)
+  plan, paidUntil    // extra, nullable; matching ignora questo campo
   bans[]
 }
 
-Session { userId, ws, countryFromIp, state }  // idle|queued|rtc|banned
+// Non persistiti come “identità”; vivono sulla sessione di ricerca:
+Search { lookingForSexes[], lookingForTags[] }
+
+Session { userId, ws, lookingFor, filtroTag, countryFromIp, state }
 Pair    { a, b, startedAt }
 ```
 
-Non salvare: nome, foto documento, MRZ, data di nascita, selfie Yoti. Chiedi a Yoti `age_over` + `gender` + `remember_me`. Se IDV ti consegna i media, scarica i campi, poi `deleteSession`.
+Non salvare: nome, foto documento, MRZ, data di nascita, selfie Yoti. Share: `age_over` + `gender` + `remember_me`. IDV: campi, poi `deleteSession`.
 
-IP e device hash servono per i ban. Sono dati personali: retention corta, base giuridica scritta.
+IP e device hash per i ban: dati personali, retention corta.
 
-Stati che il client non deve poter mentire: `sex`, `over18`, `paidUntil`. Il client manda solo `lookingFor` e `tags`.
+Il client **non** può mentire su `sexDocumento` e `over18`. **Può** (deve) mandare `lookingFor` e filtri tag a ogni ricerca.
 
 ---
 
 ## Client
 
-Web, HTTPS, un’app pagina.
+Web, HTTPS, una pagina.
 
-- Desktop: overlay Yoti / QR. Mobile: share in-app o handoff.
-- Dopo il paywall: preview camera, Start, Next, report.
+- Overlay Yoti / QR, poi **form di ricerca** (uomini / donne / entrambi + tag), poi camera.
+- Start, Next, report. Cambiare M/F = aggiorna i radio e Start di nuovo (o un “Applica filtri” che fa dequeue/enqueue).
 - `<video autoplay playsinline>` (iOS).
-- Permessi camera solo dopo click, mai al land.
-- PWA: sì. App Store / Play: webcam adult random viene rifiutata nella stragrande maggioranza dei casi. L’app Yoti resta di Yoti.
+- Permessi camera dopo click Start, mai al land.
+- PWA sì. App Store / Play: webcam adult random di solito rifiutata. L’app Yoti resta di Yoti.
 
-Stack ragionevole: TypeScript, Vite, `RTCPeerConnection` nativo. LiveKit solo se abbandoni il P2P.
+Stack: TypeScript, Vite, `RTCPeerConnection` nativo.
 
 ---
 
 ## Moderazione e legge (non è un capitolo opzionale)
 
-Sito adult + webcam random è tra i prodotti più esposti. Yoti sull’età è necessario, non sufficiente.
+Sito adult + webcam random è esposto. Matching gratis aumenta volume e abuso: il gate Yoti resta.
 
-- **18+ reale.** Checkbox “ho 18 anni” non basta in UK (Online Safety Act) e sta sparendo altrove. Yoti (o equivalente) è il gate.
-- **CSAM è reato.** Report in-app, ban device+`rememberMeId`+IP, procedura di segnalazione (NCMEC se tocchi gli USA). Hash sul materiale *segnalato* (PhotoDNA). Non campionare le chiamate live “per sicurezza” senza base legale e avviso chiaro: stai registrando sesso.
-- **Non registrare** le chiamate di default. Il prodotto vende l’effimero.
-- **GDPR.** Sesso e vita sessuale sono dati particolari (art. 9). Serve base giuridica, informative, DPA con Yoti e col processore, minimizzazione, diritto all’oblio, niente “teniamo il passaporto per sempre”. I tag gay/trans sono dati particolari anche se autodichiarati.
-- **DSA** se sei piattaforma in UE: notice-and-action, trasparenza, punto di contatto.
-- **Pagamenti adulti** e ToS: divieto minori, divieto di registrare l’altro, consenso al matching sessuale, sesso assegnato da documento.
-- **§2257 USA** se pubblichi o conservi contenuti sessuali di performer. Una live effimera non è un tube; se salvi clip o usi screenshot in ads, entri in un altro regime. Avvocato, non questo file.
+- **18+ reale.** Checkbox “ho 18 anni” non basta in UK (Online Safety Act) e sta sparendo altrove.
+- **CSAM è reato.** Report, ban device+`rememberMeId`+IP, NCMEC se tocchi gli USA. PhotoDNA sul *segnalato*. Non campionare le live senza base legale: stai registrando sesso.
+- **Non registrare** le chiamate di default.
+- **GDPR art. 9.** Sesso documento e tag gay/trans sono dati particolari. Informative, DPA, minimizzazione, oblio.
+- **DSA** in UE: notice-and-action, contatto.
+- **ToS:** minori, no registrare l’altro, matching sessuale, *chi sei* da documento, *chi cerchi* scelto in ricerca.
+- **§2257 USA** se conservi o pubblichi contenuti sessuali di performer. Avvocato, non questo file.
 
-Spoofing genere: con Yoti sul documento crolla il classico “uomo che si dichiara donna”. Resta il prestito dell’app, i documenti non binari, le coppie, i replay di video. Mitigazioni: selfie sulla share, liveness in IDV, skip-rate, report, ban.
+Spoof “io sono donna”: lo tiene a bada `sexDocumento`, non il radio “voglio vedere”. Resta prestito app, replay, coppie. Mitigazioni: selfie share, liveness IDV, skip-rate, report, ban.
 
-Bot e cam preregistrate: rate limit, una sessione video per `rememberMeId`, captcha sull’enqueue. Non partire da un detector di deepfake.
+Bot: rate limit, una sessione video per `rememberMeId`, captcha sull’enqueue. Matching gratis senza questo riempie la coda di spazzatura.
 
 ---
 
-## Liquidità (il motivo per cui i cloni muoiono)
+## Liquidità
 
-Yoti + pagamento **riducono** i bot e gli uomini che si fingono donne. **Riducono anche** il numero di persone in coda. Il matcher restituisce attese infinite se non c’è massa.
+Yoti riduce bot e spoof. Matching **gratis** aiuta la massa in coda (senza massa il matcher è vuoto). Il selettore M/F gratis sposta comunque quasi tutti gli uomini su “donne”: il p95 “cerca donne” resta il problema.
 
-Metrica che conta: rapporto uomini/donne *online in coda ora*, non iscritti. Se “uomo cerca donna” ha p95 di minuti e “donna cerca uomo” ha p50 di zero, non hai un bug nel Lua. Hai un mercato.
+Metrica: rapporto `sexDocumento` *in coda ora*, spezzato per `lookingFor`. Se “cerca donne” è minuti e “cerca uomini” è zero, non è il Lua.
 
-Cose che si fanno, nessuna magica:
+- waitroom sul lookingFor saturo quando l’altro bucket è vuoto
+- non promettere “subito solo donne”
+- tag gay/trans come code vere
 
-- waitroom per il sesso in eccesso quando l’altro bucket è vuoto
-- non promettere l’altro sesso “subito”
-- acquisizione sul lato scarso, non ads a caso
-- tag gay/trans possono essere *più* liquidi in sottocode omogenee che il pool etero sbilanciato: progettale come code vere, non come afterthought
-
-Senza una strategia su questo, il resto del file è un demo a due tab.
+Senza questo il file è un demo a due tab.
 
 ---
 
@@ -306,40 +314,40 @@ Senza una strategia su questo, il resto del file è un demo a due tab.
 
 | Pezzo | Scelta |
 |---|---|
-| Client | TypeScript + Vite, WebRTC nativo |
+| Client | TypeScript + Vite, WebRTC nativo, form ricerca M/F prima di Start |
 | Signaling | Node 20 + `ws` |
-| Matcher | Redis (sorted set + Lua) |
+| Matcher | Redis (sorted set + Lua), chiave da `lookingFor` dell’enqueue |
 | DB | Postgres |
 | TURN | coturn con IP pubblico |
-| Auth sessione | cookie httpOnly dopo Yoti |
-| Identità | Yoti Digital ID (`age_over` + `gender` + remember me); IDV fallback |
-| Pay | processore adult, webhook → `paidUntil` |
+| Auth sessione | cookie httpOnly dopo Yoti (`verified`, non `paid`) |
+| Identità | Yoti Digital ID (`age_over` + `gender` chi sei + remember me); IDV fallback |
+| Pay | opzionale, extra; il matcher non legge `paidUntil` |
 | Hosting media | nessuno (P2P) |
 | CDN | Cloudflare sul statico; WS a parte |
 
-Costi: Yoti per verifica, processore per abbonamento, TURN per i media che non fanno P2P. Il matcher in Redis resta economico.
+Costi: Yoti a verifica, TURN sul traffico del matching gratis. Extra a pagamento se ti servono a coprire Yoti.
 
 ---
 
 ## Piano di costruzione (senza implementare qui)
 
-Fase 0. Società, ToS, privacy art. 9, contratto Yoti (gender + adult), processore pagamenti, procedura CSAM. Se questa fase non chiude, fermati.
+Fase 0. Società, ToS, privacy art. 9, contratto Yoti (età + gender documento), procedura CSAM. Processore pagamenti solo se vendi extra.
 
-Fase 1. Integrazione Yoti Digital ID: share, receipt, persistenza `rememberMeId` + `sex` + `over18`. Rifiuto se under o senza gender.
+Fase 1. Yoti Digital ID: `rememberMeId` + `over18` + `sexDocumento`. Stop se under.
 
-Fase 2. Paywall. Nessun WS di chat senza pagamento valido.
+Fase 2. UI ricerca: uomini / donne / entrambi + Start. WS enqueue con `lookingFor`. **Nessun paywall.**
 
-Fase 3. Due browser, signaling, P2P, Next. Ancora senza coda globale.
+Fase 3. Due browser, signaling, P2P, Next.
 
-Fase 4. Redis: sesso reciproco + tag OR.
+Fase 4. Redis: match reciproco `sexDocumento` × `lookingFor` + tag OR.
 
 Fase 5. TURN, HTTPS, Safari iOS.
 
-Fase 6. Report, ban su `rememberMeId`, rate limit, audit log.
+Fase 6. Report, ban su `rememberMeId`, rate limit, captcha.
 
-Fase 7. IDV fallback, maschere, reconnect, osservabilità (tempo coda p50/p95 per lookingFor e per tag, ICE fail, % TURN, report/1000 match).
+Fase 7. IDV fallback, extra a pagamento se li vuoi, maschere, osservabilità (coda p50/p95 per lookingFor e tag, ICE fail, % TURN).
 
-Non invertire: una UI che “sembra Flingster” senza gate e senza ban è peggio di non lanciare.
+Non invertire: UI senza gate e senza ban è peggio di non lanciare.
 
 ---
 
@@ -347,20 +355,19 @@ Non invertire: una UI che “sembra Flingster” senza gate e senza ban è peggi
 
 - Marchio, UI copiata, JS/API di Flingster.
 - Il loro volume di online.
-- Un age gate *e* il sesso usando **solo** la stima del viso Yoti.
+- Età **e** sesso documento usando **solo** la stima del viso Yoti.
 - Verificare “gay” o “trans” come fatto anagrafico universale.
-- Mettere il prodotto sulle store Apple/Google come app di sesso random.
-- Operare senza CSAM, senza 18+, senza base GDPR sui dati sessuali.
+- Far scegliere uomini/donne a Yoti al posto dell’utente: Yoti non è un form di ricerca.
+- App Store / Play come app di sesso random.
+- Operare senza CSAM, senza 18+, senza base GDPR.
 - Registrare o ridistribuire gli stream senza consenso di entrambi e base legale.
 
 ---
 
 ## Sintesi
 
-Si può fare un Flingster-like **a pagamento**, con **Yoti in ingresso** e **sesso assegnato dal documento**, più **filtro uomini/donne** e **filtro tag** (gay, trans, …) autodichiarati.
+Si può fare un Flingster-like con **Yoti in ingresso (18+ e chi sei sul documento)**, **matching gratis**, **uomini/donne scelti in ricerca** e **tag** autodichiarati.
 
-La formula tecnica è:
+**Yoti (età + sesso documento) → form ricerca (lookingFor M/F + tag) → coda Redis reciproca gratis → signaling WS → WebRTC P2P + TURN → report/ban.**
 
-**Yoti (età + gender) → account immutabile sul sesso → abbonamento → coda Redis reciproca (sesso × tag) → signaling WS → WebRTC P2P + TURN → report/ban.**
-
-Quello che non si copia è Flingster. Quello che fa fallire i tentativi leciti non è il video: è Yoti+pagamenti+moderazione fatti sul serio, e abbastanza persone *verificate* del sesso che gli altri vogliono vedere.
+Non si copia Flingster. Il video è la parte facile. Quello che tiene in piedi il prodotto è il gate 18+, il selettore di ricerca che la gente capisce, e abbastanza persone *verificate* del sesso che gli altri hanno spuntato su “voglio vedere”.
