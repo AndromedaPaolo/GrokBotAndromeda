@@ -16,7 +16,7 @@ Requisito principale: **18+ reale**, non un checkbox e non “sembra maggiorenne
 
 **Stima età dal viso:** non soddisfa “realmente”. Lascia `age_estimation` spento.
 
-Strumenti: Didit ID (500/mese $0) o Yoti OVER 18 con **doc scan / Digital ID da documento**. Liveness: `docs/ricerca-liveness-gratuito.md`. Come fanno i siti random in live: `docs/come-i-siti-videochat-rilevano-minori.md`. Classificatori sesso: `docs/ricerca-app-rilevamento-sesso.md` (irrilevanti per l’età).
+Strumenti: Didit ID (500/mese $0) o Yoti OVER 18 con **doc scan / Digital ID da documento**. In live i siti random **non** sanno l’età del peer (P2P + checkbox + report); questa proposta fa il documento in ingresso e il report umano in chiamata.
 
 Questo file non è consulenza legale e non è un’implementazione.
 
@@ -24,7 +24,7 @@ Questo file non è consulenza legale e non è un’implementazione.
 
 ## Cosa fa Flingster oggi (superficie pubblica)
 
-Da [flingster.com](https://flingster.com/): videochat random 1:1 nel browser, Start, camera, match, Next. Genere dichiarato (uomo / donna / coppia). Filtri genere, paese e tag di interesse. Maschere AR. Matching base gratis, VIP a pagamento per i filtri. Account assente o leggerissimo.
+Da [flingster.com](https://flingster.com/): videochat random 1:1 nel browser, Start, camera, match, Next. Overlay 18+ da checkbox, **niente documento**. Genere dichiarato (uomo / donna / coppia). Filtri genere, paese e tag. Maschere AR. Matching base gratis, VIP per i filtri. Il server in live **non** verifica l’età del peer (video P2P).
 
 Il valore non è il codec video. Il valore è *trovare subito qualcuno* e *cambiarlo in un click*.
 
@@ -39,13 +39,51 @@ Il valore non è il codec video. Il valore è *trovare subito qualcuno* e *cambi
 | Tag di interesse | Filtri tag (gay, trans, …) sulla stessa schermata di ricerca |
 | App store assente, solo web | Stesso vincolo: sito/PWA |
 
-Il gate toglie i minori. Non toglie il matching gratis.
+Il gate toglie i minori in **ingresso**. In **chiamata** il video resta P2P: il server non vede i pixel. Sotto è come lavorano i siti random, e cosa fa invece questa proposta.
+
+---
+
+## Minori: come fanno i siti random (e cosa fa questa proposta)
+
+Due domande diverse. I cloni Omegle mescolano tutto in un checkbox.
+
+| | Ingresso (prima di Start) | In chiamata (peer già collegato) |
+|---|---|---|
+| Domanda | Questo *account* ha 18+? | Questa *faccia davanti alla webcam adesso* ha 18+? |
+| Flingster / Chatroulette / analoghi | Checkbox “ho 18 anni” + ToS. Nessun documento. Chatroulette “Candid” = c’è un viso, non quanti anni ha | Quasi niente di automatico. Skip, report, ban IP. Moderatori solo sugli stream *segnalati* |
+| Questa proposta | **Documento autentico + liveness + face match.** Stima viso spenta. Senza `over18` niente coda | Stesso P2P: il server **non** guarda il video. Report “minore” → coda umana, mai auto-ban da modello. Niente registrazione di tutte le live |
+
+Il video è WebRTC peer-to-peer: va da browser A a browser B. Il server vede signaling (`next`, `report`), non i frame. Per “vedere se è minorenne” in diretta dovresti far passare tutto il media da te: costi TURN e stai trattando sesso. Quasi nessuno dei siti random lo fa su ogni match. Omegle è morto anche per anonimato + minori senza gate.
+
+**In chiamata loro (e tu, sul P2P) non certificano l’età del peer.** Certificano, nel migliore dei casi, che qualcuno ha cliccato 18+ o — qui — che un documento ha passato il gate. Il resto è segnalazione.
+
+Report in questa proposta:
+
+- Bottone evidente, motivo “minore / abuso” in cima.
+- Snapshot solo se il ToS lo dice, solo su report, verso coda umana. **Mai auto-ban** su “sembra minore”: distrugge gli adulti baby-face e non ferma i 17enni che sembrano 22.
+- Ban su id provider + device + IP.
+- Prestito account (adulto verifica, poi si siede un minore): nessuno lo chiude al 100%. Liveness all’ingresso + re-check su report, non uno scanner a ogni Next.
+- Sospetto CSAM: segnalazione alle autorità (NCMEC se USA), non un Next. PhotoDNA sul *segnalato*. Non campionare tutte le chat “per controllo età”.
+
+UK OSA e analoghi: i minori non devono *incontrare* il porno; il controllo efficace è **prima di entrare**. Checkbox da solo non basta in quei Paesi. Questa proposta allinea il gate a quello, non a Flingster.
+
+Approfondimento: `docs/come-i-siti-videochat-rilevano-minori.md`, `docs/gate-18-piu-reale.md`.
 
 ---
 
 ## Gate 18+ (priorità)
 
-Vedi `docs/gate-18-piu-reale.md`. In una riga: **niente stima viso, niente checkbox.** Didit ID 500/mese $0, oppure Yoti `OVER` 18 con `doc_scan` / Digital ID da documento e `age_estimation.allowed: false`. Conservi solo `over18` + id opaco.
+**18+ reale** = data di nascita su documento autentico + liveness + face match. Conservi solo `over18: true` e un id opaco. Butti DoB e immagini.
+
+| Metodo | In questa proposta |
+|---|---|
+| Checkbox “ho 18 anni” | No. È quello che fanno Flingster/Chatroulette. Non è reale. |
+| Stima età dal viso | **Spenta.** Un 16enne che sembra 23 passa. |
+| Carta di credito / cellulare | No. Non è prova d’età. |
+| Didit ID + liveness passive + face match | Sì. 500 sessioni/mese $0, poi ~$0.33. Dal documento: DoB → `età >= 18`. Non attivare Age Estimation. |
+| Yoti `OVER` 18 con `doc_scan` / Digital ID **da documento** | Sì. `age_estimation.allowed: false`. |
+
+Didit: [help free plan](https://help.didit.me/getting-started/free-plan). Yoti: prodotto adult, conferma webcam sul contratto. OCR self-host senza autenticità del documento **non** è 18+ reale (foto del passaporto di un altro).
 
 ## Cosa Yoti può e non può fare
 
@@ -188,7 +226,7 @@ Nessun “sblocca genere col VIP”: il selettore M/F è gratis. Un piano plus, 
 
 ## Gratis vs a pagamento
 
-| Gratis (dopo Yoti 18+) | Eventuale piano a pagamento |
+| Gratis (dopo gate 18+ documento) | Eventuale piano a pagamento |
 |---|---|
 | Entrare in coda | Priorità in coda |
 | Selezionare uomini / donne / entrambi in ricerca | Niente (o pochi) ads |
@@ -197,9 +235,9 @@ Nessun “sblocca genere col VIP”: il selettore M/F è gratis. Un piano plus, 
 
 Matching **mai** dietro abbonamento. Processore **adult / high-risk** (CCBill, Segpay, Epoch) solo se vendi extra. Stripe su webcam sessuale random si fa chiudere. Niente claim “donne vere garantite”.
 
-Yoti lo paghi tu a verifica. Matching gratis + verifica a pagamento tuo è un costo: rate-limit sugli account nuovi, `rememberMeId` per non rifare Yoti ogni visita.
+Landing: marketing, ToS, bottone verifica 18+ (Didit o Yoti). Dietro il gate: ricerca e matching, non un checkout.
 
-Landing: marketing, ToS, bottone Yoti. Dietro Yoti: ricerca e matching, non un checkout.
+Yoti/Didit li paghi tu a verifica (Didit: 500/mese $0). Matching gratis + IDV a carico tuo: rate-limit sui nuovi, id provider per non rifare il documento ogni visita.
 
 ---
 
@@ -214,12 +252,12 @@ Quattro piani. Non mischiarli.
      v                                    v
 [signaling + matcher]
      |
-     +-- Postgres: utenti Yoti, sexDocumento, tag profilo, extra pagati, ban
-     +-- Redis: code di match (lookingFor arriva dall’enqueue)
-     +-- TURN (NAT che non fa P2P)
-     +-- Yoti (Digital ID + IDV)
+     +-- Postgres: over18, id provider, tag, extra, ban
+     +-- Redis: code di match
+     +-- TURN
+     +-- Didit e/o Yoti (ID + liveness, stima viso OFF)
      +-- processore pagamenti adult (solo extra)
-     +-- moderazione / report / CSAM
+     +-- coda report / CSAM (umani su “minore”)
 ```
 
 ### Media
@@ -286,11 +324,11 @@ Il client **non** può mentire su `sexDocumento` e `over18`. **Può** (deve) man
 
 Web, HTTPS, una pagina.
 
-- Overlay Yoti / QR, poi **form di ricerca** (uomini / donne / entrambi + tag), poi camera.
-- Start, Next, report. Cambiare M/F = aggiorna i radio e Start di nuovo (o un “Applica filtri” che fa dequeue/enqueue).
+- Overlay verifica 18+ (Didit/Yoti), poi **form di ricerca**, poi camera.
+- Start, Next, **report** (motivo minore in evidenza). Cambiare M/F = Start di nuovo.
 - `<video autoplay playsinline>` (iOS).
 - Permessi camera dopo click Start, mai al land.
-- PWA sì. App Store / Play: webcam adult random di solito rifiutata. L’app Yoti resta di Yoti.
+- PWA sì. App Store / Play: webcam adult random di solito rifiutata.
 
 Stack: TypeScript, Vite, `RTCPeerConnection` nativo.
 
@@ -298,19 +336,20 @@ Stack: TypeScript, Vite, `RTCPeerConnection` nativo.
 
 ## Moderazione e legge (non è un capitolo opzionale)
 
-Sito adult + webcam random è esposto. Matching gratis aumenta volume e abuso: il gate Yoti resta.
+Sito adult + webcam random è esposto. Matching gratis aumenta volume. Il gate documento è l’ingresso; in live vale la sezione **Minori** sopra.
 
-- **18+ reale.** Checkbox “ho 18 anni” non basta in UK (Online Safety Act) e sta sparendo altrove.
-- **CSAM è reato.** Report, ban device+`rememberMeId`+IP, NCMEC se tocchi gli USA. PhotoDNA sul *segnalato*. Non campionare le live senza base legale: stai registrando sesso.
+- **18+ reale in ingresso.** Checkbox e stima viso non bastano (UK OSA: i bambini non devono incontrare il porno *prima* del check).
+- **In chiamata: report, non scanner.** P2P: il server non vede i frame. “Minore” → coda umana, ban id+device+IP. Niente auto-ban da AI sul viso. Niente tap di tutte le live.
+- **CSAM è reato.** Segnalazione (NCMEC se USA). PhotoDNA sul *segnalato*. Non campionare le live “per sicurezza”: stai registrando sesso.
 - **Non registrare** le chiamate di default.
-- **GDPR art. 9.** Sesso documento e tag gay/trans sono dati particolari. Informative, DPA, minimizzazione, oblio.
+- **GDPR art. 9** se tieni sesso documento o tag gay/trans. Per il solo `over18` minimizza: niente DoB in chiaro.
 - **DSA** in UE: notice-and-action, contatto.
-- **ToS:** minori, no registrare l’altro, matching sessuale, *chi sei* da documento, *chi cerchi* scelto in ricerca.
+- **ToS:** minori, no registrare l’altro, matching sessuale, gate documento, *chi cerchi* in ricerca, prestito account vietato.
 - **§2257 USA** se conservi o pubblichi contenuti sessuali di performer. Avvocato, non questo file.
 
-Spoof “io sono donna”: lo tiene a bada `sexDocumento`, non il radio “voglio vedere”. Resta prestito app, replay, coppie. Mitigazioni: selfie share, liveness IDV, skip-rate, report, ban.
+Spoof “io sono donna”: solo se persistì `sexDocumento` dallo stesso ID. Resta prestito account, replay. Mitigazioni: liveness all’IDV, skip-rate, report, ban.
 
-Bot: rate limit, una sessione video per `rememberMeId`, captcha sull’enqueue. Matching gratis senza questo riempie la coda di spazzatura.
+Bot: rate limit, una sessione video per id verificato, captcha sull’enqueue.
 
 ---
 
@@ -361,7 +400,7 @@ Fase 4. Redis: `lookingFor` (+ `sexDocumento` solo se lo persistì dallo stesso 
 
 Fase 5. TURN, HTTPS, Safari iOS.
 
-Fase 6. Report, ban su id provider, rate limit, captcha.
+Fase 6. Report (priorità “minore” → umani, mai auto-ban viso), ban su id provider, rate limit, captcha. Procedura CSAM.
 
 Fase 7. Extra a pagamento se li vuoi, maschere, osservabilità (coda p50/p95 per lookingFor e tag, ICE fail, % TURN).
 
@@ -386,6 +425,6 @@ Non invertire: UI senza gate e senza ban è peggio di non lanciare.
 
 Si può fare un Flingster-like con **18+ reale in ingresso** (documento, non stima), **matching gratis**, **uomini/donne scelti in ricerca** e **tag** autodichiarati.
 
-**IDV (Didit/Yoti doc) → over18 → form ricerca (lookingFor M/F + tag) → coda Redis reciproca gratis → signaling WS → WebRTC P2P + TURN → report/ban.**
+**IDV (Didit/Yoti doc) → over18 → form ricerca → coda Redis gratis → WS + WebRTC P2P → report umano in live (niente scanner sul video).**
 
-Non si copia Flingster. Il video è la parte facile. Quello che tiene in piedi il prodotto è il gate 18+, il selettore di ricerca che la gente capisce, e abbastanza persone *verificate* del sesso che gli altri hanno spuntato su “voglio vedere”.
+Flingster non certifica l’età di chi è collegato. Questa proposta certifica l’account in ingresso e, in chiamata, fa quello che si può fare in P2P: segnalazione, non magia sul viso.
