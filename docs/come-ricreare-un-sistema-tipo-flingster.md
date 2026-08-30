@@ -16,7 +16,7 @@ Requisito principale: **18+ reale**, non un checkbox e non “sembra maggiorenne
 
 **Stima età dal viso:** non soddisfa “realmente”. Lascia `age_estimation` spento.
 
-Strumenti: Didit ID (500/mese $0) o Yoti OVER 18 con **doc scan / Digital ID da documento**. Liveness: `docs/ricerca-liveness-gratuito.md`. Classificatori sesso: `docs/ricerca-app-rilevamento-sesso.md` (irrilevanti per l’età).
+Strumenti: Didit ID (500/mese $0) o Yoti OVER 18 con **doc scan / Digital ID da documento**. Liveness: `docs/ricerca-liveness-gratuito.md`. Come fanno i siti random in live: `docs/come-i-siti-videochat-rilevano-minori.md`. Classificatori sesso: `docs/ricerca-app-rilevamento-sesso.md` (irrilevanti per l’età).
 
 Questo file non è consulenza legale e non è un’implementazione.
 
