@@ -10,6 +10,8 @@ Niente esempi. La scelta degli agenti è sull’organigramma e sugli strumenti d
 
 ## 1. Studio legale
 
+Dettaglio, spezzature e strumenti per agente: [`StudioLegale.md`](StudioLegale.md).
+
 L’agente Avvocato è il ruolo in organigramma. Non è iscrizione all’Albo. Chi è iscritto resta l’unico che firma, PEC, udienza, deposito.
 
 ### Dipendenti
