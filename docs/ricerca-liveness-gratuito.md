@@ -4,7 +4,7 @@ Data: 2026-08-30. Solo ricerca, nessuna integrazione.
 
 Domanda: esiste un servizio di **liveness** (la persona in camera è viva, non una foto/video/maschera) **gratis per chi lo integra** nel prodotto.
 
-**Risposta corta:** sì, a pezzi. Nessun vendor certificato ti dà liveness illimitato a $0 in produzione. Hai tre strade: quota free mensile (Didit, Persona), self-host Apache (MiniFASNet: $0 di licenza, paghi il server, più debole), trial da 30 giorni. La liveness **non** dà il sesso. Va accoppiata a un documento se vuoi `M`/`F` anagrafico.
+**Risposta corta:** sì, a pezzi. Nessun vendor certificato ti dà liveness illimitato a $0 in produzione. Hai tre strade: quota free mensile (Didit, Persona), self-host Apache (MiniFASNet: $0 di licenza, paghi il server, più debole), trial da 30 giorni. La liveness **non** dà l’età. Per 18+ reale va col documento: `docs/gate-18-piu-reale.md`.
 
 Il blog di Didit scrive “unlimited free KYC”. La [help ufficiale](https://help.didit.me/getting-started/free-plan) dice **500/mese**. Qui si usa la help.
 

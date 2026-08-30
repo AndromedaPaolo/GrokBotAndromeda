@@ -2,6 +2,8 @@
 
 Data: 2026-08-30. Solo ricerca, nessuna integrazione in questo repo.
 
+Requisito principale del prodotto: **18+ reale** (`docs/gate-18-piu-reale.md`). Questo file resta sulla domanda collaterale del sesso.
+
 Domanda: esistono app gratuite che riconoscono il sesso di una persona, da usare al posto (o accanto) a Yoti nel prodotto tipo Flingster.
 
 **Risposta corta:** no, non nel senso che ti serve. Esistono tre famiglie diverse. Solo una legge un sesso *scritto*. Le altre indovinano un aspetto. Nessuna app da Play Store/App Store è un backend di verifica. Quello che è gratis o non verifica il documento, o non è il sesso, o non è commerciale.
