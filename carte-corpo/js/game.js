@@ -1,5 +1,15 @@
 (() => {
   const engine = createEngine(DECK);
+  const PHOTOS = {
+    calm: "img/giulia.jpg",
+    hot: "img/giulia.jpg",
+    peak: "img/giulia-peak.jpg",
+  };
+  const FACES = {
+    calm: "img/giulia-face.jpg",
+    hot: "img/giulia-face-soft.jpg",
+    peak: "img/giulia-face-closed.jpg",
+  };
 
   const gate = document.getElementById("gate");
   const app = document.getElementById("app");
@@ -12,29 +22,20 @@
   const burstEl = document.getElementById("touch-burst");
   const hitLabel = document.getElementById("hit-label");
   const stageFrame = document.querySelector(".stage-frame");
-  const wetEl = document.getElementById("wet");
-  const legL = document.getElementById("leg-l");
-  const legR = document.getElementById("leg-r");
+  const bodyPhoto = document.getElementById("body-photo");
+  const bodyImg = document.getElementById("body-img");
+  const avatar = document.getElementById("avatar");
 
   function setVisible(el, on) {
     el.hidden = !on;
     el.classList.toggle("is-on", on);
   }
 
-  function showSvg(el, on) {
-    if (!el) return;
-    el.style.display = on ? "" : "none";
-  }
-
   function setFace(level) {
-    showSvg(document.getElementById("eyes-open"), level === "calm");
-    showSvg(document.getElementById("eyes-half"), level === "hot");
-    showSvg(document.getElementById("eyes-closed"), level === "peak");
-    showSvg(document.getElementById("mouth-calm"), level !== "peak");
-    showSvg(document.getElementById("mouth-open"), level === "peak");
-    const blush = level === "calm" ? 0.18 : level === "hot" ? 0.48 : 0.72;
-    document.getElementById("blush-l").setAttribute("opacity", String(blush));
-    document.getElementById("blush-r").setAttribute("opacity", String(blush));
+    bodyImg.src = PHOTOS[level];
+    avatar.src = FACES[level];
+    bodyPhoto.classList.remove("is-calm", "is-hot", "is-peak");
+    bodyPhoto.classList.add(`is-${level}`);
     stageFrame.classList.toggle("breathing", level !== "calm");
   }
 
@@ -44,19 +45,11 @@
     else setFace("calm");
   }
 
-  function setPose(pleasure) {
-    const open = Math.min(10, pleasure / 10);
-    if (legL) legL.setAttribute("transform", `rotate(${open} 155 448)`);
-    if (legR) legR.setAttribute("transform", `rotate(${-open} 205 448)`);
-    if (wetEl) wetEl.setAttribute("opacity", String(0.15 + pleasure / 160));
-  }
-
   function renderMeter(pleasure) {
     const pct = Math.min(100, pleasure);
     meterFill.style.width = `${pct}%`;
     meterLabel.textContent = String(pct);
     faceFromMeter(pleasure);
-    setPose(pleasure);
   }
 
   function zoneCenter(zone) {

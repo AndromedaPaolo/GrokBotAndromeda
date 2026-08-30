@@ -22,6 +22,9 @@ assert.match(html, /id="gate-yes"/);
 assert.match(html, /id="again"/);
 assert.match(html, /data-zone="pube"/);
 assert.match(html, /Giulia, donna adulta/);
+assert.match(html, /img\/giulia\.jpg/);
+assert.ok(fs.existsSync(path.join(root, "img/giulia.jpg")));
+assert.ok(fs.existsSync(path.join(root, "img/giulia-face.jpg")));
 
 for (const src of scripts) {
   assert.ok(html.includes(`src="${src}"`), `missing script ${src}`);
