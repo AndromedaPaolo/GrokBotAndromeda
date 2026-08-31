@@ -14,6 +14,9 @@ JOBS = {
     "giulia-face.png": "giulia-face.jpg",
     "giulia-face-soft.png": "giulia-face-soft.jpg",
     "giulia-face-eyes-closed.png": "giulia-face-closed.jpg",
+    "giulia-shift-left.png": "giulia-shift-l.jpg",
+    "giulia-shift-right.png": "giulia-shift-r.jpg",
+    "giulia-look-down.png": "giulia-look.jpg",
 }
 
 

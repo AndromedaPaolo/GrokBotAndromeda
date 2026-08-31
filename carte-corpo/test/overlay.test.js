@@ -5,7 +5,7 @@ const assert = require("assert");
 const root = path.join(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "css/game.css"), "utf8");
-const scripts = ["js/cards.js", "js/engine.js", "js/game.js"];
+const scripts = ["js/cards.js", "js/engine.js", "js/body.js", "js/game.js"];
 
 assert.match(css, /\[hidden\]\s*\{\s*display:\s*none\s*!important;/);
 assert.match(css, /\.climax\s*\{[^}]*display:\s*none;/s);
@@ -22,9 +22,13 @@ assert.match(html, /id="gate-yes"/);
 assert.match(html, /id="again"/);
 assert.match(html, /data-zone="pube"/);
 assert.match(html, /Giulia, donna adulta/);
+assert.match(html, /id="body-live"/);
 assert.match(html, /img\/giulia\.jpg/);
 assert.ok(fs.existsSync(path.join(root, "img/giulia.jpg")));
 assert.ok(fs.existsSync(path.join(root, "img/giulia-face.jpg")));
+assert.ok(fs.existsSync(path.join(root, "img/giulia-shift-l.jpg")));
+assert.ok(fs.existsSync(path.join(root, "img/giulia-shift-r.jpg")));
+assert.ok(fs.existsSync(path.join(root, "img/giulia-look.jpg")));
 
 for (const src of scripts) {
   assert.ok(html.includes(`src="${src}"`), `missing script ${src}`);

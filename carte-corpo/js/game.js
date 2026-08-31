@@ -24,7 +24,23 @@
   const stageFrame = document.querySelector(".stage-frame");
   const bodyPhoto = document.getElementById("body-photo");
   const bodyImg = document.getElementById("body-img");
+  const bodyLive = document.getElementById("body-live");
   const avatar = document.getElementById("avatar");
+  let live = null;
+  let wantLive = false;
+
+  function setVisible(el, on) {
+    el.hidden = !on;
+    el.classList.toggle("is-on", on);
+  }
+
+  function setFace(level) {
+    if (!live) bodyImg.src = PHOTOS[level];
+    avatar.src = FACES[level];
+    bodyPhoto.classList.remove("is-calm", "is-hot", "is-peak");
+    bodyPhoto.classList.add(`is-${level}`);
+    stageFrame.classList.toggle("breathing", level !== "calm");
+  }
 
   function setVisible(el, on) {
     el.hidden = !on;
@@ -149,6 +165,10 @@
     addLog(result.card, result.combo);
     renderHand(result.hand);
     renderMeter(result.pleasure);
+    if (live) {
+      live.setPleasure(result.pleasure);
+      live.hit(result.card.zone);
+    }
     if (result.climaxOpen) {
       setFace("peak");
       herLine.textContent = "«Non fermarti— vengo.»";
@@ -163,12 +183,22 @@
     herLine.textContent = "«Puoi iniziare. Scegli una carta.»";
     renderHand(state.hand);
     renderMeter(state.pleasure);
+    if (live) live.setPleasure(state.pleasure);
+  }
+
+  function bootLive() {
+    wantLive = true;
+    if (!live) return;
+    bodyLive.hidden = false;
+    bodyPhoto.classList.add("is-live");
+    live.start();
   }
 
   function enterApp() {
     setVisible(gate, false);
     app.hidden = false;
     startRound();
+    bootLive();
   }
 
   function refuse() {
@@ -184,11 +214,21 @@
     setVisible(climaxEl, false);
     herLine.textContent = "«Ancora. Più lenta stavolta.»";
     renderMeter(state.pleasure);
+    if (live) live.setPleasure(state.pleasure);
   }
 
   document.getElementById("gate-yes").addEventListener("click", enterApp);
   document.getElementById("gate-no").addEventListener("click", refuse);
   document.getElementById("again").addEventListener("click", again);
+
+  loadLiveBody(bodyLive)
+    .then((body) => {
+      live = body;
+      if (wantLive) bootLive();
+    })
+    .catch(() => {
+      bodyLive.hidden = true;
+    });
 
   if (new URLSearchParams(location.search).get("autotest") === "1") {
     enterApp();
