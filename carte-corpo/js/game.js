@@ -165,6 +165,9 @@
     addLog(result.card, result.combo);
     renderHand(result.hand);
     renderMeter(result.pleasure);
+    bodyPhoto.classList.remove("is-hit-move");
+    void bodyPhoto.offsetWidth;
+    bodyPhoto.classList.add("is-hit-move");
     if (live) {
       live.setPleasure(result.pleasure);
       live.hit(result.card.zone);

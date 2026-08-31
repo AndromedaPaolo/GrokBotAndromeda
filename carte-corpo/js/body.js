@@ -157,6 +157,7 @@ function createLiveBody(canvas, frames) {
     if (running) return;
     running = true;
     origin = performance.now();
+    canvas.dataset.live = "1";
     raf = window.requestAnimationFrame(tick);
   }
 
