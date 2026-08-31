@@ -15,7 +15,7 @@ const POSE_LOOK = 3;
 const POSE_PEAK = 4;
 
 function idlePose(timeMs, period) {
-  const seq = [POSE_CENTER, POSE_LEFT, POSE_CENTER, POSE_RIGHT];
+  const seq = [POSE_CENTER, POSE_LEFT, POSE_LOOK, POSE_RIGHT];
   const hold = period ? period * 0.18 : 900;
   const fade = period ? period * 0.14 : 700;
   const cycle = seq.length * (hold + fade);
@@ -124,37 +124,24 @@ function createLiveBody(canvas, frames) {
   function warp(now) {
     const w = canvas.width;
     const h = canvas.height;
-    const sw = off.width / COLS;
-    const sh = off.height / ROWS;
-    const dw = w / COLS;
-    const dh = h / ROWS;
+    const t = now - origin;
+    const rock = Math.sin(t / 1700) * (0.05 + pleasure * 0.0002);
+    const lift = Math.sin(t / 1300) * (0.035 + pleasure * 0.00018);
     const moving = activeImpulses(now);
+    let jx = 0;
+    let jy = 0;
+    for (const imp of moving) {
+      jx += (imp.x - 0.5) * imp.amp * 2.2;
+      jy += (imp.y - 0.45) * imp.amp * 1.4;
+    }
     view.clearRect(0, 0, w, h);
     view.imageSmoothingEnabled = true;
     view.save();
-    const t = now - origin;
-    const rock = Math.sin(t / 2100) * (0.018 + pleasure * 0.00012);
-    const lift = Math.sin(t / 1500) * (0.012 + pleasure * 0.0001);
-    view.translate(w / 2, h * 0.78);
+    view.translate(w / 2 + jx, h * 0.8 + jy);
     view.rotate(rock);
-    view.scale(1 + lift * 0.15, 1 + lift);
-    view.translate(-w / 2, -h * 0.78);
-    for (let row = 0; row < ROWS; row += 1) {
-      for (let col = 0; col < COLS; col += 1) {
-        const { dx, dy } = warpOffset(col, row, COLS, ROWS, now - origin, pleasure, moving);
-        view.drawImage(
-          off,
-          col * sw,
-          row * sh,
-          sw + 1,
-          sh + 1,
-          col * dw + dx,
-          row * dh + dy,
-          dw + 1.4,
-          dh + 1.4
-        );
-      }
-    }
+    view.scale(1 + lift * 0.25, 1 + lift);
+    view.translate(-w / 2, -h * 0.8);
+    view.drawImage(off, 0, 0, w, h);
     view.restore();
   }
 
