@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carte sul corpo — 18+</title>
+    <link rel="stylesheet" href="css/game.css" />
+  </head>
+  <body>
+    <div id="gate" class="gate is-on">
+      <div class="gate-card">
+        <img
+          class="gate-face"
+          src="img/giulia-face.jpg"
+          alt="Giulia, donna adulta di 28 anni"
+        />
+        <p class="gate-kicker">Gioco erotico</p>
+        <h1>Solo per adulti</h1>
+        <p>
+          Personaggio fittizio. Donna adulta (Giulia, 28 anni). Contenuto sessuale esplicito sul
+          corpo. Continuando dichiari di avere almeno 18 anni.
+        </p>
+        <div class="gate-actions">
+          <button type="button" id="gate-yes">Ho 18 anni o più</button>
+          <button type="button" id="gate-no" class="ghost">Esci</button>
+        </div>
+      </div>
+    </div>
+
+    <main id="app" class="app" hidden>
+      <header class="top">
+        <div class="identity">
+          <img id="avatar" class="avatar" src="img/giulia-face.jpg" alt="" />
+          <div>
+            <p class="kicker">Giulia · 28 anni · consenso</p>
+            <h1>Carte sul corpo</h1>
+          </div>
+        </div>
+        <div class="meter-wrap">
+          <span>Piacere</span>
+          <div class="meter" aria-label="Livello di piacere">
+            <div id="meter-fill" class="meter-fill"></div>
+          </div>
+          <strong id="meter-label">0</strong>
+        </div>
+      </header>
+
+      <section class="stage">
+        <div class="stage-frame">
+          <div class="body-photo" id="body-photo">
+            <img
+              id="body-img"
+              src="img/giulia.jpg"
+              alt="Giulia, donna adulta, in piedi, in attesa delle tue carte"
+            />
+            <canvas
+              id="body-live"
+              width="340"
+              height="510"
+              hidden
+              aria-label="Giulia fotorealistica che respira e reagisce alle carte"
+            ></canvas>
+            <svg
+              id="body"
+              class="hitmap"
+              viewBox="0 0 100 150"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <ellipse class="zone" data-zone="collo" cx="50" cy="33" rx="11" ry="6" />
+              <ellipse class="zone" data-zone="seno" cx="42" cy="50" rx="10" ry="8" />
+              <ellipse class="zone" data-zone="seno" cx="58" cy="50" rx="10" ry="8" />
+              <circle class="zone" data-zone="capezzoli" cx="42" cy="52" r="2.6" />
+              <circle class="zone" data-zone="capezzoli" cx="58" cy="52" r="2.6" />
+              <ellipse class="zone" data-zone="ventre" cx="50" cy="64" rx="12" ry="9" />
+              <ellipse class="zone" data-zone="fianco" cx="35" cy="72" rx="8" ry="11" />
+              <ellipse class="zone" data-zone="fianco" cx="65" cy="72" rx="8" ry="11" />
+              <ellipse class="zone" data-zone="pube" cx="50" cy="79" rx="8" ry="6.5" />
+              <ellipse class="zone" data-zone="coscia" cx="43" cy="102" rx="9" ry="20" />
+              <ellipse class="zone" data-zone="coscia" cx="57" cy="102" rx="9" ry="20" />
+            </svg>
+            <div id="touch-burst" class="touch-burst" hidden></div>
+            <p id="hit-label" class="hit-label" hidden></p>
+          </div>
+          <p id="her-line" class="her-line">«Puoi iniziare. Scegli una carta.»</p>
+        </div>
+
+        <aside class="log-wrap">
+          <h2>Cosa succede</h2>
+          <ol id="log" class="log"></ol>
+        </aside>
+      </section>
+
+      <section class="hand-wrap">
+        <p class="hand-hint">Gioca una carta: l’azione arriva sul suo corpo.</p>
+        <div id="hand" class="hand"></div>
+      </section>
+    </main>
+
+    <div id="climax" class="climax" hidden>
+      <div class="climax-inner">
+        <img src="img/giulia-face-closed.jpg" alt="" />
+        <p>Giulia viene</p>
+        <button type="button" id="again">Ancora</button>
+      </div>
+    </div>
+
+    <script src="js/cards.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/body.js"></script>
+    <script src="js/game.js"></script>
+  </body>
+</html>
