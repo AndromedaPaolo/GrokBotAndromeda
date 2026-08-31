@@ -16,8 +16,8 @@ const POSE_PEAK = 4;
 
 function idlePose(timeMs, period) {
   const seq = [POSE_CENTER, POSE_LEFT, POSE_CENTER, POSE_RIGHT];
-  const hold = period ? period * 0.2 : 1100;
-  const fade = period ? period * 0.05 : 280;
+  const hold = period ? period * 0.18 : 900;
+  const fade = period ? period * 0.14 : 700;
   const cycle = seq.length * (hold + fade);
   let t = ((timeMs % cycle) + cycle) % cycle;
   for (let i = 0; i < seq.length; i += 1) {
@@ -43,8 +43,8 @@ function reactAmount(now, reactAt, duration) {
 function warpOffset(col, row, cols, rows, timeMs, pleasure, impulses) {
   const yn = rows <= 1 ? 0 : row / (rows - 1);
   const xn = cols <= 1 ? 0 : col / (cols - 1);
-  const breath = Math.sin(timeMs / 1400) * (3.4 + pleasure * 0.05);
-  const sway = Math.sin(timeMs / 2300) * (4.6 + pleasure * 0.04);
+  const breath = Math.sin(timeMs / 1500) * (11 + pleasure * 0.09);
+  const sway = Math.sin(timeMs / 2100) * (13 + pleasure * 0.07);
   const chest = yn > 0.2 && yn < 0.5 ? Math.sin(((yn - 0.2) / 0.3) * Math.PI) : 0;
   const hair = yn < 0.2 ? (0.2 - yn) / 0.2 : 0;
   const hip = yn > 0.44 && yn < 0.64 ? Math.sin(((yn - 0.44) / 0.2) * Math.PI) : 0;
@@ -110,12 +110,13 @@ function createLiveBody(canvas, frames) {
   }
 
   function compose(now) {
-    const pose = idlePose(now - origin, 5600);
-    const react = reactAmount(now, reactAt, 780);
+    const pose = idlePose(now - origin, 4800);
+    const react = reactAmount(now, reactAt, 1100);
     const peak = pleasure >= 80 ? (pleasure - 80) / 20 : 0;
     buf.clearRect(0, 0, off.width, off.height);
+    buf.globalCompositeOperation = "source-over";
     drawImageFit(buf, frames[pose.a], 1);
-    drawImageFit(buf, frames[pose.b], pose.mix);
+    if (pose.mix > 0.01) drawImageFit(buf, frames[pose.b], pose.mix);
     if (react > 0.02) drawImageFit(buf, frames[POSE_LOOK], react * 0.9);
     if (peak > 0.02) drawImageFit(buf, frames[POSE_PEAK], peak);
   }
@@ -130,6 +131,14 @@ function createLiveBody(canvas, frames) {
     const moving = activeImpulses(now);
     view.clearRect(0, 0, w, h);
     view.imageSmoothingEnabled = true;
+    view.save();
+    const t = now - origin;
+    const rock = Math.sin(t / 2100) * (0.018 + pleasure * 0.00012);
+    const lift = Math.sin(t / 1500) * (0.012 + pleasure * 0.0001);
+    view.translate(w / 2, h * 0.78);
+    view.rotate(rock);
+    view.scale(1 + lift * 0.15, 1 + lift);
+    view.translate(-w / 2, -h * 0.78);
     for (let row = 0; row < ROWS; row += 1) {
       for (let col = 0; col < COLS; col += 1) {
         const { dx, dy } = warpOffset(col, row, COLS, ROWS, now - origin, pleasure, moving);
@@ -146,6 +155,7 @@ function createLiveBody(canvas, frames) {
         );
       }
     }
+    view.restore();
   }
 
   function tick(now) {
@@ -176,7 +186,7 @@ function createLiveBody(canvas, frames) {
   function hit(zone) {
     const uv = BODY_ZONES[zone] || { x: 0.5, y: 0.4 };
     const now = performance.now();
-    impulses.push({ x: uv.x, y: uv.y, born: now, life: 700, amp: 3.4 });
+    impulses.push({ x: uv.x, y: uv.y, born: now, life: 900, amp: 9 });
     if (impulses.length > 8) impulses.shift();
     reactAt = now;
   }

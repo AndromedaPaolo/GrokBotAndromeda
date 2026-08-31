@@ -18,7 +18,7 @@ const held = idlePose(200, 5600);
 assert.equal(held.a, 0);
 assert.equal(held.b, 0);
 
-const fading = idlePose(5600 * 0.2 + 5600 * 0.025, 5600);
+const fading = idlePose(5600 * 0.18 + 5600 * 0.07, 5600);
 assert.ok(fading.mix > 0.3 && fading.mix < 0.7);
 assert.equal(fading.a, 0);
 assert.equal(fading.b, 1);
