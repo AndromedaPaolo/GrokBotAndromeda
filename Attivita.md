@@ -317,6 +317,8 @@ Paolo Approves su ogni accensione.
 
 ## 2. Studio commercialista
 
+Dettaglio, spezzature e strumenti per agente: [`StudioCommercialisti.md`](StudioCommercialisti.md).
+
 Agenti propri. Non sono quelli del §1. Due studi, due organigrammi.
 
 L’agente Commercialista è il ruolo in organigramma. Non è iscrizione all’Albo. Chi è iscritto resta l’unico che firma, PEC, invio.
