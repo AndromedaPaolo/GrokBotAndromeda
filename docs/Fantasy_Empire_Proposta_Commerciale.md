@@ -4,13 +4,14 @@
 **Fonte design:** *Fantasy Empire – Game Design Document (SFW)* — perimetro completo dal giorno uno
 **Stack:** GitHub · Vercel · Cloudflare D1 · Stripe (spento in Fase 0)
 **Tipo documento:** proposta (nessun codice, nessun deploy)
-**Versione proposta:** 2.9 — 1 settembre 2026
+**Versione proposta:** 2.10 — 1 settembre 2026
 **Ops (Cursor + GrokBot):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Squadra agenti (nomi, panchina inclusa):** `Fantasy_Empire_Squadra_Agenti.md`
 **Dashboard sì/no:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, dettaglio:** `Fantasy_Empire_Grok_Bot_Ops.md`
 **Video IA azioni (nel sito):** `Fantasy_Empire_Video_IA_Azioni.md`
 **Video, dove si generano e dove stanno:** `Fantasy_Empire_Video_Storage_Generazione.md`
+**Carte, personaggi, video (dove si mettono):** `Fantasy_Empire_Asset_Dove.md`
 **Quadro normativo:** `Fantasy_Empire_Quadro_Normativo.md`
 **Fase 0 (gratis, Italia):** `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Decisioni da confermare con te:** `Fantasy_Empire_Decisioni_Aperte.md`
@@ -191,7 +192,7 @@ Il numero 7 e il 40 stanno in `config`. Non si "aggiusta in silenzio". Se li cam
 
 Recurring: disdetta in `/account` (e Customer Portal Stripe). Pulsante recesso art. 54-bis sul primo periodo. Prezzo IVA inclusa. Classificazione: descrittore acquisti in-game da aggiornare in Fase B.
 
-Dettaglio file e R2: `Fantasy_Empire_Video_Storage_Generazione.md`.
+Dettaglio file e R2: `Fantasy_Empire_Video_Storage_Generazione.md`. Mappa carte/personaggi/video: `Fantasy_Empire_Asset_Dove.md`.
 
 ---
 
@@ -301,7 +302,9 @@ GDPR art. 32 non aspetta Stripe.
 - `audit_payments` (vuota in Fase 0)
 - `consents` (età, T&C, privacy, marketing)
 - `world_seeds` / `config` (soglie Influence, size mostri, `PAYWALL`, `STRIPE_LIVE`, cap)
-- `cinematics` (vedi file video)
+- `cinematics` (vedi file video; path R2 `videos/{video_key}/`)
+- `characters` (id, kind, status; file su `characters/{id}/`)
+- `cards` (id, kind, zone, sp, character_archetype; file su `cards/{id}/`)
 - `approvals` (coda dashboard: type, preview, stato pending/done/discarded/error, log del click)
 
 Il JSON di save resta: il GDD è largo. Normalizzare tabelle si può fare in Fase C se serve analytics.
@@ -376,7 +379,7 @@ Specifica di principio: `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
 ## 12. Cosa chiedo a te adesso
 
-Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.9, se non mi dici il contrario:
+Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa v2.10, se non mi dici il contrario:
 
 1. Fase 0 invite + cap 40, non open registration.
 2. 18+ dichiarato. Territorio: Italia + UE. Niente UK/USA in beta.
@@ -391,5 +394,6 @@ Le alternative sono in `Fantasy_Empire_Decisioni_Aperte.md`. I default di questa
 11. Video Fase 0: richiesta → dashboard "manca X" → still → tu → upload → Approva. `GEN_API=off`. Niente combattimento.
 12. Video Fase B (Visioni 9,99 €/mese): Worker + nostra API key, genera e carica da solo, `ready` dopo policy. Tetto 40. Chi non abbona: 7, solo cache. Niente chiavi Grok dei giocatori.
 13. Squadra: i 17 posti. Imagine è C8 (banco in beta, tubo API in Fase B), non GrokBot.
+14. Disco: un R2 `fe-media` — `characters/{id}/`, `cards/{id}/`, `videos/{key}/`. Git solo JSON in `data/`. In partita: carte eroe su Head/Chest/Arms/Legs; mostri in pool; video sull'azione, non sul file del personaggio.
 
 Rispondi puntando ai numeri. Cambio il file e rialzo la versione.

@@ -1,10 +1,10 @@
 # Fantasy Empire — Dashboard approvazioni
 
 **Tipo documento:** proposta. Nessun codice, nessuna pagina, nessun webhook creato.
-**Versione:** 1.6 — 1 settembre 2026
+**Versione:** 1.7 — 1 settembre 2026
 **Perché esiste:** non devi aprire GitHub, Gmail o X per ogni ok. Una coda. Due tasti. Vale per il push e per **tutte le cose dello stesso tipo**: mail, post, flag, preavviso, ban video, invite. I buchi video ("manca X") stanno qui, non in una seconda app.
 
-**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.9 · `Fantasy_Empire_Video_Storage_Generazione.md`
+**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.10 · `Fantasy_Empire_Video_Storage_Generazione.md` · `Fantasy_Empire_Asset_Dove.md`
 
 ---
 
@@ -43,6 +43,8 @@ Regola: se oggi dovresti andare su un sito a cliccare, domani sta qui.
 | `ads` | Copy, budget, targeting | Tipo panchina (G8 Spesa). Anche dopo, Approva qui non paga da solo | Elimina |
 | `memo_legale` | Fonti, cosa cambierebbe | Non pubblica legge. Apre/accoda un `git_pr` con la patch di `docs/` o delle pagine | Archivia il memo |
 | `memo_twitter` | Riassunto sola lettura | Archivia (non c'è niente da pubblicare) | Archivia |
+| `char_new` | Portrait / body / ref, `character_id` | Catalogo: file su `characters/{id}/` | Cancella oggetti, id fuori catalogo |
+| `card_new` | Art carta, `card_id`, zona se eroe | Catalogo: file su `cards/{id}/` | Cancella oggetti, id fuori catalogo |
 | `video_req` | **Manca video X** (Fase 0) oppure **In generazione API** (Fase B Visioni). Dove si vede, prompt, n. richieste, still | Fase 0: Genera/Carica still, Scarica still, Carica MP4 → `video_new`. Fase B Visioni: niente upload, il Worker carica da solo | Scarta la richiesta / il buco |
 | `video_new` | Player, `video_key`, prompt, still. Fase 0: da pubblicare. Fase B: **già live** | Fase 0: `ready`. Fase B: no-op sul play (è già `ready`); resta per audit | Cancella oggetti R2, riga `banned` |
 | `imagine_batch` | ~~Lotto 1×/giorno in beta~~ | **Non si usa.** Il pagato è per-richiesta (`GEN_API` sulla card `stripe_live`) | — |
@@ -70,7 +72,7 @@ Tasti, in ordine:
 
 1. **Genera still** se manca (API image) **o Carica still** (JPG tuo).
 2. **Scarica still** quando c'è. Fuori dalla dashboard: image-to-video con quel file e quel prompt.
-3. **Carica MP4**. Il Worker lo mette in `{video_key}/master.mp4`. Fine: è già nella sezione giusta.
+3. **Carica MP4**. Il Worker lo mette in `videos/{video_key}/master.mp4`. Fine: è già nella sezione giusta.
 4. Compare `video_new` col player. **Approva** = `ready`. **Scarta** = via.
 
 Richieste giocatore in cima. Sotto, buchi di catalogo senza `ready`.
@@ -100,7 +102,8 @@ Il browser non ha chiavi. Il browser parla col server della dashboard. Il server
 | `git_pr`, `prezzo`, patch da memo, flag nel repo | **Cursor** (merge/push sul repo). La dashboard non sostituisce git, nasconde git a te |
 | `mail`, `mail_massa`, `mail_visioni`, `preavviso_pagamenti`, `post_*` | **GrokBot** |
 | `stripe_live` | Cursor cambia i flag **solo** se i vincoli sono verdi. Accende anche `GEN_API` (I2V Visioni, upload automatico). GrokBot non lo tocca |
-| `video_req` (Fase 0 still / upload) | Worker su R2 + D1. Still da API image o da te. MP4 da te. GrokBot non c'entra |
+| `char_new`, `card_new` | Worker su R2 + D1. Path `characters/{id}/` o `cards/{id}/`. GrokBot non c'entra |
+| `video_req` (Fase 0 still / upload) | Worker su R2 + D1. Still da API image, da carta/personaggio già in catalogo, o da te. MP4 da te. GrokBot non c'entra |
 | `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. Fase 0: file dal tuo upload. Fase B: file già messo dal job API |
 
 Un click, un job. Se il job fallisce, la riga resta in coda con errore visibile. Non si ritenta in loop.

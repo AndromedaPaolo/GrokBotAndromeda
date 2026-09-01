@@ -1,6 +1,6 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.9. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Documento operativo.** Completa la proposta v2.10. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
 **Versione:** 1.4 — 1 settembre 2026
 **Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.

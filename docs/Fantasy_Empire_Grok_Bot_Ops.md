@@ -1,7 +1,7 @@
 # Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.9)
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.10)
 **Squadra (nomi GrokBot):** `Fantasy_Empire_Squadra_Agenti.md`
 **Video generazione:** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)

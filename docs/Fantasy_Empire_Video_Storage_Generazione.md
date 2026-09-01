@@ -1,8 +1,8 @@
 # Fantasy Empire — Generazione e storage dei video/gif
 
 **Tipo documento:** proposta. Nessun job IA, nessun bucket creato.
-**Versione:** 1.5 — 1 settembre 2026
-**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.9
+**Versione:** 1.6 — 1 settembre 2026
+**Riferimenti:** `Fantasy_Empire_Video_IA_Azioni.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.10 · `Fantasy_Empire_Asset_Dove.md`
 
 Questa è la soluzione consigliata. Le alternative stanno in fondo e in `Fantasy_Empire_Decisioni_Aperte.md` §13, §17, §18, §22.
 
@@ -18,8 +18,8 @@ Derivati, solo se servono, **dall'MP4 già in cache**, non una seconda generazio
 
 | File | A cosa serve | Come nasce |
 |---|---|---|
-| `{key}/poster.jpg` | LCP, `prefers-reduced-motion`, fallback, **input** per il video | Still se manca (API image o upload tuo). Altrimenti primo frame del master |
-| `{key}/master.mp4` | overlay `/play` | **Fase 0:** tu, dallo still, upload sulla card. **Fase B (Visioni):** Worker + `XAI_API_KEY`, I2V, `R2.put` da solo |
+| `videos/{key}/poster.jpg` | LCP, `prefers-reduced-motion`, fallback, **input** per il video | Still se manca (API image, `cards/…/art` o `characters/…/ref`, o upload tuo). Altrimenti primo frame del master |
+| `videos/{key}/master.mp4` | overlay `/play` | **Fase 0:** tu, dallo still, upload sulla card. **Fase B (Visioni):** Worker + `XAI_API_KEY`, I2V, `R2.put` da solo su `videos/{video_key}/` |
 | `{key}/loop.webp` (opzionale) | vetrina landing, thumb | transcode dal master (Cloudflare media transform). GIF solo se un social lo pretendo, stesso transcode |
 
 Una chiave `video_key`, tre oggetti al massimo. Non tre pipeline. Il caricamento sulla card **è** lo slot giusto: path R2 = quella chiave, superficie di gioco = quella scritta in dashboard. Non si sceglie a mano una cartella.
@@ -40,11 +40,13 @@ Motivi, in ordine:
 Layout:
 
 ```
-r2://fe-cinematics/
-  {video_key}/poster.jpg
-  {video_key}/master.mp4
-  {video_key}/loop.webp     // solo se transcodato
+r2://fe-media/
+  videos/{video_key}/poster.jpg
+  videos/{video_key}/master.mp4
+  videos/{video_key}/loop.webp     // solo se transcodato
 ```
+
+Carte e personaggi stanno **nello stesso bucket**, altri prefissi. Mappa: `Fantasy_Empire_Asset_Dove.md`.
 
 D1 `cinematics` resta l'indice:
 
@@ -70,7 +72,7 @@ Stessa `video_key`, stesso R2, stesso combat (miss = 2D). Cambia **chi** mette i
 | Tempo | Flag | Chi genera il video | Chi carica su R2 | Chi mette `ready` |
 |---|---|---|---|---|
 | **Fase 0** (gratis) | `GEN_API=off` | **Tu**, dallo still, col tool che vuoi | **Tu**, tasto Carica MP4 sulla card | **Tu**, Approva su `video_new` |
-| **Fase B** (Visioni) | `GEN_API=on` | Worker + **nostra** `XAI_API_KEY` (still se manca, poi I2V) | Worker, da solo, stesso path `{video_key}/master.mp4` | Policy check automatico → `ready`. Tu puoi Scarta/ban dopo |
+| **Fase B** (Visioni) | `GEN_API=on` | Worker + **nostra** `XAI_API_KEY` (still se manca, poi I2V) | Worker, da solo, `videos/{video_key}/master.mp4` | Policy check automatico → `ready`. Tu puoi Scarta/ban dopo |
 
 `GEN_API` **non** si accende in beta. Si accende con `STRIPE_LIVE` (stesso evento: checklist verde + preavviso 30 giorni + tuo Approva). In preview il tubo API si costruisce spento, come il checkout.
 
@@ -97,7 +99,7 @@ Solo richieste di account `visions`. Chi non abbona: tetto 7, vede la **cache** 
 | Richiesta Visioni, chiave nuova | Worker | D1 quota 40 | 0 |
 | Still se manca | Worker da solo | `grok-imagine-image` | ~0,03 $ |
 | I2V 5 s 720p muto | Worker da solo | `grok-imagine-video` (~0,25 $) o `…-1.5` (~0,40 $) | a clip |
-| Download URL (scade) → R2 | Worker da solo | `R2.put {key}/poster.jpg` + `master.mp4` | 0 |
+| Download URL (scade) → R2 | Worker da solo | `R2.put videos/{key}/poster.jpg` + `master.mp4` | 0 |
 | Policy | Worker | scarto se esplicito / "young" | 0 |
 | `ready` | automatico se policy ok | — | 0 |
 | Card `video_new` | dashboard, **già live** | Tu Scarta = ban | 0 |

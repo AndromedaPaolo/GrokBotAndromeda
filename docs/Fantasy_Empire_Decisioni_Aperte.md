@@ -1,7 +1,7 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.9 — 1 settembre 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.9.
+**Versione:** 2.0 — 1 settembre 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.10.
 
 I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, tetto settimanale sulle clip nuove, video a mano in beta e **API automatica solo a pagamento (Visioni)**, e **nessuna data** da gratis a pagato. Niente chiavi Grok dei giocatori.
 
@@ -170,14 +170,16 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 
 ---
 
-## 18. Dove stanno i file
+## 18. Dove stanno i file (carte, personaggi, video)
 
-- **A (default).** Cloudflare R2 privato. Worker, URL firmati. 10 GB free, egress 0. Path `{video_key}/master.mp4`.
-- **B.** R2 + Cloudflare Stream per il delivery. Ha senso con volume, non con 40 beta.
-- **C.** File in `/public` su Vercel o su GitHub. No. Peso e bucket di fatto pubblico.
+- **A (default).** Un R2 privato `fe-media`. `characters/{id}/`, `cards/{id}/`, `videos/{video_key}/`. Git solo JSON in `data/`. Worker, URL firmati. 10 GB free, egress 0.
+- **B.** R2 + Cloudflare Stream per il *delivery* dei video. Ha senso con volume, non con 40 beta. Catalogo carte/personaggi resta R2.
+- **C.** File in `/public` su Vercel o su GitHub. No. Peso e bucket di fatto pubblico. Trailer 0 è l'unica eccezione.
 - **D.** Lasciare i file su `vidgen.x.ai`. No. Scadono.
 
-Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
+In partita (non è storage): carte eroe su Head/Chest/Arms/Legs; mostri in pool; Bond sul party; video sull'azione.
+
+Dettaglio: `Fantasy_Empire_Asset_Dove.md`.
 
 ---
 

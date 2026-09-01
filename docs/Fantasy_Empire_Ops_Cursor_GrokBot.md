@@ -2,7 +2,7 @@
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
 **Versione:** 1.7 — 1 settembre 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.9 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.10 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---

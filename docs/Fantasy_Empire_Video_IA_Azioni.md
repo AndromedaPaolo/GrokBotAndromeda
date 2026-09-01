@@ -1,9 +1,10 @@
 # Fantasy Empire — Video IA sulle azioni (sito)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.9)
-**Versione:** 1.8 — 1 settembre 2026
+**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.10)
+**Versione:** 1.9 — 1 settembre 2026
 **Storage e generazione (scelta chiusa in proposta):** `Fantasy_Empire_Video_Storage_Generazione.md`
+**Disco (carte, personaggi, video):** `Fantasy_Empire_Asset_Dove.md`
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).
 
@@ -112,7 +113,7 @@ Due tempi. Stesso file su R2. Combat mai in attesa.
 1. Card **Manca video X**. Dice dove si vede in `/play`.
 2. Se manca lo still: **Genera still** o **Carica still**.
 3. Scarichi lo still. Image-to-video tu, col prompt della card.
-4. **Carica MP4** sulla stessa card → R2 `{video_key}/master.mp4`.
+4. **Carica MP4** sulla stessa card → R2 `videos/{video_key}/master.mp4`.
 5. `video_new`. Approva = `ready`. Scarta = `banned`.
 
 **Fase B (`GEN_API=on`, con Stripe live).** Solo account `visions`.
@@ -155,7 +156,7 @@ D1 tabella `cinematics`:
 - `created_at`
 - `moderation_log` (chi ha flaggato, quando; niente payload utente)
 
-File: Cloudflare R2 privato, path `{video_key}/master.mp4` (+ poster, eventuale webp). Il browser riceve URL firmati a scadenza breve, non un bucket pubblico. Non si usa l'URL temporaneo xAI. Stream è un'opzione di delivery *dopo*, copiando da R2, non l'archivio.
+File: Cloudflare R2 privato `fe-media`, path `videos/{video_key}/master.mp4` (+ poster, eventuale webp). Carte e personaggi: `Fantasy_Empire_Asset_Dove.md`. Il browser riceve URL firmati a scadenza breve, non un bucket pubblico. Non si usa l'URL temporaneo xAI. Stream è un'opzione di delivery *dopo*, copiando da R2, non l'archivio.
 
 GitHub: **zero** mp4 di azione nel repo (peso + moderazione).
 

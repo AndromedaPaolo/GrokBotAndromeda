@@ -2,7 +2,7 @@
 
 **Tipo documento:** proposta. Nessun agent creato, nessuna Automation, nessuna Routine.
 **Versione:** 1.4 — 1 settembre 2026
-**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.9
+**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.10
 **Ops (principio):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, mandato:** `Fantasy_Empire_Grok_Bot_Ops.md`
