@@ -115,11 +115,13 @@ Id: `<slug>.O` `<slug>.E` `<slug>.I` `<slug>.R`.
 
 Esempio: `segr.O` è la segreteria. Non è G4. Non è C1.
 
+Organigramma, misura intera/parte, fa e non fa: [`Attivita.md`](Attivita.md). Questo foglio è la fabbrica. Quello è il mestiere. Studio legale e studio commercialista non stanno più in `Attivita.md`: Albo, non si vendono sostituiti.
+
 ---
 
 ## Attività in laboratorio (stampo, tutti panchina)
 
-Tre da clonare per prime, se Approvi il ruolo (G1 deve aver mappato, tu hai detto sì).
+Tre da clonare per prime, se Approvi il ruolo (G1 deve aver mappato, tu hai detto sì). Allineate a `Attivita.md` §1, §5, §8.
 
 ### segr — Segreteria PMI
 
@@ -158,16 +160,25 @@ Classe: `assistente-di-studio`. Protocollo, bozze, promemoria da calendario *gi�
 
 ## Coda (niente trio finché G1 + il tuo sì)
 
-Stampo uguale, slug già pronti, posti inesistenti finché non Approvi.
+Stampo uguale, slug già pronti, posti inesistenti finché non Approvi. Aperti in `Attivita.md` non significa clonati.
 
-| Slug | Attività | Inbox? | Perché aspetta |
-|---|---|---|---|
-| social | Social PMI | no | Disclosure IA, minori, ads |
-| cv | Screening CV | no | GDPR, AI Act se scoring |
-| condo | Property / condòmini | sì | Assemblee, millesimi, avvocato del condominio |
-| copy | Copy SEO locale | no | Basso rischio, si può anticipare se vuoi un quarto facile |
+| Slug | Attività | Inbox? | `Attivita.md` | Perché aspetta |
+|---|---|---|---|---|
+| copy | Copy SEO locale | no | §2 intera sulla bozza | Publish e ads restano tuoi. Si può anticipare |
+| cat | Catalogo e-commerce | no | §3 intera sulle schede | Prezzo, stock, publish |
+| verb | Verbali e protocollo | sì | §4 intera sul verbale in bozza | Firma di chi presiede |
+| desk | Helpdesk IT L1 | sì | §6 parte | Accessi, produzione, comandi |
+| ordini | Back-office ordini | sì | §7 parte | Prezzo, accettazione, soldi |
+| social | Social PMI | no | coda, parte | Disclosure IA, minori, ads |
+| cv | Screening CV | no | coda, parte | GDPR, AI Act se scoring |
+| condo | Property / condòmini | sì | coda, parte | Assemblee, millesimi, avvocato del condominio |
+| docs | Documentazione software | no | coda, intera sul testo | Casa Cursor. Merge = tu |
+| prenota | Prenotazioni | sì | coda, intera sull’agenda | Pagamento, cartella clinica |
+| nota | Prima nota | no | coda, parte | F24, bilancio, IVA da chiudere |
+| scuola | Segreteria scolastica | sì | coda, parte | Minori, pagelle, Albo docente |
+| iso | Registro documenti già approvati | no | coda, intera sul registro | Casa Cursor. Non certifica |
 
-`ordinistico-vietato-vendita` (avvocato *firmatario*, medico, notaio, …): G1 può mapparlo. Non si clona il trio per venderlo come “ruolo sostituito”. Eventuale `studio-avvocato` come *assistente*, altro Approva, Gazzetta prima.
+`ordinistico-vietato-vendita` (avvocato *firmatario*, medico, notaio, …): G1 può mapparlo. Non si clona il trio per venderlo come “ruolo sostituito”. Eventuale `studio-avvocato` come *assistente*, altro Approva, Gazzetta prima. Non torna in `Attivita.md` con questo filtro.
 
 ---
 
