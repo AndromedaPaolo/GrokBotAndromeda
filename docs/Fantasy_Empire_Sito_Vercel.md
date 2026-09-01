@@ -18,13 +18,39 @@ Codice: cartella `web/` (Next.js 15, App Router, italiano, 18+).
 
 ## Come nasce `fantasyempier.vercel.app`
 
-Vercel crea `*.vercel.app` dal **nome progetto**. Senza account Vercel collegato a questo agente il dominio non può essere emesso da qui.
+Vercel crea `*.vercel.app` dal **nome progetto**. Prima di importare il repo va installata l’app GitHub **Vercel** sull’account che **possiede** il repository (`AndromedaPaolo`). Un collaboratore o un login Vercel fatto solo con Google/email non basta.
 
-Import: https://vercel.com/new/import?s=https://github.com/AndromedaPaolo/GrokBotAndromeda
+Non usare `vercel.com/new/import?s=https://github.com/...` al primo giro: quello è l’import “third-party” e risponde *To link a GitHub repository, you need to install the GitHub integration first.*
 
-- Project Name: `fantasyempier`
-- Root Directory: `web`
-- Env: `OPS_PASSWORD`, poi le chiavi R2 quando il bucket `fe-media` esiste
+### 1. Installa l’integrazione GitHub
+
+1. Entra su Vercel con **Continue with GitHub**, account **AndromedaPaolo**.
+2. Apri l’installazione app: https://github.com/apps/vercel/installations/new
+3. Scegli l’account personale **AndromedaPaolo** (non un’org a caso).
+4. Repository access: *Only select repositories* → `GrokBotAndromeda`, oppure *All repositories*.
+5. **Install**.
+
+Se l’app c’è già ma il repo non compare: GitHub → Settings → Applications → Installed GitHub Apps → **Vercel** → Configure → aggiungi `GrokBotAndromeda`. Stessa schermata: https://github.com/settings/installations
+
+### 2. Crea il progetto dalla lista, non da URL
+
+1. https://vercel.com/new
+2. Nel dropdown Git, account **AndromedaPaolo**.
+3. Cerca `GrokBotAndromeda` → **Import**.
+4. Project Name: `fantasyempier` → `https://fantasyempier.vercel.app`
+5. Root Directory: **Edit** → `web`
+6. Framework Preset: Next.js
+7. Production Branch: `cursor/dashboard-clip-manuale-b7a8` (su `main` non c’è ancora `web/`)
+8. Env: `OPS_PASSWORD` (obbligatoria per `/ops`). R2 dopo, quando esiste `fe-media`.
+9. **Deploy**
+
+### Alternativa senza GitHub App
+
+Token da https://vercel.com/account/tokens, poi dalla cartella `web/`:
+
+```bash
+npx vercel --name fantasyempier --yes --prod --token "$VERCEL_TOKEN"
+```
 
 ## Storage
 
