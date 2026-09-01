@@ -1,9 +1,9 @@
 # Fantasy Empire — Decisioni aperte (da chiudere con te)
 
-**Versione:** 1.8 — 1 settembre 2026
-**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.8.
+**Versione:** 1.9 — 1 settembre 2026
+**Come si usa:** rispondi con il numero e la lettera. Aggiorno la proposta e alzo la versione. Se non rispondi, resto sui **default** già scritti in `Fantasy_Empire_Proposta_Commerciale.md` v2.9.
 
-I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, tetto settimanale sulle clip nuove, video fatti da te dallo still in dashboard, e **nessuna data** da gratis a pagato. Niente chiavi Grok dei giocatori.
+I default non sono "la verità". Sono la scelta più prudente per una Fase 0 gratuita in Italia, con Cursor Pro+ sul git, GrokBot a chiamata, dashboard Approva/Scarta, tetto settimanale sulle clip nuove, video a mano in beta e **API automatica solo a pagamento (Visioni)**, e **nessuna data** da gratis a pagato. Niente chiavi Grok dei giocatori.
 
 ---
 
@@ -123,7 +123,7 @@ B e C riqualificano il servizio verso "piattaforma online" DSA. In Fase 0 è pes
 
 ## 13. Tetto e modo dei video in beta
 
-- **A (default).** Il giocatore chiede. Miss = 2D. Dashboard: "manca video X". Still se manca, **tu** fai il video, upload sulla card, Approva. Tetto settimanale (decisione 20). Master MP4 su R2.
+- **A (default).** Il giocatore chiede. Miss = 2D. Dashboard: "manca video X". Still se manca, **tu** fai il video, upload, Approva. Tetto 7. In Fase B questo banco **non** è più il default delle richieste Visioni (vedi 22).
 - **B.** Solo libreria 2D / poster. Zero video IA.
 - **C.** Generate live in combattimento, anche con tetto. No. Le clip escono storte e il turno non aspetta.
 - **D.** Precache 80–150 chiavi a tuo carico, più le richieste. Opzionale, non il default.
@@ -160,12 +160,13 @@ A usa la beta per quello che serve. C è più pulita se i numeri non ti interess
 
 ## 17. Chi genera i video
 
-- **A (default).** Dashboard. Still se manca (API image o upload tuo). **Tu** fai image-to-video dallo still + prompt della card, con il tool che vuoi. Carichi l'MP4 sulla stessa card. Casa Cursor (path R2). GrokBot non tiene i file.
+- **A (default).** Due tempi. Fase 0: dashboard, still se manca, **tu** fai I2V, upload sulla card. Fase B Visioni: Worker + **nostra** API key, still se manca, I2V, `R2.put` da solo. Casa Cursor. GrokBot no. Giocatore mai.
 - **B.** Solo still + animazione 2D. Zero video IA.
-- **C.** API I2V (Grok Imagine / fal / Kling) al posto delle tue mani, stesso R2, stesso Approva. Ha senso se le card sono troppe. Sblocchi `imagine_batch`.
+- **C.** API I2V anche in Fase 0. No: credito senza incasso.
 - **D.** Asset fatti a mano / commissionati, senza IA.
 - **E.** ~~GrokBot lancia Imagine~~ **Scartata.**
-- **F.** ~~Miss in combat → coda job~~ **Scartata.** Le clip escono storte. Si chiede, si riempie in dashboard, si Approva.
+- **F.** ~~Miss in combat → coda job~~ **Scartata.**
+- **G.** ~~Chiedere la API key al giocatore~~ **Scartata.**
 
 ---
 
@@ -182,13 +183,11 @@ Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 ## 19. Abbonamento Visioni
 
-- **A (default).** 9,99 €/mese IVA inclusa. Stripe `mode=subscription`. Solo Fase B. Sblocca il Santuario delle Visioni e alza il tetto *richieste* in dashboard. Still e video restano il flusso A della decisione 17. I soldi coprono il tuo tempo (e, se un giorno accendi l'API I2V, il credito).
+- **A (default).** 9,99 €/mese IVA inclusa. Stripe `mode=subscription`. Solo Fase B. Sblocca il Santuario, tetto 40, e **accende `GEN_API`**: generazione + upload automatico sulla nostra chiave. Chi non abbona non lancia job. I soldi coprono il credito.
 - **B.** Altro prezzo, o annuale.
-- **C.** Niente abbonamento. Solo tetto settimanale per tutti.
+- **C.** Niente abbonamento. Solo tetto settimanale per tutti. Allora `GEN_API` non ha chi lo paga.
 
-A è lo SKU a pagamento di questa proposta. Il GDD resta gratis. C tiene i costi bassi e toglie la sezione speciale. B lo scrivi tu.
-
-Non si chiede al giocatore di collegare Grok, Imagine, o una API key. Quella idea è scartata.
+A è lo SKU di questa proposta. Il GDD resta gratis. Non si chiede al giocatore di collegare Grok, Imagine, o una API key.
 
 ---
 
@@ -214,13 +213,14 @@ A è più nomi da ricordare. Costa zero finché non li accendi. B ti fa scrivere
 
 ---
 
-## 22. Banco dashboard vs lotto API
+## 22. Banco Fase 0 vs API a pagamento
 
-- **A (default).** Sempre il banco: manca X → still se manca → tu fai il video → upload sulla card → Approva. Niente agent I2V. `imagine_batch` esiste e resta spento.
-- **B.** Come A, più C8 I2V API 1×/giorno acceso da subito. Tu resti su Approva/Scarta. Meno lavoro, più scarti in coda, credito xAI acceso.
-- **C.** Solo API, niente still-first in dashboard. No. Perdi il volto/armatura coerente e il controllo sul tool.
+- **A (default).** Fase 0: banco (manca X → still → tu → upload → Approva). Fase B, con `stripe_live`: `GEN_API=on`. Richieste **Visioni** → Worker genera con API key e carica da solo → `ready` dopo policy. Combat sempre 2D sul miss. Scarta/ban resta in dashboard.
+- **B.** Come A, ma in Fase B il job API resta `pending_review` e tu Approvi prima del play. Più controllo, coda che ricresce.
+- **C.** `GEN_API` acceso già in Fase 0. No. Paghi xAI senza Stripe.
+- **D.** Lotto 1×/giorno invece del job per-richiesta. Più lento per l'abbonato. Non è il default Visioni.
 
-A è il default di questa versione. B è la rampa se le card sono troppe (40 persone × 7 richieste). C non si prende.
+A è questa versione. B se la policy automatica ti fa paura. C e D no.
 
 ---
 

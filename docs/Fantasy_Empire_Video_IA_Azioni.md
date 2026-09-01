@@ -1,8 +1,8 @@
 # Fantasy Empire — Video IA sulle azioni (sito)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.8)
-**Versione:** 1.7 — 1 settembre 2026
+**Riferimento:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.9)
+**Versione:** 1.8 — 1 settembre 2026
 **Storage e generazione (scelta chiusa in proposta):** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Dove si vede subito:** nel **sito** (overlay `/play` + clip vetrina in landing).
 **Dopo il profitto:** le stesse clip in cache vengono caricate dal bot sui **canali del progetto** (`Fantasy_Empire_Grok_Bot_Ops.md`).
@@ -17,7 +17,7 @@ Ogni volta che un giocatore **con entitlement attivo** (`beta_active` in Fase 0,
 
 - Tono: **SFW ma sexy** — suggestivo, fantasy, camera vicina, vestiti aderenti / armature "fan service", niente nudo esplicito, niente sesso, niente minori.
 - Se quella azione (stessa chiave, vedi §4) ha **già** un video `ready`, **non si rigenera**: si riproduce il file in cache.
-- Se manca: animazione 2D, niente attesa. Il giocatore può **richiedere** quella clip. Compare in gioco dopo che tu, in dashboard, hai still + MP4 + Approva.
+- Se manca: animazione 2D, niente attesa. Il giocatore può **richiedere** quella clip. Fase 0: compare dopo still + MP4 + Approva tuo. Fase B (Visioni): l'API la genera e la carica da sola; la rivedi quando è `ready`.
 
 Obiettivo in Fase 0: differenziare il titolo e misurare se la gente resta. Obiettivo in Fase B: vendere Visioni (Santuario + più job), non chiudere `/play`. Il combat resolver resta sul server; il video è **presentazione**, non regola.
 
@@ -105,19 +105,25 @@ TTL: permanente finché non cambia `mood` o il prompt version. Rigenera solo se:
 
 Clip master: **3–5 secondi, MP4 H.264, 16:9, 720p, muto.** GIF non è il master. Eventuale `loop.webp` / GIF si ricava dal master.
 
-Default: **tu**, dalla dashboard. Non l'API video in combattimento e non un agent 1×/giorno.
+Due tempi. Stesso file su R2. Combat mai in attesa.
 
-1. Card **Manca video X** (richiesta giocatore o buco di catalogo). Dice dove si vede in `/play`.
-2. Se manca lo still: **Genera still** (API image, pochi centesimi) o **Carica still**.
-3. Scarichi lo still. Fuori dalla dashboard fai image-to-video (grok.com, Kling, locale, altro) col prompt della card.
-4. **Carica MP4** sulla stessa card → R2 `{video_key}/master.mp4`. Quella chiave *è* la sezione.
-5. Card `video_new` col player. Approva = `ready`. Scarta = file cancellato, riga `banned`.
+**Fase 0 (`GEN_API=off`).** Tu, dalla dashboard.
 
-La volta dopo, stessa chiave: play dalla cache. GrokBot non lancia. L'API `grok-imagine-video` esiste come opzione (`imagine_batch`), spenta.
+1. Card **Manca video X**. Dice dove si vede in `/play`.
+2. Se manca lo still: **Genera still** o **Carica still**.
+3. Scarichi lo still. Image-to-video tu, col prompt della card.
+4. **Carica MP4** sulla stessa card → R2 `{video_key}/master.mp4`.
+5. `video_new`. Approva = `ready`. Scarta = `banned`.
 
-Il player non punta mai a un URL temporaneo del generatore.
+**Fase B (`GEN_API=on`, con Stripe live).** Solo account `visions`.
 
-Dettaglio (perché R2, perché non Stream, alternative): `Fantasy_Empire_Video_Storage_Generazione.md`.
+1. Stessa richiesta. Worker: still se manca → I2V con **nostra** `XAI_API_KEY` → download → `R2.put` da solo.
+2. Policy ok → `ready`. Card `video_new` già live (puoi Scarta/ban).
+3. Chi non abbona: cache se c'è, niente job API.
+
+GrokBot non lancia. Il player non punta mai a un URL temporaneo.
+
+Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 Prompt di sistema (vincoli, non sceneggiatura esplicita):
 
@@ -128,11 +134,13 @@ Prompt di sistema (vincoli, non sceneggiatura esplicita):
 - Nessun minore, nessuno "young", no school uniform.
 - Nessun volto o voce di persona reale.
 
-Provider (scelta in implementazione, non in lancio gratis illimitato): default still-se-manca + video tuo + R2, vedi file storage. Alternative: solo 2D, oppure API I2V se la coda dashboard ti scoppia.
+Provider: Fase 0 = still-se-manca + video tuo + R2. Fase B Visioni = stessa R2, I2V API. Alternative: solo 2D, o Approva obbligatorio anche sul job API (decisione 22).
 
 Contratto col tool che usi (e col provider still, se è API), prima di pubblicare: marcatura AI Act art. 50, liceità del training, licenza d'uso commerciale degli output, manleva. Senza queste tre righe si resta sulla libreria 2D.
 
-**Costo in Fase 0:** lo storage sta nel free Cloudflare (R2). Lo still API è pochi centesimi, o 0 se lo carichi tu. Il video lo fai tu, fuori dal credito Imagine Video. Tetto 7 *richieste* /settimana (coda dashboard, non dollari). Miss = 2D, sempre.
+**Costo in Fase 0:** R2 free. Still API pochi centesimi. Video tuo. Tetto 7 richieste. Miss = 2D.
+
+**Costo in Fase B (Visioni):** I2V sulla nostra chiave, ~0,25 $ a clip nuova, tetto 40, budget mese 80 USD. Upload automatico. Chi non paga non lancia il job.
 
 ---
 
@@ -143,7 +151,7 @@ D1 tabella `cinematics`:
 - `video_key` (unique)
 - `action_type`, `prompt_version`
 - `storage_url`, `poster_url`
-- `duration_ms`, `status` (`need_still` / `need_video` / `pending_review` / `ready` / `failed` / `banned`)
+- `duration_ms`, `status` (`need_still` / `need_video` / `generating` / `pending_review` / `ready` / `failed` / `banned`)
 - `created_at`
 - `moderation_log` (chi ha flaggato, quando; niente payload utente)
 
@@ -186,7 +194,7 @@ Questa policy è anche la prova che **non** si è nel perimetro pornografico del
 
 - Utenti `beta_active` o `visions`.
 - Fase 0: **7 richieste / settimana** a persona. Cache hit e "già in coda" non contano. Miss = 2D. Oggetti su R2 free (10 GB). Stream no. Santuario visibile e chiuso.
-- Fase B senza Visioni: stesso tetto 7. Con Visioni: tetto 40, Santuario aperto, più card in dashboard a carico nostro. Still + upload + Approva restano.
+- Fase B senza Visioni: tetto 7, cache se c'è, niente job API. Con Visioni: tetto 40, Santuario, Worker genera e carica da solo.
 - Fase C (profitto): eventuale Stream. Il bot **riusa la cache del sito** e carica le clip sui canali del progetto. Non si rigenera un video nuovo per ogni social. Il video social non sblocca il gioco.
 
 Il resolver di danno/SP **ignora** il video. Cheat sul client non crea una richiesta senza l'azione validata dal Worker.

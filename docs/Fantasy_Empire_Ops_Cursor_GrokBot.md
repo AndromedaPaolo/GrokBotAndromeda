@@ -1,8 +1,8 @@
 # Fantasy Empire — Ops: Cursor prima, GrokBot a supporto
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
-**Versione:** 1.6 — 1 settembre 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.8 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Versione:** 1.7 — 1 settembre 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.9 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---
@@ -38,14 +38,15 @@ Il profitto alza il rischio legale (recesso, IVA, policy Stripe, classificazione
 | Test, 429, tetti D1, cap beta | **Cursor** | PR + report in issue | Alzare i piani a pagamento da solo |
 | Checklist Fase B (P.IVA, Stripe, recesso) tenuta aggiornata nel repo | **Cursor** | Issue permanente, box rossi/verdi | Mettere un box verde perché "è passato abbastanza tempo" |
 | Tradurre un memo legale in patch del repo | **Cursor** | PR che cita il memo | Inventarsi norme |
-| Banco clip (still + upload tuo) | **tu + Cursor** | Card `video_req`: manca X, Genera/Carica still, Carica MP4. Poi `video_new` per la qualità | Generare in combattimento. GrokBot con la chiave. Auto-ready. Space/free tier nel Worker |
+| Banco clip Fase 0 (still + upload tuo) | **tu + Cursor** | Card `video_req`. Approva `video_new` | Generare in combattimento. `GEN_API` in beta. Chiave del giocatore |
+| Job I2V Fase B (Visioni) | **Worker (C8)** | `GEN_API=on` con `stripe_live`. API key nostra, upload automatico, policy, poi `ready` | GrokBot con la chiave. Auto-merge git |
 | Mail a un giocatore, magic link di supporto, preavviso (il giorno in cui *tu* lo chiedi) | **GrokBot** | Inbox / AgentMail / Gmail, su tuo ordine | Newsletter a raffica, soft spam in Fase 0 |
 | Analisi X/Twitter, thread, sentiment, account da non citare | **GrokBot** | Ricerca + memo in chat o issue | Post live, ads, reply automatiche |
 | Ricerca legale (AGCOM, Garante, AI Act, policy Stripe, ToS Vercel) | **GrokBot** | Memo con fonti. Non è un parere | Cambiare i T&C in produzione da solo |
 | Upgrade Vercel / D1 / dominio | nessuno in autonomia | Proposta in issue, click billing tuo | — |
 | Accensione `STRIPE_LIVE` | **tu, da dashboard** | Riga in coda. Approva solo se checklist verde + preavviso scaduto | Automazione, cron, "è ora" |
 
-Regola corta: **git e tubo file = Cursor. Mondo fuori dal git (mail, X, legale) = GrokBot. Sì/no = dashboard. Video = still in dashboard, MP4 lo fai tu. Soldi sul billing dei fornitori = tu.** I nomi dei posti: `Fantasy_Empire_Squadra_Agenti.md`.
+Regola corta: **git e tubo file = Cursor. Mondo fuori dal git = GrokBot. Sì/no = dashboard. Fase 0 video = banco tuo. Fase B Visioni = API + upload automatico. Soldi sul billing = tu.**
 
 ---
 
@@ -71,7 +72,7 @@ Cosa Cursor **non** fa, anche con Pro+:
 - Non tiene i fondi.
 - Non decide che "ora si paga".
 - Non mergea da solo.
-- Non pubblica una clip `ready` senza il tuo Approva su `video_new`.
+- Non pubblica una clip `ready` in **Fase 0** senza Approva su `video_new`. In Fase B le clip Visioni diventano `ready` dopo policy; Scarta/ban resta tuo.
 
 Il review resta. Si è solo spostato: dalla pagina GitHub alla dashboard. Pro+ non è un permesso a skippare il click.
 
@@ -109,7 +110,7 @@ Il file `Fantasy_Empire_Grok_Bot_Ops.md` resta la specifica di dettaglio. La vec
 
 La Fase 0 non ha una fine scritta. Non "90 giorni". Non "lancio a Natale". Non un cron che accende Stripe.
 
-L'unico cron ammesso, e solo se tu Approvi `imagine_batch`, è l'I2V API 1×/giorno. Default: spento. Genera e carica. Non pubblica. Non tocca i pagamenti.
+Nessun cron sui pagamenti. `GEN_API` non è un cron: è un job per richiesta Visioni, spento finché `STRIPE_LIVE` è off.
 
 Si *può* parlare di pagamenti solo se **tutte** queste cose sono vere insieme:
 

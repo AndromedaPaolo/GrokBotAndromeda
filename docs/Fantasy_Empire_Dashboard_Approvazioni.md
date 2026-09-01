@@ -1,10 +1,10 @@
 # Fantasy Empire — Dashboard approvazioni
 
 **Tipo documento:** proposta. Nessun codice, nessuna pagina, nessun webhook creato.
-**Versione:** 1.5 — 1 settembre 2026
+**Versione:** 1.6 — 1 settembre 2026
 **Perché esiste:** non devi aprire GitHub, Gmail o X per ogni ok. Una coda. Due tasti. Vale per il push e per **tutte le cose dello stesso tipo**: mail, post, flag, preavviso, ban video, invite. I buchi video ("manca X") stanno qui, non in una seconda app.
 
-**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.8 · `Fantasy_Empire_Video_Storage_Generazione.md`
+**Riferimenti:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Proposta_Commerciale.md` v2.9 · `Fantasy_Empire_Video_Storage_Generazione.md`
 
 ---
 
@@ -36,16 +36,16 @@ Regola: se oggi dovresti andare su un sito a cliccare, domani sta qui.
 | `mail_massa` | Conteggio destinatari, oggetto, corpo, consenso filtrato | Invia a quel set. Tipo panchina (G6 Promo) in Fase 0 salvo transazionale | Elimina bozza |
 | `preavviso_pagamenti` | Testo email 30 giorni, numero `beta_active`, checklist Fase B (deve essere verde) | Manda il preavviso. **Non** accende Stripe | Elimina. Fase 0 resta |
 | `mail_visioni` | Destinatario, oggetto, corpo (abbonamento attivo / disdetto / pagamento fallito) | Invia. Tipo **spento** in Fase 0 (G4 Corriere, seconda vita) | Elimina |
-| `stripe_live` | Checklist Fase B, data invio preavviso, giorni scaduti | `STRIPE_LIVE=on` solo se i box sono verdi. Altrimenti il tasto è morto e spiega perché | Lascia off |
+| `stripe_live` | Checklist Fase B, data invio preavviso, giorni scaduti, box `GEN_API` (I2V Visioni) | `STRIPE_LIVE=on` e `GEN_API=on` solo se i box sono verdi. Altrimenti il tasto è morto e spiega perché | Lascia off. Banco Fase 0 resta |
 | `prezzo` | Vecchio / nuovo, SKU (Visioni 9,99 o altro) | Patch + push del prezzo | Niente |
 | `quota_week` | Vecchio / nuovo tetto 7 o 40 | Patch `config` + disclosure in-game | Niente |
 | `post_x` / `post_ig` / `post_altro` | Testo, clip, disclosure IA | Pubblica. Tipo panchina (G7 Bacheca) in Fase 0 | Elimina bozza |
 | `ads` | Copy, budget, targeting | Tipo panchina (G8 Spesa). Anche dopo, Approva qui non paga da solo | Elimina |
 | `memo_legale` | Fonti, cosa cambierebbe | Non pubblica legge. Apre/accoda un `git_pr` con la patch di `docs/` o delle pagine | Archivia il memo |
 | `memo_twitter` | Riassunto sola lettura | Archivia (non c'è niente da pubblicare) | Archivia |
-| `video_req` | **Manca video X.** Tipo azione, dove si vede in `/play`, prompt, n. richieste, still o buco still | Non pubblica. Tasti sulla card: Genera/Carica still, Scarica still, Carica MP4. Poi diventa `video_new` | Scarta la richiesta / il buco |
-| `video_new` | Player della clip, `video_key`, prompt version, still usato | `ready` in D1, resta su R2. La volta dopo il giocatore la vede | Cancella oggetti R2, riga `banned` |
-| `imagine_batch` | Quante card `need_video`, stima costo API | Sblocca C8 I2V API 1×/giorno. **Spento** di default. **Non** auto-Approva | Resta still → tu fai il video → upload |
+| `video_req` | **Manca video X** (Fase 0) oppure **In generazione API** (Fase B Visioni). Dove si vede, prompt, n. richieste, still | Fase 0: Genera/Carica still, Scarica still, Carica MP4 → `video_new`. Fase B Visioni: niente upload, il Worker carica da solo | Scarta la richiesta / il buco |
+| `video_new` | Player, `video_key`, prompt, still. Fase 0: da pubblicare. Fase B: **già live** | Fase 0: `ready`. Fase B: no-op sul play (è già `ready`); resta per audit | Cancella oggetti R2, riga `banned` |
+| `imagine_batch` | ~~Lotto 1×/giorno in beta~~ | **Non si usa.** Il pagato è per-richiesta (`GEN_API` sulla card `stripe_live`) | — |
 | `video_ban` / `video_unban` | `video_key`, motivo, frame | Segna `banned` / `ready` | Lascia com'è |
 | `invite` / `cap` | Email o nuovo cap | Grant o cambio cap | Niente |
 | `upgrade_piano` | Servizio, costo, perché | Non paga da solo. Ti lascia un reminder e un link al billing. Il click sulla carta resta tuo | Archivia |
@@ -73,7 +73,9 @@ Tasti, in ordine:
 3. **Carica MP4**. Il Worker lo mette in `{video_key}/master.mp4`. Fine: è già nella sezione giusta.
 4. Compare `video_new` col player. **Approva** = `ready`. **Scarta** = via.
 
-Richieste giocatore in cima. Sotto, buchi di catalogo senza `ready`. La volta dopo il file `ready` c'è: `/play` lo riproduce, niente nuova card.
+Richieste giocatore in cima. Sotto, buchi di catalogo senza `ready`.
+
+In **Fase B**, se `GEN_API=on` e la richiesta è Visioni, la stessa card dice "In generazione API": niente Carica MP4. Il Worker scrive R2 da solo. `video_new` compare già `ready`.
 
 ---
 
@@ -97,10 +99,9 @@ Il browser non ha chiavi. Il browser parla col server della dashboard. Il server
 |---|---|
 | `git_pr`, `prezzo`, patch da memo, flag nel repo | **Cursor** (merge/push sul repo). La dashboard non sostituisce git, nasconde git a te |
 | `mail`, `mail_massa`, `mail_visioni`, `preavviso_pagamenti`, `post_*` | **GrokBot** |
-| `stripe_live` | Cursor cambia il flag **solo** se la riga porta i vincoli verdi. GrokBot non lo tocca |
-| `video_req` (still / upload) | Worker su R2 + D1. Still da API image o da te. MP4 **sempre** da te (upload). GrokBot non c'entra |
-| `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. File già su R2 da quell'upload. GrokBot non c'entra |
-| `imagine_batch` | Cursor accende I2V API 1×/giorno, **solo se** Approvi. Il tasto non pubblica clip. Default: spento |
+| `stripe_live` | Cursor cambia i flag **solo** se i vincoli sono verdi. Accende anche `GEN_API` (I2V Visioni, upload automatico). GrokBot non lo tocca |
+| `video_req` (Fase 0 still / upload) | Worker su R2 + D1. Still da API image o da te. MP4 da te. GrokBot non c'entra |
+| `video_new`, `video_ban` / `video_unban` | Worker su R2 + D1. Fase 0: file dal tuo upload. Fase B: file già messo dal job API |
 
 Un click, un job. Se il job fallisce, la riga resta in coda con errore visibile. Non si ritenta in loop.
 
@@ -139,12 +140,12 @@ Niente dump JSON in faccia. Il JSON sta nel job, non in UI.
 
 La dashboard è comoda. Non è un bypass.
 
-- `STRIPE_LIVE` e prezzi: stessi blocchi della Fase 0 / quadro normativo. Tasto spento, non "Approva e poi vediamo".
+- `STRIPE_LIVE` e prezzi: stessi blocchi della Fase 0 / quadro normativo. Tasto spento, non "Approva e poi vediamo". `GEN_API` parte **con** quel click, non prima.
 - `mail_massa` in Fase 0: solo se c'è consenso o è transazionale del servizio (waitlist, magic link, preavviso). Altrimenti tasto spento.
 - `post_*` in Fase 0: default **coda spenta** per il live. I memo Twitter sì, i post no, finché non sblocchi tu il tipo.
 - Combat / auth / entitlement: Approva consentito (altrimenti non shippi), ma il tag `rischio` è grosso. Non auto-approva.
-- `imagine_batch` accende I2V API 1×/giorno. Default spento. Non pubblica clip. `video_new` resta il click sulla qualità.
-- Niente auto-Approva. Niente "se i test passano, merge da solo". Il punto della dashboard è il **tuo** click, non togliere il click.
+- Clip Visioni in Fase B: upload e `ready` automatici dopo policy. Non è un auto-merge git. Scarta/ban resta tuo.
+- Niente auto-Approva sul git. Niente "se i test passano, merge da solo".
 
 Un click su Scarta è definitivo per quella riga. Se Cursor deve rifare, apre una riga nuova.
 

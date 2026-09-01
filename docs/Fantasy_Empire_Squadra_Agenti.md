@@ -1,8 +1,8 @@
 # Fantasy Empire — Squadra agenti
 
 **Tipo documento:** proposta. Nessun agent creato, nessuna Automation, nessuna Routine.
-**Versione:** 1.3 — 1 settembre 2026
-**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.8
+**Versione:** 1.4 — 1 settembre 2026
+**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.9
 **Ops (principio):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, mandato:** `Fantasy_Empire_Grok_Bot_Ops.md`
@@ -57,7 +57,7 @@ Nessuno di questi posti accende i pagamenti da solo. Nessuno fissa una data.
 | C5 | Santuario | preview | `git_pr` | Zona extra locked in Fase 0. Si apre con `entitlements.status = visions`. Stesso combat. |
 | C6 | Bandiere | acceso | `stripe_live` (tasto morto se checklist rossa), flag nel repo | `PAYWALL`, `STRIPE_LIVE`, `BETA_ACCESS`. Mai un cron. |
 | C7 | Verbale | acceso | `git_pr` da `memo_legale` | Checklist Fase B nel repo. Box rossi/verdi. Non li mette verdi perché "è passato un po'". |
-| C8 | Imagine | acceso, banco tuo | `video_req`, `video_new` | Manca X → still se manca → tu carichi l'MP4. I2V API solo se Approvi `imagine_batch`. Tu Approvi la qualità. |
+| C8 | Imagine | acceso, banco in beta | `video_req`, `video_new` | Fase 0: manca X → still → tu carichi. Fase B: tubo `GEN_API` per Visioni, upload da solo. Tu Scarta/ban. |
 | C9 | Stagione | panchina | `git_pr` (tipo spento) | Season e cosmetic. Niente pay-to-win. Si siede quando c'è margine *e* tu sblocchi. |
 
 ### GrokBot (fuori dal git)
@@ -141,16 +141,16 @@ Non mette un box verde perché è agosto.
 
 Still, path R2, card in dashboard. Stessa casa del git perché il tubo è codice: Worker, secret still, coda richieste, upload.
 
-`XAI_API_KEY` sta nei secret del Worker, **solo** per **Genera still** (e per I2V se un giorno sblocchi `imagine_batch`). Non in GrokBot. Non nel browser. Non in una chat.
+`XAI_API_KEY` sta nei secret del Worker. In Fase 0 serve al massimo a **Genera still**. L'I2V API si usa solo con `GEN_API=on` (Fase B). Non in GrokBot. Non nel browser. Non in una chat. Non una chiave del giocatore.
 
-Le clip escono storte. Quindi il video lo fai tu, non l'agent:
+Due tempi, stesso posto:
 
-1. **Banco, default.** Card `video_req`: "Manca video X". Se manca lo still, Genera o Carica. Scarichi lo still, fai I2V fuori, Carica MP4 sulla stessa card. `video_new`. Approva = `ready`. Scarta = via. La volta dopo c'è.
-2. **Lotto I2V API, spento.** Solo se Approvi `imagine_batch`. C8 genera i `need_video` 1×/giorno, apre `video_new`. Non mette `ready`. Il tasto resta tuo.
+1. **Fase 0, banco.** Card `video_req`: "Manca video X". Still se manca. Tu I2V fuori, Carica MP4. `video_new`. Approva = `ready`.
+2. **Fase B, API.** `GEN_API` si accende con `stripe_live`. Richiesta Visioni: still se manca → I2V → download → `R2.put` da solo → `ready` se policy ok. Card `video_new` già live. Scarta = ban.
 
-Niente generazione in combattimento. Miss = 2D. Il giocatore *chiede*. `gen_quota` scala sulla richiesta accettata, non sul click in fight.
+Niente generazione in combattimento. Miss = 2D. `gen_quota` scala sulla richiesta accettata.
 
-Mai una chiave del giocatore. Se il player in `/play` è rotto, è Patcher. Imagine non tocca lo SP.
+Se il player in `/play` è rotto, è Patcher. Imagine non tocca lo SP.
 
 ### C9 Stagione
 
@@ -215,10 +215,10 @@ Ascolto vede un pattern
   → se è prodotto: issue → C1 Patcher
 
 giocatore richiede una clip
-  → Worker: quota, dedup chiave → video_req "Manca video X"
-  → combat resta 2D
-  → still se manca (Genera/Carica) → tu I2V → upload MP4 → video_new
-  → tu Approvi/Scarti (qualità). GrokBot non c'entra
+  → Worker: quota, dedup chiave
+  → GEN_API=off: video_req "Manca video X" → still → tu upload → Approva
+  → GEN_API=on e visions: generating → API still+I2V → R2 da solo → ready
+  → combat resta 2D finché ready. GrokBot non c'entra
 
 tu vuoi i pagamenti
   → C7 Verbale verde

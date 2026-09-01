@@ -2,7 +2,7 @@
 
 Repo di lavoro per Fantasy Empire. Per ora solo documenti di proposta. Nessun gioco deployato da questi file.
 
-Parti da `docs/Fantasy_Empire_Proposta_Commerciale.md` (v2.8).
+Parti da `docs/Fantasy_Empire_Proposta_Commerciale.md` (v2.9).
 
 | File | Contenuto |
 |---|---|
@@ -14,7 +14,7 @@ Parti da `docs/Fantasy_Empire_Proposta_Commerciale.md` (v2.8).
 | `docs/Fantasy_Empire_Decisioni_Aperte.md` | Menu da confermare (1–22) |
 | `docs/Fantasy_Empire_Quadro_Normativo.md` | Mappa normativa (anche per quando, se, si venderà) |
 | `docs/Fantasy_Empire_Video_IA_Azioni.md` | Overlay video IA nel sito |
-| `docs/Fantasy_Empire_Video_Storage_Generazione.md` | Richiesta giocatore, dashboard manca X, still poi video tuo, MP4 su R2 |
+| `docs/Fantasy_Empire_Video_Storage_Generazione.md` | Fase 0 banco tuo; Fase B Visioni: API key + upload automatico su R2 |
 | `docs/Fantasy_Empire_Grok_Bot_Ops.md` | GrokBot: mail, X, legale. Non il manutentore |
 
 Non è un parere legale. I T&C e il fisco vanno chiusi con avvocato e commercialista.

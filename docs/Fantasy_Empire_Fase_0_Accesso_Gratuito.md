@@ -1,7 +1,7 @@
 # Fantasy Empire — Fase 0: accesso gratuito, legge italiana
 
-**Documento operativo.** Completa la proposta v2.8. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
-**Versione:** 1.3 — 1 settembre 2026
+**Documento operativo.** Completa la proposta v2.9. Non sostituisce `Fantasy_Empire_Quadro_Normativo.md`.
+**Versione:** 1.4 — 1 settembre 2026
 **Ops:** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Ipotesi:** titolare persona fisica in Italia, servizio web, nessun incasso, giocatori consumatori, contenuto 18+ SFW sexy, video IA. Cursor Pro+ e GrokBot già in abbonamento.
 
@@ -57,7 +57,7 @@ Attenzione: se in landing scrivi "compra a 14,99 €" con bottone che non funzio
 
 Testo da usare, in italiano chiaro, in T&C e in landing:
 
-> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco né una sezione extra. Ogni account può chiedere un numero limitato di clip IA a settimana; le già generate si rivedono. Compare in gioco quando il titolo la pubblica, non in combattimento. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare il GDD senza pagare, oppure abbonarti. Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
+> Fantasy Empire è in accesso gratuito (beta), senza una data di fine. Non è un abbonamento. Non è una promessa di "gratis per sempre". Non stiamo vendendo il gioco né una sezione extra. Ogni account può chiedere un numero limitato di clip IA a settimana; le già generate si rivedono. Compare in gioco quando il titolo la pubblica, non in combattimento. Se decideremo di attivare i pagamenti, te lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare il GDD senza pagare, oppure abbonarti (Santuario e generazione automatica a nostro carico). Finché sei in beta, il servizio può essere sospeso o chiuso. I 30 giorni partono da quell'email, non da oggi.
 
 Quello che **non** si scrive:
 
@@ -145,11 +145,12 @@ Checklist che **blocca** l'accensione:
 - [ ] Tua conferma esplicita: Approva sulla card `preavviso_pagamenti` in dashboard. Non un KPI e non una data in agenda
 - [ ] Piano Hobby Vercel riletto / upgrade se i ToS lo chiedono
 - [ ] Riclassificazione se gli "acquisti nel videogioco" cambiano i descrittori
-- [ ] T&C Visioni: prezzo 9,99 € IVA incl., disdetta, tetto 7 vs 40, Santuario non è pay-to-win, art. 54-bis sul primo periodo
+- [ ] T&C Visioni: prezzo 9,99 € IVA incl., disdetta, tetto 7 vs 40, Santuario non è pay-to-win, generazione API a nostro carico, art. 54-bis sul primo periodo
+- [ ] Contratto xAI / provider I2V: uso commerciale, art. 50, `GEN_API` costruito in preview e **spento** in prod finché Stripe è off
 
 Cosa succede al giocatore che **non** si abbona, default di questa proposta:
 
-- `/play` resta. Il GDD resta. Tetto richieste clip resta 7/settimana. Miss = 2D.
+- `/play` resta. Il GDD resta. Tetto richieste clip resta 7/settimana. Miss = 2D. Niente job API (`GEN_API` serve `visions`). Cache delle clip già `ready` sì.
 - Il Santuario resta chiuso.
 - Niente addebito automatico. Niente carta "già in archivio": in Fase 0 non l'abbiamo chiesta.
 
