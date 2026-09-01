@@ -1,8 +1,8 @@
 # Fantasy Empire — Ops: Cursor prima, GrokBot a supporto
 
 **Tipo documento:** proposta. Nessun codice, nessuna Automation, nessuna Routine creata.
-**Versione:** 1.5 — 28 agosto 2026
-**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.7 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
+**Versione:** 1.6 — 1 settembre 2026
+**Riferimenti:** `Fantasy_Empire_Proposta_Commerciale.md` v2.8 · `Fantasy_Empire_Squadra_Agenti.md` · `Fantasy_Empire_Dashboard_Approvazioni.md` · `Fantasy_Empire_Grok_Bot_Ops.md` · `Fantasy_Empire_Fase_0_Accesso_Gratuito.md`
 **Cosa hai già:** Cursor Pro+ su questo repo. Abbonamento GrokBot. Si usano tutti e due. Non se ne compra un terzo.
 
 ---
@@ -38,14 +38,14 @@ Il profitto alza il rischio legale (recesso, IVA, policy Stripe, classificazione
 | Test, 429, tetti D1, cap beta | **Cursor** | PR + report in issue | Alzare i piani a pagamento da solo |
 | Checklist Fase B (P.IVA, Stripe, recesso) tenuta aggiornata nel repo | **Cursor** | Issue permanente, box rossi/verdi | Mettere un box verde perché "è passato abbastanza tempo" |
 | Tradurre un memo legale in patch del repo | **Cursor** | PR che cita il memo | Inventarsi norme |
-| Job Grok Imagine (still + I2V) | **Cursor** | Prima a mano tuo da `video_req`. Poi lotto 1×/giorno se Approvi `imagine_batch`. Card `video_new` per la qualità | Generare in combattimento. GrokBot con la chiave. Auto-ready |
+| Banco clip (still + upload tuo) | **tu + Cursor** | Card `video_req`: manca X, Genera/Carica still, Carica MP4. Poi `video_new` per la qualità | Generare in combattimento. GrokBot con la chiave. Auto-ready. Space/free tier nel Worker |
 | Mail a un giocatore, magic link di supporto, preavviso (il giorno in cui *tu* lo chiedi) | **GrokBot** | Inbox / AgentMail / Gmail, su tuo ordine | Newsletter a raffica, soft spam in Fase 0 |
 | Analisi X/Twitter, thread, sentiment, account da non citare | **GrokBot** | Ricerca + memo in chat o issue | Post live, ads, reply automatiche |
 | Ricerca legale (AGCOM, Garante, AI Act, policy Stripe, ToS Vercel) | **GrokBot** | Memo con fonti. Non è un parere | Cambiare i T&C in produzione da solo |
 | Upgrade Vercel / D1 / dominio | nessuno in autonomia | Proposta in issue, click billing tuo | — |
 | Accensione `STRIPE_LIVE` | **tu, da dashboard** | Riga in coda. Approva solo se checklist verde + preavviso scaduto | Automazione, cron, "è ora" |
 
-Regola corta: **git e Imagine = Cursor. Mondo fuori dal git (mail, X, legale) = GrokBot. Sì/no = dashboard. Soldi sul billing dei fornitori = tu.** I nomi dei posti: `Fantasy_Empire_Squadra_Agenti.md`.
+Regola corta: **git e tubo file = Cursor. Mondo fuori dal git (mail, X, legale) = GrokBot. Sì/no = dashboard. Video = still in dashboard, MP4 lo fai tu. Soldi sul billing dei fornitori = tu.** I nomi dei posti: `Fantasy_Empire_Squadra_Agenti.md`.
 
 ---
 
@@ -109,7 +109,7 @@ Il file `Fantasy_Empire_Grok_Bot_Ops.md` resta la specifica di dettaglio. La vec
 
 La Fase 0 non ha una fine scritta. Non "90 giorni". Non "lancio a Natale". Non un cron che accende Stripe.
 
-L'unico cron ammesso, e solo se tu Approvi `imagine_batch`, è il lotto clip 1×/giorno. Genera e carica. Non pubblica. Non tocca i pagamenti.
+L'unico cron ammesso, e solo se tu Approvi `imagine_batch`, è l'I2V API 1×/giorno. Default: spento. Genera e carica. Non pubblica. Non tocca i pagamenti.
 
 Si *può* parlare di pagamenti solo se **tutte** queste cose sono vere insieme:
 
@@ -121,7 +121,7 @@ Se il punto 2 è rosso, GrokBot può fare ricerca e Cursor può preparare le pag
 
 Landing e T&C, formula:
 
-> Accesso gratuito, senza una data di fine. Non è una promessa di gratis per sempre. Ogni account può chiedere un numero limitato di clip IA a settimana. Arrivano col lotto. Se attiveremo i pagamenti, lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare, abbonarti, o esportare il save.
+> Accesso gratuito, senza una data di fine. Non è una promessa di gratis per sempre. Ogni account può chiedere un numero limitato di clip IA a settimana. Compare in gioco quando il titolo la pubblica, non in combattimento. Se attiveremo i pagamenti, lo comunicheremo per email con almeno 30 giorni di preavviso. Potrai continuare a giocare, abbonarti, o esportare il save.
 
 Vietato in landing: "beta fino al GG/MM/AAAA", countdown, "ultimi giorni".
 

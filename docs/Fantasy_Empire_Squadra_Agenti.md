@@ -1,8 +1,8 @@
 # Fantasy Empire — Squadra agenti
 
 **Tipo documento:** proposta. Nessun agent creato, nessuna Automation, nessuna Routine.
-**Versione:** 1.2 — 28 agosto 2026
-**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.7
+**Versione:** 1.3 — 1 settembre 2026
+**Proposta:** `Fantasy_Empire_Proposta_Commerciale.md` v2.8
 **Ops (principio):** `Fantasy_Empire_Ops_Cursor_GrokBot.md`
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
 **GrokBot, mandato:** `Fantasy_Empire_Grok_Bot_Ops.md`
@@ -17,8 +17,8 @@ Tu non sei un agent. Sei il click. Approva o Scarta. Fine.
 
 | Casa | Cosa può toccare | Cosa non può |
 |---|---|---|
-| **Cursor** | Repo, PR, test, flag, pagine, schema D1, checkout in preview, job Imagine (Worker + xAI) | Inbox giocatori, X, ads, invio mail |
-| **GrokBot** | Mail, X, ricerca web/norme, bozze social | Merge, combat, Price ID, `STRIPE_LIVE`, job Imagine, file in R2 |
+| **Cursor** | Repo, PR, test, flag, pagine, schema D1, checkout in preview, tubo file (Worker, R2, card still/upload) | Inbox giocatori, X, ads, invio mail |
+| **GrokBot** | Mail, X, ricerca web/norme, bozze social | Merge, combat, Price ID, `STRIPE_LIVE`, job Imagine, file in R2, upload MP4 |
 
 Se un lavoro sta a cavallo, si spezza. Gazzetta (GrokBot) scrive un memo. Verbale (Cursor) lo traduce in PR. Tu Approvi due volte, due card diverse. Costa un click in più. Evita che GrokBot patchi lo SP in combattimento perché "l'ha letto su una delibera".
 
@@ -57,7 +57,7 @@ Nessuno di questi posti accende i pagamenti da solo. Nessuno fissa una data.
 | C5 | Santuario | preview | `git_pr` | Zona extra locked in Fase 0. Si apre con `entitlements.status = visions`. Stesso combat. |
 | C6 | Bandiere | acceso | `stripe_live` (tasto morto se checklist rossa), flag nel repo | `PAYWALL`, `STRIPE_LIVE`, `BETA_ACCESS`. Mai un cron. |
 | C7 | Verbale | acceso | `git_pr` da `memo_legale` | Checklist Fase B nel repo. Box rossi/verdi. Non li mette verdi perché "è passato un po'". |
-| C8 | Imagine | acceso, prima a mano | `video_req`, `video_new` | Lotto still+I2V. All'inizio tu. Poi 1×/giorno, tu Approvi la qualità. |
+| C8 | Imagine | acceso, banco tuo | `video_req`, `video_new` | Manca X → still se manca → tu carichi l'MP4. I2V API solo se Approvi `imagine_batch`. Tu Approvi la qualità. |
 | C9 | Stagione | panchina | `git_pr` (tipo spento) | Season e cosmetic. Niente pay-to-win. Si siede quando c'è margine *e* tu sblocchi. |
 
 ### GrokBot (fuori dal git)
@@ -139,14 +139,14 @@ Non mette un box verde perché è agosto.
 
 ### C8 Imagine
 
-Still e video. Stessa casa del git perché il tubo è codice: Worker, secret, coda richieste, R2.
+Still, path R2, card in dashboard. Stessa casa del git perché il tubo è codice: Worker, secret still, coda richieste, upload.
 
-`XAI_API_KEY` sta nei secret del Worker. Non in GrokBot. Non nel browser. Non in una chat.
+`XAI_API_KEY` sta nei secret del Worker, **solo** per **Genera still** (e per I2V se un giorno sblocchi `imagine_batch`). Non in GrokBot. Non nel browser. Non in una chat.
 
-Le clip escono storte. Quindi due tempi, stesso posto:
+Le clip escono storte. Quindi il video lo fai tu, non l'agent:
 
-1. **A mano, all'inizio.** Lista `video_req` in dashboard. Tu generi, carichi, `video_new`. Approva = `ready`. Scarta = via.
-2. **Lotto 1×/giorno, dopo che tu sblocchi `imagine_batch`.** L'agent conta le chiavi in coda, le genera tutte, carica su R2, apre `video_new`. Non mette `ready`. Il tasto resta tuo.
+1. **Banco, default.** Card `video_req`: "Manca video X". Se manca lo still, Genera o Carica. Scarichi lo still, fai I2V fuori, Carica MP4 sulla stessa card. `video_new`. Approva = `ready`. Scarta = via. La volta dopo c'è.
+2. **Lotto I2V API, spento.** Solo se Approvi `imagine_batch`. C8 genera i `need_video` 1×/giorno, apre `video_new`. Non mette `ready`. Il tasto resta tuo.
 
 Niente generazione in combattimento. Miss = 2D. Il giocatore *chiede*. `gen_quota` scala sulla richiesta accettata, non sul click in fight.
 
@@ -215,9 +215,9 @@ Ascolto vede un pattern
   → se è prodotto: issue → C1 Patcher
 
 giocatore richiede una clip
-  → Worker: quota, dedup chiave → video_req
+  → Worker: quota, dedup chiave → video_req "Manca video X"
   → combat resta 2D
-  → tu a mano, poi C8 1×/giorno: genera, R2, video_new
+  → still se manca (Genera/Carica) → tu I2V → upload MP4 → video_new
   → tu Approvi/Scarti (qualità). GrokBot non c'entra
 
 tu vuoi i pagamenti

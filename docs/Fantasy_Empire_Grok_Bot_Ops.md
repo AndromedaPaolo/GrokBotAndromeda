@@ -1,12 +1,12 @@
 # Fantasy Empire — GrokBot (supporto, non il manutentore)
 
 **Documento separato dalla proposta commerciale.**
-**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.7)
+**Riferimento prodotto:** `Fantasy_Empire_Proposta_Commerciale.md` (v2.8)
 **Squadra (nomi GrokBot):** `Fantasy_Empire_Squadra_Agenti.md`
 **Video generazione:** `Fantasy_Empire_Video_Storage_Generazione.md`
 **Ops d'insieme:** `Fantasy_Empire_Ops_Cursor_GrokBot.md` (leggere prima)
 **Dashboard:** `Fantasy_Empire_Dashboard_Approvazioni.md`
-**Versione:** 2.5 — 28 agosto 2026
+**Versione:** 2.6 — 1 settembre 2026
 **Video in-sito:** `Fantasy_Empire_Video_IA_Azioni.md`
 **Stato di questo file:** specifica. Nessuna Routine, nessuna Automation, nessun post.
 
@@ -67,7 +67,7 @@ Output: memo `memo_legale` in dashboard, con fonti e data. Scritto in cima: "non
 
 ### 3.4 Clip di gioco
 
-Non è GrokBot. Il giocatore chiede. Lotto: prima a mano tua, poi Cursor Imagine 1×/giorno. Tu Approvi `video_new`. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
+Non è GrokBot. Il giocatore chiede. Dashboard: manca X → still se manca → tu fai il video → upload → Approva `video_new`. Dettaglio: `Fantasy_Empire_Video_Storage_Generazione.md`.
 
 GrokBot, in Fase C se sblocchi Bacheca, **riusa** le clip già in cache. Non ne genera di nuove per un post.
 
@@ -105,7 +105,7 @@ KPI da inseguire *solo se stai già vendendo*: conversion landing → checkout, 
 - Non accende `STRIPE_LIVE` (la card c'è, il tasto è tuo e può essere spento).
 - Non fissa una data di fine beta.
 - Non mergea. Il merge lo fa Cursor dopo il tuo Approva in dashboard.
-- Non lancia Grok Imagine. Still e video sono Cursor (C8) + Worker.
+- Non lancia Grok Imagine. Still e upload sono Cursor (C8) + Worker + **tu**.
 - Non è una difesa in AGCM/Garante: ciò che manda resta tuo.
 - Non promette risultati di marketing.
 
@@ -115,7 +115,7 @@ KPI da inseguire *solo se stai già vendendo*: conversion landing → checkout, 
 
 Vedi `Fantasy_Empire_Ops_Cursor_GrokBot.md`.
 
-Git, flag e Imagine = Cursor, dopo Approva. Inbox, X, gazzetta = GrokBot, dopo Approva. Coda = dashboard. Soldi sul billing dei fornitori = tu.
+Git, flag e tubo file = Cursor, dopo Approva. Inbox, X, gazzetta = GrokBot, dopo Approva. Coda = dashboard. Video = still in dashboard, MP4 lo fai tu. Soldi sul billing dei fornitori = tu.
 
 ---
 
