@@ -1,9 +1,0 @@
-{
-  "id": "monster_tentacle",
-  "kind": "monster",
-  "name": "Tentacle",
-  "archetype": "tentacle",
-  "r2": "characters/monster_tentacle/",
-  "files": ["portrait.webp", "body.webp", "ref.webp"],
-  "notes": "Minaccia fantasy, non pornografia."
-}
