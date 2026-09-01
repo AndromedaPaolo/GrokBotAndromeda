@@ -88,7 +88,9 @@ export async function listPrefix(prefix) {
   const abs = path.join(localRoot(), prefix);
   try {
     const names = await readdir(abs, { recursive: true });
-    return names.map((n) => `${prefix.replace(/\/$/, "")}/${n}`.replaceAll("\\", "/"));
+    return names
+      .filter((n) => /\.[a-z0-9]+$/i.test(n))
+      .map((n) => `${prefix.replace(/\/$/, "")}/${n}`.replaceAll("\\", "/"));
   } catch {
     return [];
   }
