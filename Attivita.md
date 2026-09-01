@@ -4,157 +4,97 @@ Proposta. Non è in esecuzione. Non crea agenti, Automations, routine, sito, pac
 
 Metodo: 1 dipendente = 1 agente. 1 gruppo di strumenti = 1 agente. Ogni agente ha un compito solo. Un’azione sta in un agente solo.
 
-Niente esempi. La scelta degli agenti è sull’organigramma e sugli strumenti dello studio, non su casi.
+Niente esempi. La scelta degli agenti è sull’organigramma e sugli strumenti, non su casi.
+
+Filtro: solo mestieri dove l’agente può fare il lavoro per intero o in parte. L’uscita resta bozza. Tu Approvi. L’IA è di supporto. Responsabilità tua.
+
+Due misure.
+
+| Misura | Significa | Non significa |
+|---|---|---|
+| Intera | Il mestiere non ha atti riservati all’Albo. L’agente fa tutti i compiti del ruolo | Invio da solo. Merge da solo. Soldi da solo. Pubblicare da solo |
+| Parte | Un pezzo resta della persona: Albo, firma, presenza, soldi, decisione su persone. L’agente fa il resto | Che l’agente è l’iscritto |
+
+Casa. GrokBot: mail, PEC, calendario, computer, ricerca. Cursor: git. Come [`Squadra.md`](Squadra.md). L’operatore del mestiere è GrokBot. Se lo strumento è un archivio nel git, quello strumento è Cursor. Non due capi.
+
+Classe, da `Squadra.md`: `ruolo-non-ordinistico` / `assistente-di-studio`. `ordinistico-vietato-vendita` non sta in questo foglio.
+
+Slug: allineati a `Squadra.md` quando lo slug c’è già. Nuovi slug in coda lì, non clonati.
+
+Il sito non dice «sostituisce». Questo foglio dice se il mestiere si può fare con agenti, in bozza.
 
 ---
 
-## 1. Studio legale
+## Fuori
 
-Dettaglio, spezzature e strumenti per agente: [`StudioLegale.md`](StudioLegale.md).
+Studio legale. Studio commercialista. Erano §1 e §2. Organigramma di Albo. Firma, PEC, udienza, deposito, invio, 730, F24, Unilav restano dell’iscritto. Non sono mestieri da sostituire. Non si clona il trio per venderli come ruolo sostituito. G1 può mapparli. Gazzetta prima. Altro Approva, classe `assistente-di-studio`, non questo filtro.
 
-L’agente Avvocato è il ruolo in organigramma. Non è iscrizione all’Albo. Chi è iscritto resta l’unico che firma, PEC, udienza, deposito.
+`StudioLegale.md` è spento con loro.
+
+---
+
+## 1. Segreteria PMI
+
+Slug: `segr`. Classe: `ruolo-non-ordinistico`. Sostituzione: **intera**. Inbox: sì.
+
+Casa operatore: GrokBot. Cursor: no. Automation: no.
+
+Routine: sì, proposta, non accesa. Solo ingresso: ogni messaggio in arrivo va in magazzino. Nient’altro. Niente classifica, niente risposta, niente inoltro da solo.
+
+Il titolare dell’impresa non è un agente. È il click.
 
 ### Dipendenti
 
-Avvocato. Praticante. Segreteria. Amministrazione.
+Segreteria.
 
-Quattro persone, quattro agenti.
+Una persona, un agente.
 
 ### Strumenti (gruppi)
 
-Un gruppo = un agente.
-
 | Gruppo | Cosa copre |
 |---|---|
-| Posta | PEC, e-mail, fax |
-| Agenda | calendario, scadenze già iscritte, udienze già iscritte |
-| Fascicoli | archivio pratiche e documenti |
-| Banche dati | norme, giurisprudenza, prassi |
-| Redazione | forma dei testi |
-| Telematico | PCT, PST, portali di deposito |
-| Contabilità | registrazione, fatture, scadenziario pagamenti |
+| Posta | PEC, e-mail, fax, messaggi dello studio/ufficio |
+| Protocollo | numero, data, mittente, destinatario |
+| Agenda | calendario e scadenze già iscritte dal titolare |
+| Anagrafe | identità e recapiti di chi si rivolge |
+| Redazione | forma dei testi già decisi dal titolare |
 
-Sette gruppi, sette agenti.
+Cinque gruppi, cinque agenti.
 
-### Chi fa cosa nello studio
+### Chi fa cosa
 
 | Momento | Dipendente | Strumento |
 |---|---|---|
 | Entra una comunicazione | Segreteria (indica a chi) | Posta (canale) |
-| Si accetta o si rifiuta l’incarico | Avvocato | Fascicoli (apre o non apre) |
-| Si tiene la pratica | Avvocato dirige; Praticante studia | Fascicoli |
-| Si cercano fonti | Praticante; Avvocato decide cosa usare | Banche dati |
-| Si scrive un testo | Avvocato decide il merito; Praticante stende sotto direzione | Redazione (forma) |
-| Si tengono i tempi | Avvocato fissa | Agenda (scrive in elenco e avvisa) |
-| Si usa il portale | Avvocato decide se e quando | Telematico (mai deposito da solo) |
-| Si fattura | Avvocato decide gli importi; Amministrazione emette | Contabilità (registra) |
-| Si chiude | Avvocato chiude il merito | Fascicoli archivia; Contabilità chiude i conti |
-
----
+| Si numera | Segreteria chiede | Protocollo |
+| Si annota chi è | Segreteria chiede | Anagrafe |
+| Si tiene un tempo già detto | Titolare fissa | Agenda (scrive e avvisa) |
+| Si mette in forma un testo già deciso | Titolare decide il contenuto | Redazione (forma) |
+| Si spedisce | Titolare ha già deciso e tu hai Approvato | Posta (spedisce) |
 
 ### Agenti dipendenti
-
-#### Avvocato
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: direzione giuridica dello studio e della pratica. Unico agente che decide sul merito.
-
-Fa:
-
-- accetta o rifiuta l’incarico
-- fissa strategia e oggetto
-- decide quali fonti usare
-- decide il contenuto dei testi
-- fissa i tempi
-- decide se e quando usare il Telematico
-- firma, udienza, deposito (sempre la persona iscritta, non l’agente)
-- chiude la pratica nel merito
-- decide gli importi da far fatturare
-
-Non fa:
-
-- ricevere o spedire sul canale (Posta)
-- tenere l’elenco tempi (Agenda)
-- tenere i documenti (Fascicoli)
-- interrogare le banche dati (Banche dati)
-- impaginare (Redazione)
-- operare il portale (Telematico)
-- registrare fatture e pagamenti (Contabilità)
-- accoglienza e smistamento alle persone (Segreteria)
-- adempimenti di studio e rapporti con il commercialista (Amministrazione)
-- stendere la prima bozza sotto direzione (Praticante)
-
-#### Praticante
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: studio e prima stesura sotto la direzione dell’Avvocato. Non decide e non firma.
-
-Fa:
-
-- studia la questione su incarico dell’Avvocato
-- chiede alle Banche dati le fonti che servono allo studio
-- stende la prima bozza di testo sotto direzione
-- mette insieme il materiale di studio per udienza e deposito, sotto direzione
-- segnala all’Avvocato buchi e incoerenze nel fascicolo
-
-Non fa:
-
-- accettare incarichi
-- decidere strategia, fonti da usare, contenuto finale, tempi, telematico, chiusura, importi
-- firmare, udienza, deposito
-- Posta, Agenda, Fascicoli, Redazione, Telematico, Contabilità
-- smistamento (Segreteria)
-- adempimenti di studio (Amministrazione)
-- interrogare le banche dati (Banche dati: lui chiede, lo strumento interroga)
-- preparare la busta sul portale (Telematico)
 
 #### Segreteria
 
 Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
 
-Compito: accoglienza e smistamento alle persone. Non tocca canali, archivi, testi, portali, conti.
+Compito: accoglienza e smistamento. Non decide. Non spedisce da sola.
 
 Fa:
 
-- accoglie chi si rivolge allo studio
+- accoglie chi si rivolge
 - indica a Posta a quale persona inoltrare
-- chiede alle persone i pezzi che mancano per far girare lo studio
+- chiede i pezzi che mancano per far girare l’ufficio
+- fa annotare Protocollo e Anagrafe
+- chiede a Redazione la forma di un testo già deciso dal titolare
+- prepara la bozza di risposta. Non la spedisce
 
 Non fa:
 
-- merito, firma, udienza, deposito
-- Posta (canale: ricevere, magazzino, inoltrare, spedire)
-- Agenda (scrivere tempi, avvisare)
-- Fascicoli, Banche dati, Redazione, Telematico, Contabilità
-- stesura (Praticante)
-- direzione (Avvocato)
-- fatture e adempimenti (Amministrazione)
-
-#### Amministrazione
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: economia e adempimenti dello studio. Non tocca il merito e non registra.
-
-Fa:
-
-- propone e chiude gli importi con l’Avvocato
-- emette la richiesta di parcella / fattura (il numero e la registrazione li fa Contabilità)
-- adempimenti dello studio
-- rapporti con il commercialista
-- fornitori e spese di studio
-
-Non fa:
-
-- merito, firma, udienza, deposito
-- Posta, Agenda, Fascicoli, Banche dati, Redazione, Telematico
-- registrare, numerare, scadenziario pagamenti (Contabilità)
-- accoglienza (Segreteria)
-- stesura (Praticante)
-
----
+- fissare i tempi (titolare)
+- contenuto dei testi (titolare)
+- Posta (canale), Protocollo (numero), Agenda (elenco), Anagrafe (schede), Redazione (forma)
+- soldi, contratti, iscrizioni, cancellazioni
 
 ### Agenti strumenti
 
@@ -162,22 +102,23 @@ Non fa:
 
 Casa: GrokBot. Cursor: no. Automation: no.
 
-Routine: sì, proposta, non accesa. Solo ingresso: ogni messaggio in arrivo sullo studio va in magazzino. Nient’altro. Niente classifica, niente risposta, niente inoltro da solo.
+Routine: sì, proposta, non accesa. Solo ingresso.
 
 Compito: canale. Entra e esce. Non legge il merito.
 
-Fa:
+Fa: riceve, magazzino grezzo, inoltra a chi Segreteria ha indicato, spedisce il testo già deciso dopo la tua approvazione.
 
-- riceve PEC, e-mail, fax
-- mette in magazzino
-- inoltra alla persona che Segreteria ha indicato
-- spedisce il testo già deciso e già firmato da chi deve firmare
+Non fa: classificare, riassumere, rispondere, scegliere a chi inoltrare, numerare.
 
-Non fa:
+#### Protocollo
 
-- classificare, etichettare, riassumere, rispondere
-- Agenda, Fascicoli, Banche dati, Redazione, Telematico, Contabilità
-- compiti dei quattro dipendenti
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: registro. Numero, data, mittente, destinatario.
+
+Fa: numera, annota, collega all’anagrafe se la scheda esiste.
+
+Non fa: ricevere, tenere il file, classificare il merito.
 
 #### Agenda
 
@@ -185,500 +126,790 @@ Casa: GrokBot. Cursor: no. Automation: no.
 
 Routine: opzionale, proposta, spenta. Se un giorno si accende: elenca solo i tempi già iscritti. Non iscrive.
 
-Compito: elenco. Scrive i tempi che l’Avvocato ha già fissato. Non calcola e non fissa.
+Compito: elenco dei tempi già fissati dal titolare. Avvisa.
 
-Fa:
+Non fa: calcolare, fissare, inventare scadenze.
 
-- scrive in elenco scadenze e udienze già fissate dall’Avvocato
-- avvisa chi è in elenco
-- risponde su ciò che è già scritto in elenco
-
-Non fa:
-
-- calcolare termini
-- fissare i tempi (Avvocato)
-- Posta, Fascicoli, Banche dati, Redazione, Telematico, Contabilità
-- compiti dei quattro dipendenti
-
-#### Fascicoli
+#### Anagrafe
 
 Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
 
-Compito: archivio. Tiene. Non valuta.
+Compito: identità e recapiti. Non i documenti di merito.
 
-Fa:
+Fa: apre e aggiorna schede, risponde chi è e come si raggiunge.
 
-- apre il fascicolo quando l’Avvocato ha accettato
-- tiene i documenti
-- indice e recupero
-- archivia quando l’Avvocato ha chiuso il merito
-
-Non fa:
-
-- accettare incarichi
-- valutare, riassumere, redigere
-- Posta, Agenda, Banche dati, Redazione, Telematico, Contabilità
-- compiti dei quattro dipendenti
-
-#### Banche dati
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: interrogare le fonti. Non sceglie e non scrive atti.
-
-Fa:
-
-- interroga norme, giurisprudenza, prassi
-- estrae il testo trovato
-- indica data e fonte
-
-Non fa:
-
-- decidere quali fonti usare (Avvocato)
-- stendere testi (Praticante / Redazione)
-- Posta, Agenda, Fascicoli, Redazione, Telematico, Contabilità
-- firma, udienza, deposito
+Non fa: accogliere, decidere se è un incarico.
 
 #### Redazione
 
 Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
 
-Compito: forma. Non decide il contenuto.
+Compito: forma. Non il contenuto.
 
-Fa:
+Fa: impagina, versioni, controllo forma. Restituisce identico nel merito.
 
-- impagina
-- tiene le versioni
-- controlla la forma
-
-Non fa:
-
-- contenuto giuridico
-- prima stesura di merito (Praticante)
-- Posta, Agenda, Fascicoli, Banche dati, Telematico, Contabilità
-- firma, deposito
-
-#### Telematico
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no. Vietato accenderne una.
-
-Compito: interfaccia dei portali. Non deposita.
-
-Fa:
-
-- apre il portale
-- mostra lo stato
-- prepara la busta su testi e firme già pronti
-- si ferma prima del deposito
-
-Non fa:
-
-- deposito
-- firma digitale
-- Posta, Agenda, Fascicoli, Banche dati, Redazione, Contabilità
-- decidere se e quando (Avvocato)
-
-#### Contabilità
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: registrazione. Non decide gli importi.
-
-Fa:
-
-- numera e registra la fattura / parcella già emessa da Amministrazione
-- tiene lo scadenziario pagamenti
-- chiude i conti della pratica quando l’Avvocato ha chiuso il merito e Amministrazione ha chiuso gli importi
-
-Non fa:
-
-- decidere importi (Avvocato / Amministrazione)
-- emettere la richiesta (Amministrazione)
-- Posta, Agenda, Fascicoli, Banche dati, Redazione, Telematico
-- merito
-
----
+Non fa: scrivere il contenuto, spedire.
 
 ### Cosa non c’è
 
-Nessun agente di questa attività è in Cursor. Cursor è la fabbrica (`Squadra.md`).
-
-Nessuna Automation.
-
-Routine: solo Posta (ingresso, proposta, non accesa). Agenda spenta. Telematico vietato.
-
-Niente sito, pack, Stripe, merge.
+Nessuna Automation. Telematico no. Contabilità no. Banche dati no. Niente sito, pack, Stripe, merge.
 
 ### Cosa resta
 
-Paolo Approves su ogni accensione.
+Paolo Approves su ogni accensione e su ogni uscita.
 
 ---
 
-## 2. Studio commercialista
+## 2. Copy SEO locale
 
-Agenti propri. Non sono quelli del §1. Due studi, due organigrammi.
+Slug: `copy`. Classe: `ruolo-non-ordinistico`. Sostituzione: **intera** sulla bozza. Inbox: no.
 
-L’agente Commercialista è il ruolo in organigramma. Non è iscrizione all’Albo. Chi è iscritto resta l’unico che firma, PEC, invio.
+Casa operatore: GrokBot. Cursor: sì, se il testo sta nel git. Automation: no. Routine: no.
 
-Non è il consulente del lavoro. Se lo studio ha un iscritto all’albo dei consulenti del lavoro, i documenti di lavoro li firma lui.
+Il titolare decide cosa si pubblica. L’agente non pubblica.
 
 ### Dipendenti
 
-Commercialista. Praticante. Segreteria. Amministrazione.
+Copy.
 
-Quattro persone, quattro agenti.
+Una persona, un agente.
 
 ### Strumenti (gruppi)
 
-Un gruppo = un agente.
-
 | Gruppo | Cosa copre |
 |---|---|
-| Posta | PEC, e-mail, fax |
-| Agenda | calendario, scadenze già iscritte |
-| Fascicoli | anagrafe e documenti del cliente |
-| Banche dati | norme, prassi, giurisprudenza |
-| Redazione | forma dei testi |
-| Telematico | Entratel, portali AE, INPS, CCIAA, SDI |
-| Scritture | gestionale dei clienti |
-| Paghe | software paghe e contributi |
-| Conti studio | registrazione parcelle e pagamenti dello studio |
+| Fonti | ricerca web, pagine già pubbliche, materiali già dati dal titolare |
+| Pagine | archivio dei testi nel git o nella cartella del pack |
+| Redazione | forma, titolo, meta, versioni |
 
-Nove gruppi, nove agenti.
+Tre gruppi, tre agenti.
 
-### Chi fa cosa nello studio
+### Chi fa cosa
 
 | Momento | Dipendente | Strumento |
 |---|---|---|
-| Entra una comunicazione | Segreteria (indica a chi) | Posta (canale) |
-| Si accetta o si rifiuta l’incarico | Commercialista | Fascicoli (apre o non apre) |
-| Si tiene il cliente | Commercialista dirige; Praticante studia | Fascicoli |
-| Si tengono le scritture | Commercialista decide; Praticante propone | Scritture (registra) |
-| Si tengono le paghe | Commercialista decide | Paghe (elabora) |
-| Si cercano fonti | Praticante; Commercialista decide cosa usare | Banche dati |
-| Si scrive un testo | Commercialista decide il merito; Praticante stende sotto direzione | Redazione (forma) |
-| Si tengono i tempi | Commercialista fissa | Agenda (scrive in elenco e avvisa) |
-| Si usa il portale | Commercialista decide se e quando | Telematico (mai invio da solo) |
-| Si fattura lo studio | Commercialista decide gli importi; Amministrazione emette | Conti studio (registra) |
-| Si chiude | Commercialista chiude il merito | Fascicoli archivia; Scritture chiude i sezionali cliente; Conti studio chiude i conti dello studio |
-
----
+| Si raccolgono materiali già pubblici o già dati | Copy chiede | Fonti (estrae) |
+| Si stende la bozza | Copy | Pagine (tiene le versioni) |
+| Si mette in forma | Copy consegna | Redazione |
+| Si pubblica | Titolare. Tu Approvi | nessuno di questi |
 
 ### Agenti dipendenti
 
-#### Commercialista
+#### Copy
 
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+Casa: GrokBot. Cursor: sì, se scrive nel git. Automation: no. Routine: no.
 
-Compito: direzione professionale dello studio e dell’incarico. Unico agente che decide sul merito.
-
-Fa:
-
-- accetta o rifiuta l’incarico
-- fissa oggetto e perimetro
-- decide interpretazione e classificazione
-- decide quali fonti usare
-- decide il contenuto dei testi
-- fissa i tempi
-- decide se e quando usare il Telematico
-- firma e invio (sempre la persona iscritta, non l’agente)
-- chiude l’incarico nel merito
-- decide gli importi da far fatturare allo studio
-
-Non fa:
-
-- ricevere o spedire sul canale (Posta)
-- scrivere l’elenco tempi (Agenda)
-- tenere i documenti (Fascicoli)
-- interrogare le banche dati (Banche dati)
-- impaginare (Redazione)
-- operare il portale (Telematico)
-- registrare le scritture dei clienti (Scritture)
-- elaborare i cedolini (Paghe)
-- registrare le parcelle dello studio (Conti studio)
-- accoglienza e smistamento alle persone (Segreteria)
-- adempimenti e fornitori dello studio (Amministrazione)
-- stendere la prima bozza sotto direzione (Praticante)
-
-#### Praticante
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: studio, prima classificazione e prima stesura sotto la direzione del Commercialista. Non decide e non firma.
+Compito: bozza dei testi locali. Non pubblica. Non compra ads.
 
 Fa:
 
-- studia la questione su incarico del Commercialista
-- chiede alle Banche dati le fonti che servono allo studio
-- propone la prima classificazione sotto direzione
-- stende la prima bozza di testo sotto direzione
-- mette insieme il materiale per adempimenti e invii, sotto direzione
-- segnala al Commercialista buchi e incoerenze nel fascicolo
+- chiede a Fonti i materiali
+- stende titolo, corpo, meta
+- consegna a Redazione
+- tiene le versioni in Pagine
+- segnala se manca un fatto già dato. Non lo inventa
 
 Non fa:
 
-- accettare incarichi
-- decidere interpretazione, classificazione finale, fonti da usare, contenuto finale, tempi, telematico, chiusura, importi, cosa va in Scritture e in Paghe
-- firmare, inviare
-- Posta, Agenda, Fascicoli, Redazione, Telematico, Scritture, Paghe, Conti studio
-- smistamento (Segreteria)
-- adempimenti di studio (Amministrazione)
-- interrogare le banche dati (Banche dati: lui chiede, lo strumento interroga)
-- preparare il file sul portale (Telematico)
-- registrare (Scritture)
-- elaborare i cedolini (Paghe)
+- pubblicare
+- ads, tracking, pixel
+- inventare recensioni, premi, numeri
+- Posta verso il cliente finale
+- soldi, contratti
 
-#### Segreteria
+### Agenti strumenti
+
+#### Fonti
 
 Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
 
-Compito: accoglienza e smistamento alle persone. Non tocca canali, archivi, testi, portali, gestionali, conti.
+Compito: interrogare materiali già pubblici o già consegnati. Non sceglie la linea.
 
-Fa:
+Fa: estrae, indica data e fonte, tiene traccia di cosa è stato chiesto.
 
-- accoglie chi si rivolge allo studio
-- indica a Posta a quale persona inoltrare
-- chiede alle persone i pezzi che mancano per far girare lo studio
+Non fa: stendere, pubblicare, decidere la linea.
 
-Non fa:
+#### Pagine
 
-- merito, firma, invio
-- Posta (canale: ricevere, magazzino, inoltrare, spedire)
-- Agenda (scrivere tempi, avvisare)
-- Fascicoli, Banche dati, Redazione, Telematico, Scritture, Paghe, Conti studio
-- stesura (Praticante)
-- direzione (Commercialista)
-- fatture e adempimenti dello studio (Amministrazione)
+Casa: Cursor. GrokBot: no, se il testo è git. Automation: no. Routine: no.
 
-#### Amministrazione
+Compito: archivio dei testi. Tiene. Non valuta.
 
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+Fa: mette il file, indice, versioni, recupero.
 
-Compito: economia e adempimenti dello studio. Non tocca il merito dei clienti e non registra.
+Non fa: merge, publish, copiare segreti del cliente nel pack di laboratorio.
 
-Fa:
+#### Redazione
 
-- propone e chiude gli importi con il Commercialista
-- emette la richiesta di parcella / fattura dello studio (il numero e la registrazione li fa Conti studio)
-- adempimenti dello studio
-- fornitori e spese di studio
+Casa: GrokBot. Cursor: sì, se la forma sta nel git. Automation: no. Routine: no.
 
-Non fa:
+Compito: forma. Non il contenuto commerciale.
 
-- merito, firma, invio
-- Posta, Agenda, Fascicoli, Banche dati, Redazione, Telematico, Scritture, Paghe
-- registrare, numerare, scadenziario pagamenti dello studio (Conti studio)
-- scritture dei clienti (Scritture)
-- cedolini (Paghe)
-- accoglienza (Segreteria)
-- stesura (Praticante)
+Fa: impagina, meta complete, versioni in forma.
+
+Non fa: inventare fatti, pubblicare.
+
+### Cosa non c’è
+
+Inbox no. Routine no. Ads no. Niente Stripe, merge da solo.
+
+### Cosa resta
+
+Pubblicazione e merge: tu.
 
 ---
+
+## 3. Catalogo e-commerce
+
+Slug: `cat`. Classe: `ruolo-non-ordinistico`. Sostituzione: **intera** sulle schede. Inbox: no.
+
+Casa operatore: GrokBot. Cursor: sì, se il catalogo è nel git. Automation: no. Routine: no.
+
+Prezzo, stock vero, messa in vendita: titolare.
+
+### Dipendenti
+
+Catalogo.
+
+Una persona, un agente.
+
+### Strumenti (gruppi)
+
+| Gruppo | Cosa copre |
+|---|---|
+| Schede | testi, attributi, varianti già detti |
+| Magazzino | giacenze già scritte da altri |
+| Canale | vetrina, marketplace. Non pubblica da solo |
+| Redazione | forma della scheda |
+
+Quattro gruppi, quattro agenti.
+
+### Chi fa cosa
+
+| Momento | Dipendente | Strumento |
+|---|---|---|
+| Arrivano dati prodotto già decisi | Catalogo | Schede (tiene) |
+| Si legge lo stock già scritto | Catalogo legge | Magazzino |
+| Si mette in forma la scheda | Catalogo consegna | Redazione |
+| Si mette in vendita | Titolare | Canale (prepara, non preme) |
+
+### Agenti dipendenti
+
+#### Catalogo
+
+Casa: GrokBot. Cursor: sì, se le schede sono git. Automation: no. Routine: no.
+
+Compito: schede prodotto. Non vende. Non compra.
+
+Fa:
+
+- stende la scheda su dati già dati
+- allinea attributi e varianti già detti
+- legge Magazzino. Non lo cambia
+- consegna a Redazione
+- prepara il pezzo per Canale. Non pubblica
+
+Non fa:
+
+- prezzo finale, sconto, messa in vendita
+- inventare certificazioni, materiali, recensioni
+- pagare, spedire, rimborsare
+- Posta al cliente
+
+### Agenti strumenti
+
+#### Schede
+
+Casa: Cursor, se git. Altrimenti GrokBot. Automation: no. Routine: no.
+
+Compito: archivio schede. Tiene.
+
+Non fa: pubblicare, cambiare il prezzo.
+
+#### Magazzino
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: leggere giacenze già scritte. Non movimenta.
+
+Non fa: inventare stock, ordinare merce, fare inventario fisico.
+
+#### Canale
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no. Vietato accenderne una che pubblichi da sola.
+
+Compito: preparare la messa in vetrina. Non preme.
+
+Non fa: pubblicare, ads, cambiare prezzo live.
+
+#### Redazione
+
+Casa: GrokBot. Cursor: sì se git. Automation: no. Routine: no.
+
+Compito: forma della scheda. Non i fatti.
+
+### Cosa non c’è
+
+Inbox no. Pagamenti no. Spedizioni no.
+
+### Cosa resta
+
+Prezzo, stock, publish: tu.
+
+---
+
+## 4. Verbali e protocollo
+
+Slug: `verb`. Classe: `ruolo-non-ordinistico`. Sostituzione: **intera** sul verbale in bozza. Inbox: sì.
+
+Casa operatore: GrokBot. Cursor: no. Automation: no.
+
+Routine: Posta ingresso, proposta, non accesa.
+
+Non è il presidente. Non è il notaio. Non è l’amministratore di condominio iscritto.
+
+### Dipendenti
+
+Segretario.
+
+Una persona, un agente.
+
+### Strumenti (gruppi)
+
+| Gruppo | Cosa copre |
+|---|---|
+| Posta | convocate e messaggi già firmati da chi deve |
+| Protocollo | numero, data, mittente, destinatario |
+| Agenda | date già fissate |
+| Archivio | delibere e verbali già approvati |
+| Redazione | forma del verbale |
+
+Cinque gruppi, cinque agenti.
+
+### Chi fa cosa
+
+| Momento | Dipendente | Strumento |
+|---|---|---|
+| Entra una comunicazione | Segretario indica | Posta |
+| Si numera | Segretario chiede | Protocollo |
+| Si tiene la data già fissata | Chi presiede fissa | Agenda |
+| Si stende il verbale | Segretario | Redazione (forma) |
+| Si archivia | Dopo che chi presiede ha approvato | Archivio |
+| Si spedisce la convocata | Testo già deciso e firmato, tu Approvi | Posta |
+
+### Agenti dipendenti
+
+#### Segretario
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: protocollo e bozza di verbale. Non delibera. Non vota.
+
+Fa:
+
+- indica a Posta a chi inoltrare
+- fa numerare
+- stende la bozza di verbale su quanto già detto in seduta o già messo a verbale dal presidente
+- consegna a Redazione
+- fa archiviare dopo l’approvazione di chi presiede
+- prepara la convocata sul testo già deciso. Non la spedisce da solo
+
+Non fa:
+
+- votare, presiedere, firmare
+- inventare delibere
+- millesimi, riparti, spese (quello è `condo`, altro organigramma)
+- soldi, contratti, PEC di merito al posto di chi deve firmare
 
 ### Agenti strumenti
 
 #### Posta
 
-Casa: GrokBot. Cursor: no. Automation: no.
+Casa: GrokBot. Cursor: no. Automation: no. Routine: ingresso, proposta, spenta.
 
-Routine: sì, proposta, non accesa. Solo ingresso: ogni messaggio in arrivo sullo studio va in magazzino. Nient’altro. Niente classifica, niente risposta, niente inoltro da solo.
+Compito: canale. Non classifica.
 
-Compito: canale. Entra e esce. Non legge il merito.
+#### Protocollo
 
-Fa:
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
 
-- riceve PEC, e-mail, fax
-- mette in magazzino
-- inoltra alla persona che Segreteria ha indicato
-- spedisce il testo già deciso e già firmato da chi deve firmare
-
-Non fa:
-
-- classificare, etichettare, riassumere, rispondere
-- Agenda, Fascicoli, Banche dati, Redazione, Telematico, Scritture, Paghe, Conti studio
-- compiti dei quattro dipendenti
+Compito: registro.
 
 #### Agenda
 
-Casa: GrokBot. Cursor: no. Automation: no.
+Casa: GrokBot. Cursor: no. Automation: no. Routine: opzionale, spenta.
 
-Routine: opzionale, proposta, spenta. Se un giorno si accende: elenca solo i tempi già iscritti. Non iscrive.
+Compito: elenco date già fissate. Non fissa.
 
-Compito: elenco. Scrive i tempi che il Commercialista ha già fissato. Non calcola e non fissa.
+#### Archivio
 
-Fa:
+Casa: GrokBot. Cursor: sì, se i verbali stanno nel git. Automation: no. Routine: no.
 
-- scrive in elenco le scadenze già fissate dal Commercialista
-- avvisa chi è in elenco
-- risponde su ciò che è già scritto in elenco
-
-Non fa:
-
-- calcolare termini
-- fissare i tempi (Commercialista)
-- Posta, Fascicoli, Banche dati, Redazione, Telematico, Scritture, Paghe, Conti studio
-- compiti dei quattro dipendenti
-
-#### Fascicoli
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: archivio. Tiene. Non valuta.
-
-Fa:
-
-- apre il fascicolo quando il Commercialista ha accettato
-- tiene anagrafe e documenti del cliente
-- indice e recupero
-- archivia quando il Commercialista ha chiuso il merito
-
-Non fa:
-
-- accettare incarichi
-- valutare, riassumere, redigere, classificare
-- Posta, Agenda, Banche dati, Redazione, Telematico, Scritture, Paghe, Conti studio
-- compiti dei quattro dipendenti
-
-#### Banche dati
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: interrogare le fonti. Non sceglie e non scrive.
-
-Fa:
-
-- interroga norme, prassi, giurisprudenza
-- estrae il testo trovato
-- indica data e fonte
-
-Non fa:
-
-- decidere quali fonti usare (Commercialista)
-- stendere testi (Praticante / Redazione)
-- Posta, Agenda, Fascicoli, Redazione, Telematico, Scritture, Paghe, Conti studio
-- firma, invio
+Compito: tiene i verbali già approvati. Non valuta.
 
 #### Redazione
 
 Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
 
-Compito: forma. Non decide il contenuto.
-
-Fa:
-
-- impagina
-- tiene le versioni
-- controlla la forma
-
-Non fa:
-
-- contenuto professionale
-- prima stesura di merito (Praticante)
-- Posta, Agenda, Fascicoli, Banche dati, Telematico, Scritture, Paghe, Conti studio
-- firma, invio
-
-#### Telematico
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no. Vietato accenderne una.
-
-Compito: interfaccia dei portali. Non invia.
-
-Fa:
-
-- apre il portale
-- mostra lo stato
-- prepara il file su dati e firme già pronti
-- si ferma prima dell’invio
-
-Non fa:
-
-- invio
-- firma digitale
-- Posta, Agenda, Fascicoli, Banche dati, Redazione, Scritture, Paghe, Conti studio
-- decidere se e quando (Commercialista)
-- registrare (Scritture)
-- elaborare i cedolini (Paghe)
-
-#### Scritture
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: gestionale dei clienti. Registra. Non classifica e non invia.
-
-Fa:
-
-- registra le scritture già decise dal Commercialista
-- tiene i sezionali del gestionale
-- produce i prospetti calcolati dal gestionale
-- chiude i sezionali del cliente quando il Commercialista ha chiuso il merito
-
-Non fa:
-
-- classificare, interpretare (Commercialista)
-- prima proposta di classificazione (Praticante)
-- elaborare i cedolini (Paghe)
-- registrare le parcelle dello studio (Conti studio)
-- invio (Telematico)
-- Posta, Agenda, Fascicoli, Banche dati, Redazione
-- compiti dei quattro dipendenti
-
-#### Paghe
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: software paghe. Elabora. Non assume, non decide la retribuzione, non invia.
-
-Fa:
-
-- elabora cedolini e contributi su dati e scelte già decisi dal Commercialista
-- tiene l’anagrafe dei lavoratori nel software paghe
-- produce i prospetti di paga calcolati dal software
-
-Non fa:
-
-- decidere assunzioni, cessazioni, retribuzioni (Commercialista)
-- invio (Telematico)
-- registrare le scritture dei clienti (Scritture)
-- registrare le parcelle dello studio (Conti studio)
-- Posta, Agenda, Fascicoli, Banche dati, Redazione
-- compiti dei quattro dipendenti
-
-#### Conti studio
-
-Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
-
-Compito: registrazione dello studio. Non tocca i clienti.
-
-Fa:
-
-- numera e registra la fattura / parcella già emessa da Amministrazione
-- tiene lo scadenziario pagamenti dello studio
-- chiude i conti dello studio sull’incarico quando il Commercialista ha chiuso il merito e Amministrazione ha chiuso gli importi
-
-Non fa:
-
-- decidere importi (Commercialista / Amministrazione)
-- emettere la richiesta (Amministrazione)
-- scritture dei clienti (Scritture)
-- cedolini (Paghe)
-- Posta, Agenda, Fascicoli, Banche dati, Redazione, Telematico
-- merito
-
----
+Compito: forma del verbale. Non il voto.
 
 ### Cosa non c’è
 
-Nessun agente di questa attività è in Cursor. Cursor è la fabbrica (`Squadra.md`).
-
-Nessuna Automation.
-
-Routine: solo Posta (ingresso, proposta, non accesa). Agenda spenta. Telematico vietato.
-
-Niente sito, pack, Stripe, merge.
+Notaio no. Amministratore condominiale iscritto no. Cassa no.
 
 ### Cosa resta
 
-Stessa griglia sulle attività successive, quando le numeri.
+Firma di chi presiede. Tua approvazione sull’invio.
+
+---
+
+## 5. Customer care e-commerce
+
+Slug: `care`. Classe: `ruolo-non-ordinistico`. Sostituzione: **parte**. Inbox: sì.
+
+Intera sul ticket: legge, classifica, bozza, tracking già vero. Parte su rimborso, reso economico, accredito.
+
+Casa operatore: GrokBot. Cursor: no. Automation: no.
+
+Routine: Posta ingresso, proposta, non accesa.
+
+### Dipendenti
+
+Care.
+
+Una persona, un agente.
+
+### Strumenti (gruppi)
+
+| Gruppo | Cosa copre |
+|---|---|
+| Posta | ticket in mail |
+| Ordini | stato ordine già scritto dal gestionale |
+| Tracking | spedizione già scritta dal corriere |
+| Magazzino | reso merce già registrato |
+| Redazione | forma della risposta |
+
+Cinque gruppi, cinque agenti.
+
+### Chi fa cosa
+
+| Momento | Dipendente | Strumento |
+|---|---|---|
+| Entra un ticket | Care | Posta |
+| Si legge l’ordine | Care chiede | Ordini |
+| Si legge la spedizione | Care chiede | Tracking |
+| Si risponde | Care stende, tu Approvi | Redazione, poi Posta |
+| Si rimborsa | Titolare | nessuno di questi |
+
+### Agenti dipendenti
+
+#### Care
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: ticket. Non accredita.
+
+Fa:
+
+- legge il ticket
+- chiede a Ordini e Tracking lo stato già scritto
+- stende la bozza. Non inventa il tracking
+- consegna a Redazione
+- chiede a Posta di spedire dopo la tua approvazione
+- ferma e passa al titolare: rimborso, accredito, minaccia legale, AGCM
+
+Non fa:
+
+- accreditare, rimborsare, scontare da solo
+- inventare tracking o giacenza
+- cambiare l’ordine
+- Posta (canale), Ordini (registro), Tracking (corriere)
+
+### Agenti strumenti
+
+#### Posta
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: ingresso, proposta, spenta.
+
+Compito: canale del ticket. Casella dell’agente, non la Gmail del titolare.
+
+Non fa: rispondere da sola.
+
+#### Ordini
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: leggere lo stato ordine già scritto. Non lo cambia.
+
+#### Tracking
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: leggere il tracking già vero. Non lo inventa. Se manca, dice che manca.
+
+#### Magazzino
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: leggere se il reso merce è già registrato. Non movimenta.
+
+#### Redazione
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: forma della risposta. Non i fatti.
+
+### Cosa non c’è
+
+Cassa no. Stripe no. Routine di invio no.
+
+### Cosa resta
+
+Rimborso, accredito, variazione ordine, invio: tu.
+
+---
+
+## 6. Helpdesk IT L1
+
+Slug: `desk`. Classe: `ruolo-non-ordinistico`. Sostituzione: **parte**. Inbox: sì.
+
+Intera sul runbook già scritto: legge il ticket, trova la scheda, stende i passi. Parte su accessi, password, produzione, acquisti.
+
+Casa operatore: GrokBot. Cursor: sì, se il runbook è git. Automation: no.
+
+Routine: Posta ingresso, proposta, non accesa.
+
+### Dipendenti
+
+Helpdesk.
+
+Una persona, un agente.
+
+### Strumenti (gruppi)
+
+| Gruppo | Cosa copre |
+|---|---|
+| Posta | ticket |
+| Runbook | procedure già scritte nel git |
+| Inventario | elenco asset già registrati |
+| Redazione | forma della risposta |
+
+Quattro gruppi, quattro agenti.
+
+### Chi fa cosa
+
+| Momento | Dipendente | Strumento |
+|---|---|---|
+| Entra un ticket | Helpdesk | Posta |
+| Si cerca la procedura già scritta | Helpdesk chiede | Runbook |
+| Si vede se l’asset è in elenco | Helpdesk chiede | Inventario |
+| Si risponde | Helpdesk stende, tu Approvi | Redazione, Posta |
+| Si crea un accesso o si tocca la produzione | Persona titolata | nessuno di questi |
+
+### Agenti dipendenti
+
+#### Helpdesk
+
+Casa: GrokBot. Cursor: no sull’invio. Automation: no. Routine: no.
+
+Compito: L1 su runbook già scritto. Non è l’amministratore di sistema.
+
+Fa:
+
+- legge il ticket
+- chiede a Runbook la scheda già scritta
+- stende i passi così come stanno
+- se il runbook non copre, ferma e passa
+- non inventa comandi
+
+Non fa:
+
+- creare account, reset password, sbloccare MFA
+- cambiare produzione, DNS, backup, fatturazione cloud
+- copiare segreti nel ticket
+- scrivere un runbook nuovo (quello è fabbrica, `Squadra.md` C1, altro Approva)
+
+### Agenti strumenti
+
+#### Posta
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: ingresso, proposta, spenta.
+
+Compito: canale ticket.
+
+#### Runbook
+
+Casa: Cursor. GrokBot: legge, non mergea. Automation: no. Routine: no.
+
+Compito: archivio procedure già scritte. Tiene. Non valuta se la procedura è giusta.
+
+Non fa: eseguire i comandi. Merge.
+
+#### Inventario
+
+Casa: GrokBot. Cursor: sì se l’elenco è git. Automation: no. Routine: no.
+
+Compito: elenco asset già registrati. Non compra. Non dismette.
+
+#### Redazione
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: forma della risposta.
+
+### Cosa non c’è
+
+Accessi da solo. Produzione da sola. Routine che esegue comandi: vietata.
+
+### Cosa resta
+
+Credenziali, produzione, acquisti, merge del runbook: tu.
+
+---
+
+## 7. Back-office ordini
+
+Slug: `ordini`. Classe: `ruolo-non-ordinistico`. Sostituzione: **parte**. Inbox: sì.
+
+Intera su conferma, elenco, tracking già vero, documenti già emessi. Parte su prezzo, sconto, acquisto merce, reso soldi.
+
+Casa operatore: GrokBot. Cursor: no. Automation: no.
+
+Routine: Posta ingresso, proposta, non accesa.
+
+### Dipendenti
+
+Back-office.
+
+Una persona, un agente.
+
+### Strumenti (gruppi)
+
+| Gruppo | Cosa copre |
+|---|---|
+| Posta | conferme, DDT, reclami di consegna |
+| Ordini | registro ordini già accettati dal titolare |
+| Tracking | spedizione già scritta |
+| Magazzino | giacenza già scritta |
+| Anagrafe | clienti già in anagrafe |
+| Redazione | forma di conferma e solleciti documentali |
+
+Sei gruppi, sei agenti.
+
+### Chi fa cosa
+
+| Momento | Dipendente | Strumento |
+|---|---|---|
+| Entra un ordine o una domanda di stato | Back-office indica | Posta |
+| Si registra l’ordine già accettato | Titolare accetta | Ordini |
+| Si legge stock e spedizione | Back-office chiede | Magazzino, Tracking |
+| Si conferma | Testo già deciso, tu Approvi | Redazione, Posta |
+| Si cambia il prezzo o si rimborsa | Titolare | nessuno di questi |
+
+### Agenti dipendenti
+
+#### Back-office
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: far girare l’ordine già accettato. Non vende. Non compra.
+
+Fa:
+
+- indica a Posta a chi inoltrare
+- chiede a Ordini, Magazzino, Tracking, Anagrafe ciò che è già scritto
+- stende conferma e aggiornamento di stato su dati già veri
+- segnala al titolare se stock o tracking mancano
+- ferma: sconto, extra, reso soldi, ordine nuovo da accettare
+
+Non fa:
+
+- accettare l’ordine
+- prezzo, sconto, resa
+- ordinare merce
+- emettere fattura (altro mestiere, altro organigramma)
+- inventare giacenza o tracking
+
+### Agenti strumenti
+
+#### Posta
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: ingresso, proposta, spenta.
+
+#### Ordini
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: registro degli ordini già accettati. Non accetta.
+
+#### Tracking
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: leggere la spedizione già vera.
+
+#### Magazzino
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: leggere la giacenza già scritta. Non movimenta.
+
+#### Anagrafe
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: clienti già in scheda. Non decide il credito.
+
+#### Redazione
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: forma. Non i prezzi.
+
+### Cosa non c’è
+
+Listino. Cassa. Fattura elettronica. Magazziniere fisico.
+
+### Cosa resta
+
+Accettazione ordine, prezzo, soldi, fattura: tu.
+
+---
+
+## 8. Assistente di studio
+
+Slug: `studio`. Classe: `assistente-di-studio`. Sostituzione: **parte**. Inbox: sì.
+
+Non è il commercialista. Non è il consulente del lavoro. Non è l’avvocato. Informativa IA al cliente se tocca una prestazione.
+
+Casa operatore: GrokBot. Cursor: no. Automation: no.
+
+Routine: Posta ingresso, proposta, non accesa. Telematico: vietato accenderne una.
+
+### Dipendenti
+
+Assistente.
+
+Una persona, un agente. L’iscritto non è un agente di questo foglio. Resta la persona.
+
+### Strumenti (gruppi)
+
+| Gruppo | Cosa copre |
+|---|---|
+| Posta | PEC, e-mail. Casella dell’assistente, non quella dell’iscritto |
+| Protocollo | numero, data, mittente, destinatario |
+| Agenda | scadenze già iscritte dall’iscritto |
+| Fascicoli | documenti del cliente già in archivio |
+| Anagrafe | identità e recapiti |
+| Redazione | forma delle bozze |
+
+Sei gruppi, sei agenti.
+
+### Chi fa cosa
+
+| Momento | Dipendente | Strumento |
+|---|---|---|
+| Entra una comunicazione | Assistente indica | Posta |
+| Si numera | Assistente chiede | Protocollo |
+| Si tiene il documento | Assistente chiede | Fascicoli |
+| Si stende una bozza sotto direzione | Assistente | Redazione |
+| Si fissa una scadenza | Iscritto | Agenda (scrive) |
+| Si firma, si invia, si chiude un adempimento riservato | Iscritto | nessuno di questi |
+
+### Agenti dipendenti
+
+#### Assistente
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: protocollo, bozze, promemoria da calendario già dello studio. Non chiude adempimenti riservati.
+
+Fa:
+
+- indica a Posta a chi inoltrare
+- fa numerare
+- recupera da Fascicoli
+- stende la prima bozza sotto direzione dell’iscritto
+- avvisa su scadenze già iscritte
+- segnala all’iscritto i pezzi che mancano
+- si ferma su 730, Unilav, F24, dichiarazione, visto, firma, invio, deposito
+
+Non fa:
+
+- interpretare norme
+- calcolare imposte, contributi, IVA da chiudere
+- firmare, PEC di merito, invio portali
+- sostituire l’Albo
+
+### Agenti strumenti
+
+#### Posta
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: ingresso, proposta, spenta.
+
+Non fa: spedire senza Approva. Non è la PEC dell’iscritto.
+
+#### Protocollo
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+#### Agenda
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: opzionale, spenta. Elenca. Non iscrive. Non calcola termini.
+
+#### Fascicoli
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: archivio. Non valuta.
+
+#### Anagrafe
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+#### Redazione
+
+Casa: GrokBot. Cursor: no. Automation: no. Routine: no.
+
+Compito: forma. Non il merito professionale.
+
+### Cosa non c’è
+
+Banche dati di merito. Telematico. Scritture. Paghe. Conti studio. Avvocato. Commercialista.
+
+### Cosa resta
+
+Ogni adempimento riservato. Firma. Invio. Tua approvazione. Informativa IA.
+
+---
+
+## Coda
+
+Stampo uguale. Non aperti. Niente trio finché G1 + il tuo sì. Slug già in `Squadra.md` o da metterci.
+
+| Slug | Attività | Sostituzione | Inbox | Casa operatore | Perché aspetta / dove si ferma |
+|---|---|---|---|---|---|
+| social | Social PMI | parte | no | GrokBot | Disclosure IA, minori, ads. Bozza sì. Publish no |
+| cv | Screening CV | parte | no | GrokBot | GDPR. Elenco e confronto su criteri già scritti. Niente scoring, niente assunzione |
+| condo | Property / condòmini | parte | sì | GrokBot | Protocollo e convocate sì. Millesimi, assemblea, avvocato del condominio no |
+| docs | Documentazione software | intera sul testo | no | Cursor | Changelog, README, istruzioni nel git. Merge = tu |
+| prenota | Prenotazioni | intera sull’agenda | sì | GrokBot | B&B, ristorante, ambulatorio non medico. Agenda e conferma. Pagamento e cartella clinica no |
+| nota | Prima nota | parte | no | GrokBot | Registra su classificazione già detta. F24, bilancio, IVA da chiudere = iscritto |
+| scuola | Segreteria scolastica | parte | sì | GrokBot | Circolari, assenze già registrate. Minori, pagelle, Albo docente no |
+| iso | Registro documenti già approvati | intera sul registro | no | Cursor | Versiona procedure già firmate. Non certifica |
+
+---
+
+## Cosa non c’è
+
+Nessun agente di questo foglio è acceso. Cursor fabbrica resta `Squadra.md`. Nessuna Automation. Routine: solo Posta ingresso, proposta, non accesa. Agenda spenta. Vietato accendere routine che inviino, pubblichino, paghino, eseguano comandi, segnalino.
+
+Niente sito, pack, Stripe, merge.
+
+Niente organigramma di Albo da vendere sostituito.
+
+## Cosa resta
+
+G1 mappa. Tu Approvi il ruolo. Poi C1/C2 e lo slug. Un’attività alla volta. `segr` prima, se la chiedi.
 
 Paolo Approves su ogni accensione.
