@@ -1,0 +1,13 @@
+{
+  "id": "tentacle_coil",
+  "kind": "monster_normal",
+  "name": "Coil",
+  "sp": 2,
+  "zone": null,
+  "character_archetype": "tentacle",
+  "r2": "cards/tentacle_coil/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_coil/art.webp" },
+  "text": "They wind tight and steal the next step.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}

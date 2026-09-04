@@ -1,0 +1,13 @@
+{
+  "id": "tentacle_slam",
+  "kind": "monster_normal",
+  "name": "Slam",
+  "sp": 3,
+  "zone": null,
+  "character_archetype": "tentacle",
+  "r2": "cards/tentacle_slam/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_slam/art.webp" },
+  "text": "A heavy crash that rattles the stone.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}
