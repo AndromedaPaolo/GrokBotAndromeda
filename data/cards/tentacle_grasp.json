@@ -1,0 +1,13 @@
+{
+  "id": "tentacle_grasp",
+  "kind": "monster_normal",
+  "name": "Grasp",
+  "sp": 2,
+  "zone": null,
+  "character_archetype": "tentacle",
+  "r2": "cards/tentacle_grasp/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_grasp/art.webp" },
+  "text": "They catch a limb and will not let go.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}

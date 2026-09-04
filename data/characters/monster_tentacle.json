@@ -5,5 +5,10 @@
   "archetype": "tentacle",
   "r2": "characters/monster_tentacle/",
   "files": ["portrait.webp", "body.webp", "ref.webp"],
-  "notes": "Minaccia fantasy, non pornografia."
+  "public": {
+    "portrait": "/media/characters/monster_tentacle/portrait.webp",
+    "body": "/media/characters/monster_tentacle/body.webp",
+    "ref": "/media/characters/monster_tentacle/ref.webp"
+  },
+  "notes": "First monster. Fantasy threat, not pornography. No human, no heroine. SFW."
 }

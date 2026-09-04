@@ -1,0 +1,13 @@
+{
+  "id": "tentacle_ink",
+  "kind": "monster_normal",
+  "name": "Ink",
+  "sp": 1,
+  "zone": null,
+  "character_archetype": "tentacle",
+  "r2": "cards/tentacle_ink/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_ink/art.webp" },
+  "text": "A dark burst that blinds the next strike.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}

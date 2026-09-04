@@ -8,3 +8,4 @@ JSON = id e regole. I file veri (webp/mp4) stanno su R2, vedi `docs/Fantasy_Empi
 Carte eroe: campo `zone` di solito `Head` | `Chest` | `Arms` | `Legs`.
 Le 6 carte starter di Selene (`slap`, `kiss`, `grab`, `tease`, `pin`, `whisper`) hanno `zone: null`: l’azione non mira a una parte del corpo. L’arte mostra solo l’azione (mano, bacio, catene…), non l’eroina.
 Carte mostro / Bond / Origin: `zone` = `null`.
+Il primo mostro Tentacle ha 5 carte normali (`tentacle_lash`, `tentacle_coil`, `tentacle_slam`, `tentacle_grasp`, `tentacle_ink`) e 1 Origin: `tentacle_birth` (carta Birth, `kind: monster_origin`, cresce +1 SP). L’arte mostra l’azione o l’evocazione, non una ragazza.

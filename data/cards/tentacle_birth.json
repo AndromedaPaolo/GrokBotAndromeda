@@ -1,0 +1,14 @@
+{
+  "id": "tentacle_birth",
+  "kind": "monster_origin",
+  "name": "Birth",
+  "sp": 4,
+  "zone": null,
+  "character_archetype": "tentacle",
+  "grows": true,
+  "r2": "cards/tentacle_birth/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_birth/art.webp" },
+  "text": "A rift tears open and the tentacle takes form.",
+  "notes": "Origin card (Birth). Summons this monster. Grows +1 SP on each growth. Art shows the summoning, not a heroine. No body zone."
+}

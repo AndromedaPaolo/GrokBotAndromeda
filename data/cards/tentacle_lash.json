@@ -1,10 +1,13 @@
 {
   "id": "tentacle_lash",
   "kind": "monster_normal",
-  "name": "Tentacle Lash",
+  "name": "Lash",
   "sp": 3,
   "zone": null,
   "character_archetype": "tentacle",
   "r2": "cards/tentacle_lash/",
-  "files": ["art.webp"]
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_lash/art.webp" },
+  "text": "A whipping strike that knocks their stance wide.",
+  "notes": "Art shows the action only. No heroine. No body zone."
 }
