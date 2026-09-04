@@ -1,0 +1,13 @@
+{
+  "id": "kiss",
+  "kind": "hero_normal",
+  "name": "Kiss",
+  "sp": 2,
+  "zone": null,
+  "character_archetype": "selene",
+  "r2": "cards/kiss/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/kiss/art.webp" },
+  "text": "A close kiss that steals their next breath.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}

@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0c0a07;
+  --bg-2: #16120c;
+  --ink: #efe6d4;
+  --muted: #b7a88a;
+  --gold: #d4b45a;
+  --gold-2: #8c6d22;
+  --wine: #7a2432;
+  --line: rgba(212, 180, 90, 0.28);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-cormorant);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(122, 36, 50, 0.22), transparent 55%),
+    radial-gradient(900px 500px at -10% 20%, rgba(140, 109, 34, 0.16), transparent 50%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.display {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.frame {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-2) 88%, black);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.gold-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #e4c878, #b48a2b);
+  color: #1a1408;
+  font-weight: 700;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.4rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.gold-btn:hover {
+  filter: brightness(1.06);
+  text-decoration: none;
+}
+
+.gold-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.8rem 1.25rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}

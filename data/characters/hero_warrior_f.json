@@ -1,0 +1,10 @@
+{
+  "id": "hero_warrior_f",
+  "kind": "hero",
+  "name": "Guerriera",
+  "archetype": "warrior_f",
+  "apparent_age": 25,
+  "r2": "characters/hero_warrior_f/",
+  "files": ["portrait.webp", "body.webp", "ref.webp"],
+  "notes": "Adulta inventata. Nessun volto reale. SFW sexy, armatura."
+}

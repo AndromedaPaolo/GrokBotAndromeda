@@ -1,0 +1,13 @@
+{
+  "id": "tease",
+  "kind": "hero_normal",
+  "name": "Tease",
+  "sp": 1,
+  "zone": null,
+  "character_archetype": "selene",
+  "r2": "cards/tease/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tease/art.webp" },
+  "text": "A lingering look that breaks their guard.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}
