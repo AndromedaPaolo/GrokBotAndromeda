@@ -1,0 +1,13 @@
+{
+  "id": "slap",
+  "kind": "hero_normal",
+  "name": "Slap",
+  "sp": 1,
+  "zone": null,
+  "character_archetype": "selene",
+  "r2": "cards/slap/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/slap/art.webp" },
+  "text": "A sudden open-hand strike that snaps their focus.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "grab",
+  "kind": "hero_normal",
+  "name": "Grab",
+  "sp": 2,
+  "zone": null,
+  "character_archetype": "selene",
+  "r2": "cards/grab/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/grab/art.webp" },
+  "text": "Seize them and hold their motion still.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}

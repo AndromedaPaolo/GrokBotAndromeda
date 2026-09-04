@@ -1,0 +1,15 @@
+{
+  "id": "hero_selene",
+  "kind": "hero",
+  "name": "Selene",
+  "archetype": "selene",
+  "apparent_age": 27,
+  "r2": "characters/hero_selene/",
+  "files": ["portrait.webp", "body.webp", "ref.webp"],
+  "public": {
+    "portrait": "/media/characters/hero_selene/portrait.webp",
+    "body": "/media/characters/hero_selene/body.webp",
+    "ref": "/media/characters/hero_selene/ref.webp"
+  },
+  "notes": "Invented adult heroine. Full-body lingerie. No real face. SFW sexy."
+}

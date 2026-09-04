@@ -1,0 +1,13 @@
+{
+  "id": "whisper",
+  "kind": "hero_normal",
+  "name": "Whisper",
+  "sp": 2,
+  "zone": null,
+  "character_archetype": "selene",
+  "r2": "cards/whisper/",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/whisper/art.webp" },
+  "text": "Soft words that make them miss a beat.",
+  "notes": "Art shows the action only. No heroine. No body zone."
+}
