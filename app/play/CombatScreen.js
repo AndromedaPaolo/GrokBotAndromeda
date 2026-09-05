@@ -128,6 +128,25 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </ol>
         </div>
 
+        <aside className="now-actor frame rounded-xl overflow-hidden flex flex-col" data-testid="now-actor">
+          <div className="relative flex-1 min-h-[220px] bg-black">
+            {actor?.body || actor?.portrait ? (
+              <img
+                src={actor.body || actor.portrait}
+                alt={actor.name}
+                className="absolute inset-0 w-full h-full object-cover object-top"
+              />
+            ) : null}
+          </div>
+          <div className="p-3">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">Di turno</p>
+            <p className="display text-2xl m-0 mt-1">{actor?.name}</p>
+            <p className="text-xs text-[var(--muted)] m-0 mt-1">
+              {actor?.side === "enemy" ? "Nemico" : "Alleato"} · AP {actor?.currentAp}
+            </p>
+          </div>
+        </aside>
+
         <section className="enemy-row">
           <div className="flex items-end justify-between gap-3 mb-2">
             <h2 className="display text-2xl sm:text-3xl m-0">Prossimo nemico</h2>

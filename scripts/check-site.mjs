@@ -187,6 +187,8 @@ const playUi = readFileSync(path.join(root, "app/play/CombatScreen.js"), "utf8")
 assert.match(playUi, /data-testid="turn-bar"/);
 assert.match(playUi, /data-testid="continue-btn"/);
 assert.match(playUi, /data-testid="skip-btn"/);
+assert.match(playUi, /data-testid="now-actor"/);
+assert.match(playUi, /Di turno/);
 assert.match(playUi, /data-testid="stage"/);
 assert.match(playUi, /Skip turn/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
