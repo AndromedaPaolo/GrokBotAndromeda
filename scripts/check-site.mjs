@@ -126,6 +126,7 @@ assert.equal(fight0.stage, null);
 for (const unit of fight0.units) {
   assert.equal(unit.apGain, 1);
   assert.equal(unit.currentAp, 1);
+  assert.ok(unit.life > 0);
 }
 
 const firstActor = combat.currentActor(fight0);
@@ -138,14 +139,94 @@ if (firstActor.side === "enemy") {
   assert.equal(combat.canSkipTurn(fight0), true);
 }
 
-const fight1 = combat.continueFight(fight0, combat.rngFromSeed(11));
+const alwaysPlay = () => 0.99;
+const fight1 = combat.continueFight(fight0, alwaysPlay);
 assert.ok(fight1.stage, "Continue must put an action on the stage");
 assert.ok(fight1.stage.media?.src);
 assert.equal(fight1.stage.hold, true);
 
-const fight2 = combat.continueFight(fight1, combat.rngFromSeed(11));
+const fight2 = combat.continueFight(fight1, alwaysPlay);
 assert.ok(fight2.stage, "Continue must not clear the stage");
-assert.ok(fight2.stage.media?.src);
+assert.ok(fight2.stage.card || fight2.stage.passed);
+assert.notEqual(
+  fight2.actorId,
+  fight1.actorId,
+  "second Continue ends the turn instead of dumping remaining AP",
+);
+const actorAfterOnePlay = fight2.units.find((u) => u.id === combat.currentActor(fight1).id);
+assert.equal(
+  actorAfterOnePlay.currentAp,
+  fight1.units.find((u) => u.id === actorAfterOnePlay.id).currentAp,
+);
+
+const fatAp = combat.createFight({
+  hero,
+  monster,
+  heroCards,
+  monsterCards: monsterPool,
+  rng: combat.rngFromSeed(11),
+});
+const fatId = fatAp.actorId;
+fatAp.units.find((u) => u.id === fatId).currentAp = 5;
+const fatPlay = combat.continueFight(fatAp, alwaysPlay);
+assert.ok(fatPlay.stage.card);
+assert.equal(fatPlay.actorId, fatId);
+assert.equal(fatPlay.stage.spent, Number(fatPlay.stage.card.sp) || 0);
+assert.equal(
+  fatPlay.units.find((u) => u.id === fatId).currentAp,
+  5 - fatPlay.stage.spent,
+);
+const fatDone = combat.continueFight(fatPlay, alwaysPlay);
+assert.notEqual(fatDone.actorId, fatId);
+assert.equal(
+  fatDone.units.find((u) => u.id === fatId).currentAp,
+  5 - fatPlay.stage.spent,
+);
+
+const banker = {
+  side: "enemy",
+  currentAp: 1,
+  playedKeys: [],
+  hand: [{ id: "tentacle_ink", sp: 1 }],
+};
+assert.equal(combat.chooseCard(banker, () => 0), null);
+assert.equal(combat.chooseCard(banker, () => 0.99)?.id, "tentacle_ink");
+
+let manual = combat.setAllyAuto(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(11),
+  }),
+  false,
+);
+let hops = 0;
+while (combat.currentActor(manual).side !== "ally" && hops < 8) {
+  const id = manual.actorId;
+  manual = combat.continueFight(manual, alwaysPlay);
+  if (manual.actorId === id) manual = combat.continueFight(manual, alwaysPlay);
+  hops += 1;
+}
+assert.equal(combat.currentActor(manual).side, "ally");
+const ally = manual.units.find((u) => u.side === "ally");
+ally.currentAp = 3;
+const slapIdx = ally.hand.findIndex((c) => c.id === "slap");
+assert.ok(slapIdx >= 0);
+ally.hand[slapIdx] = { ...ally.hand[slapIdx], recoverAp: 2 };
+const recovered = combat.playManualCard(manual, "slap");
+assert.equal(recovered.stage.spent, 1);
+assert.equal(recovered.stage.recovered, 2);
+assert.equal(recovered.units.find((u) => u.side === "ally").currentAp, 4);
+const afterManual = combat.continueFight(recovered, alwaysPlay);
+assert.notEqual(afterManual.actorId, recovered.actorId);
+const allyAfter = afterManual.units.find((u) => u.side === "ally");
+if (afterManual.round === recovered.round) {
+  assert.equal(allyAfter.currentAp, 4);
+} else {
+  assert.equal(allyAfter.currentAp, 4 + allyAfter.apGain);
+}
 
 let cursor = fight0;
 let guard = 0;
@@ -170,7 +251,7 @@ if (skipped.round === cursor.round) {
 let roundWalk = fight0;
 guard = 0;
 const leftover = {};
-while (roundWalk.round === 1 && guard < 24) {
+while (roundWalk.round === 1 && guard < 40) {
   const who = combat.currentActor(roundWalk);
   leftover[who.id] = who.currentAp;
   if (who.side === "ally") roundWalk = combat.skipTurn(roundWalk);
@@ -188,8 +269,11 @@ assert.match(playUi, /data-testid="turn-bar"/);
 assert.match(playUi, /data-testid="continue-btn"/);
 assert.match(playUi, /data-testid="skip-btn"/);
 assert.match(playUi, /data-testid="now-actor"/);
+assert.match(playUi, /data-testid="now-actor-status"/);
 assert.match(playUi, /Di turno/);
 assert.match(playUi, /data-testid="stage"/);
+assert.match(playUi, /data-testid="stage-ap"/);
+assert.match(playUi, /AP non spesi restano/);
 assert.match(playUi, /Skip turn/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 
