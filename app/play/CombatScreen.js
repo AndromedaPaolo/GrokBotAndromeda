@@ -151,14 +151,14 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
 
         <aside className="stage-col frame rounded-xl overflow-hidden flex flex-col">
           <div
-            className="relative bg-black aspect-video grid place-items-center"
+            className="relative bg-black aspect-video overflow-hidden shrink-0"
             data-testid="stage"
           >
             {media?.type === "video" && media.src ? (
               <video
                 key={media.src + (stage?.card?.id ?? "")}
                 src={media.src}
-                className="w-full h-full object-contain"
+                className="absolute inset-0 w-full h-full object-contain"
                 controls
                 playsInline
                 muted
@@ -167,10 +167,10 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               <img
                 src={media.src}
                 alt={stage?.card?.name ?? "Azione"}
-                className="w-full h-full object-contain"
+                className="absolute inset-0 w-full h-full object-contain"
               />
             ) : (
-              <div className="flex items-center justify-center gap-6 px-4 py-8">
+              <div className="absolute inset-0 flex items-center justify-center gap-6 px-4">
                 {enemy?.portrait ? (
                   <img
                     src={enemy.portrait}

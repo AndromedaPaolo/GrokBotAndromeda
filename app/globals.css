@@ -127,6 +127,7 @@ button {
 
 .stage-col {
   grid-area: stage;
+  min-height: 0;
 }
 
 @media (min-width: 960px) {
