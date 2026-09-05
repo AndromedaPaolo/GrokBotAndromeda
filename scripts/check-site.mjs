@@ -99,4 +99,48 @@ const landing = readFileSync(path.join(root, "app/page.js"), "utf8");
 assert.match(landing, /Fantasy Empire/);
 assert.doesNotMatch(landing, /9,99|14,99|Abbonati|Acquista e gioca/);
 
+const { pathToFileURL } = await import("node:url");
+const combat = await import(pathToFileURL(path.join(root, "lib/combat.js")).href);
+const rng = combat.rngFromSeed(11);
+const heroCards = Object.keys(starter).map((id) =>
+  JSON.parse(readFileSync(path.join(root, `data/cards/${id}.json`), "utf8")),
+);
+const monsterCardIds = Object.keys(tentacleCards);
+const monsterPool = monsterCardIds.map((id) =>
+  JSON.parse(readFileSync(path.join(root, `data/cards/${id}.json`), "utf8")),
+);
+const drawn = combat.drawHand(monsterPool, 6, rng);
+assert.equal(drawn.length, 6);
+assert.equal(new Set(drawn.map((c) => c.id)).size, 6);
+
+const fight0 = combat.createFight({
+  hero,
+  monster,
+  heroCards,
+  monsterCards: monsterPool,
+  rng: combat.rngFromSeed(11),
+  startingSp: 6,
+});
+assert.equal(fight0.units.find((u) => u.side === "enemy").hand.length, 6);
+assert.equal(fight0.units.find((u) => u.side === "ally").hand.length, 6);
+assert.equal(fight0.stage, null);
+
+const fight1 = combat.continueFight(fight0, combat.rngFromSeed(11));
+assert.ok(fight1.stage, "Continue must put an action on the stage");
+assert.ok(fight1.stage.media?.src);
+assert.equal(fight1.stage.hold, true);
+const heldSrc = fight1.stage.media.src;
+assert.equal(fight1.stage.media.src, heldSrc);
+
+const fight2 = combat.continueFight(fight1, combat.rngFromSeed(11));
+assert.ok(fight2.stage, "Continue must not clear the stage");
+assert.ok(fight2.stage.media?.src);
+
+const playUi = readFileSync(path.join(root, "app/play/CombatScreen.js"), "utf8");
+assert.match(playUi, /data-testid="turn-bar"/);
+assert.match(playUi, /data-testid="continue-btn"/);
+assert.match(playUi, /data-testid="stage"/);
+assert.match(playUi, /Auto combat/);
+assert.doesNotMatch(playUi, /setTimeout|setInterval/);
+
 console.log("catalog + landing checks ok");

@@ -101,3 +101,42 @@ textarea,
 button {
   font: inherit;
 }
+
+.combat-board {
+  display: grid;
+  gap: 0.85rem 1.1rem;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "turns"
+    "enemy"
+    "stage"
+    "ally";
+}
+
+.turn-bar {
+  grid-area: turns;
+}
+
+.enemy-row {
+  grid-area: enemy;
+}
+
+.ally-row {
+  grid-area: ally;
+}
+
+.stage-col {
+  grid-area: stage;
+}
+
+@media (min-width: 960px) {
+  .combat-board {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 40%);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "turns turns"
+      "enemy stage"
+      "ally stage";
+    align-items: stretch;
+  }
+}
