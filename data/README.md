@@ -9,3 +9,5 @@ Carte eroe: campo `zone` di solito `Head` | `Chest` | `Arms` | `Legs`.
 Le 6 carte starter di Selene (`slap`, `kiss`, `grab`, `tease`, `pin`, `whisper`) hanno `zone: null`: l’azione non mira a una parte del corpo. L’arte mostra solo l’azione (mano, bacio, catene…), non l’eroina.
 Carte mostro / Bond / Origin: `zone` = `null`.
 Il primo mostro Tentacle ha 5 carte normali (`tentacle_lash`, `tentacle_coil`, `tentacle_slam`, `tentacle_grasp`, `tentacle_ink`) e 1 Origin: `tentacle_birth` (carta Birth, `kind: monster_origin`, cresce +1 SP). L’arte mostra l’azione o l’evocazione, non una ragazza.
+
+Combattimento: una carta a turno (o passa). Gli AP non spesi restano e al round nuovo si somma `carte/6`. Una carta può avere `recoverAp` per restituire AP dopo il costo.

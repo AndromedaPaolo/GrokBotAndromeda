@@ -95,9 +95,67 @@ a:hover {
   font-weight: 600;
 }
 
+.ghost-btn:hover {
+  text-decoration: none;
+  border-color: var(--gold);
+}
+
+.ghost-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  filter: grayscale(1);
+  border-color: var(--line);
+  color: var(--muted);
+}
+
 input,
 select,
 textarea,
 button {
   font: inherit;
+}
+
+.combat-board {
+  display: grid;
+  gap: 0.85rem 1.1rem;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "turns"
+    "now"
+    "enemy"
+    "stage"
+    "ally";
+}
+
+.turn-bar {
+  grid-area: turns;
+}
+
+.now-actor {
+  grid-area: now;
+}
+
+.enemy-row {
+  grid-area: enemy;
+}
+
+.ally-row {
+  grid-area: ally;
+}
+
+.stage-col {
+  grid-area: stage;
+  min-height: 0;
+}
+
+@media (min-width: 960px) {
+  .combat-board {
+    grid-template-columns: 200px minmax(0, 1fr) minmax(280px, 38%);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "turns turns turns"
+      "now enemy stage"
+      "now ally stage";
+    align-items: stretch;
+  }
 }
