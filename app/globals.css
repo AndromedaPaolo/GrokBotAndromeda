@@ -95,6 +95,19 @@ a:hover {
   font-weight: 600;
 }
 
+.ghost-btn:hover {
+  text-decoration: none;
+  border-color: var(--gold);
+}
+
+.ghost-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  filter: grayscale(1);
+  border-color: var(--line);
+  color: var(--muted);
+}
+
 input,
 select,
 textarea,

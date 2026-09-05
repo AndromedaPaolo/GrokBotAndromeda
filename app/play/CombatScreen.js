@@ -4,12 +4,14 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  canSkipTurn,
   continueFight,
   createFight,
   currentActor,
   nextOfSide,
   playManualCard,
   setAllyAuto,
+  skipTurn,
 } from "@/lib/combat";
 
 function HandRow({ unit, acting, onPick }) {
@@ -62,6 +64,10 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
     setFight((prev) => continueFight(prev));
   }
 
+  function onSkip() {
+    setFight((prev) => skipTurn(prev));
+  }
+
   function onAuto(e) {
     setFight((prev) => setAllyAuto(prev, e.target.checked));
   }
@@ -85,7 +91,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
       <div className="combat-board px-3 sm:px-5 pb-6 flex-1">
         <div className="turn-bar frame rounded-xl px-3 py-2" data-testid="turn-bar">
           <p className="text-[10px] uppercase tracking-[0.22em] text-[var(--gold)] mb-2">
-            Turno {fight.round} · SP più basso agisce prima
+            Turno {fight.round} · AP più basso agisce prima
           </p>
           <ol className="flex items-stretch gap-2 overflow-x-auto">
             {fight.order.map((id, i) => {
@@ -112,7 +118,8 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                   <span>
                     <span className="block text-sm leading-tight">{unit?.name}</span>
                     <span className="block text-[10px] uppercase tracking-wider text-[var(--muted)]">
-                      {unit?.side === "enemy" ? "Nemico" : "Alleato"} · SP {unit?.currentSp}
+                      {unit?.side === "enemy" ? "Nemico" : "Alleato"} · AP {unit?.currentAp} · +
+                      {unit?.apGain}/turno
                     </span>
                   </span>
                 </li>
@@ -191,7 +198,9 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             {stage?.card ? (
               <div className="absolute left-3 bottom-3 right-3 flex justify-between gap-2 text-xs">
                 <span className="rounded-full bg-black/70 px-3 py-1">
-                  {stage.actorName} · {stage.card.name} · SP {stage.card.sp}
+                  {stage.passed
+                    ? `${stage.actorName} passa. AP conservati.`
+                    : `${stage.actorName} · ${stage.card.name} · costo ${stage.card.sp}`}
                 </span>
                 <span className="rounded-full bg-black/70 px-3 py-1 text-[var(--gold)]">
                   {media?.type === "video" ? "Video" : "2D"}
@@ -199,26 +208,46 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               </div>
             ) : (
               <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-[var(--muted)]">
-                Continua tiene lo still. Niente auto-skip.
+                {stage?.passed
+                  ? `${stage.actorName} passa. AP conservati.`
+                  : "Continua tiene lo still. Skip turn passa senza giocare."}
               </p>
             )}
           </div>
           <div className="p-3 mt-auto flex items-end justify-between gap-3">
             <p className="text-xs text-[var(--muted)] m-0 max-w-[14rem]">
               {actor
-                ? actor.side === "enemy" || fight.allyAuto
-                  ? `Tocca a ${actor.name}. Continua gioca la prossima carta.`
-                  : `Tocca a ${actor.name}. Scegli una carta, poi Continua.`
+                ? actor.side === "enemy"
+                  ? `Tocca a ${actor.name}. Continua gioca una carta a caso.`
+                  : fight.allyAuto
+                    ? `Tocca a ${actor.name}. Continua gioca, Skip turn passa.`
+                    : `Tocca a ${actor.name}. Gioca una carta o Skip turn.`
                 : null}
             </p>
-            <button
-              type="button"
-              className="gold-btn shrink-0"
-              data-testid="continue-btn"
-              onClick={onContinue}
-            >
-              Continua
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                className="ghost-btn"
+                data-testid="skip-btn"
+                disabled={!canSkipTurn(fight)}
+                title={
+                  canSkipTurn(fight)
+                    ? "Passa senza giocare. Gli AP restano."
+                    : "Il mostro gioca a caso: Skip turn è spento."
+                }
+                onClick={onSkip}
+              >
+                Skip turn
+              </button>
+              <button
+                type="button"
+                className="gold-btn"
+                data-testid="continue-btn"
+                onClick={onContinue}
+              >
+                Continua
+              </button>
+            </div>
           </div>
         </aside>
       </div>

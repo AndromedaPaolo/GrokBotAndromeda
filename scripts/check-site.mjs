@@ -119,28 +119,76 @@ const fight0 = combat.createFight({
   heroCards,
   monsterCards: monsterPool,
   rng: combat.rngFromSeed(11),
-  startingSp: 6,
 });
 assert.equal(fight0.units.find((u) => u.side === "enemy").hand.length, 6);
 assert.equal(fight0.units.find((u) => u.side === "ally").hand.length, 6);
 assert.equal(fight0.stage, null);
+for (const unit of fight0.units) {
+  assert.equal(unit.apGain, 1);
+  assert.equal(unit.currentAp, 1);
+}
+
+const firstActor = combat.currentActor(fight0);
+if (firstActor.side === "enemy") {
+  assert.equal(combat.canSkipTurn(fight0), false);
+  const ignored = combat.skipTurn(fight0);
+  assert.equal(ignored.actorId, fight0.actorId);
+  assert.equal(ignored.units.find((u) => u.id === firstActor.id).currentAp, 1);
+} else {
+  assert.equal(combat.canSkipTurn(fight0), true);
+}
 
 const fight1 = combat.continueFight(fight0, combat.rngFromSeed(11));
 assert.ok(fight1.stage, "Continue must put an action on the stage");
 assert.ok(fight1.stage.media?.src);
 assert.equal(fight1.stage.hold, true);
-const heldSrc = fight1.stage.media.src;
-assert.equal(fight1.stage.media.src, heldSrc);
 
 const fight2 = combat.continueFight(fight1, combat.rngFromSeed(11));
 assert.ok(fight2.stage, "Continue must not clear the stage");
 assert.ok(fight2.stage.media?.src);
 
+let cursor = fight0;
+let guard = 0;
+while (combat.currentActor(cursor).side !== "ally" && guard < 12) {
+  cursor = combat.continueFight(cursor, combat.rngFromSeed(30 + guard));
+  guard += 1;
+}
+assert.equal(combat.currentActor(cursor).side, "ally");
+const skipperId = cursor.actorId;
+assert.equal(combat.canSkipTurn(cursor), true);
+const apBeforeSkip = combat.currentActor(cursor).currentAp;
+const skipperGain = combat.currentActor(cursor).apGain;
+const skipped = combat.skipTurn(cursor);
+assert.notEqual(skipped.actorId, skipperId);
+const apAfterSkip = skipped.units.find((u) => u.id === skipperId).currentAp;
+if (skipped.round === cursor.round) {
+  assert.equal(apAfterSkip, apBeforeSkip);
+} else {
+  assert.equal(apAfterSkip, apBeforeSkip + skipperGain);
+}
+
+let roundWalk = fight0;
+guard = 0;
+const leftover = {};
+while (roundWalk.round === 1 && guard < 24) {
+  const who = combat.currentActor(roundWalk);
+  leftover[who.id] = who.currentAp;
+  if (who.side === "ally") roundWalk = combat.skipTurn(roundWalk);
+  else roundWalk = combat.continueFight(roundWalk, combat.rngFromSeed(40 + guard));
+  guard += 1;
+}
+assert.equal(roundWalk.round, 2);
+for (const unit of roundWalk.units) {
+  const before = leftover[unit.id] ?? unit.apGain;
+  assert.equal(unit.currentAp, before + unit.apGain);
+}
+
 const playUi = readFileSync(path.join(root, "app/play/CombatScreen.js"), "utf8");
 assert.match(playUi, /data-testid="turn-bar"/);
 assert.match(playUi, /data-testid="continue-btn"/);
+assert.match(playUi, /data-testid="skip-btn"/);
 assert.match(playUi, /data-testid="stage"/);
-assert.match(playUi, /Auto combat/);
+assert.match(playUi, /Skip turn/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 
 console.log("catalog + landing checks ok");
