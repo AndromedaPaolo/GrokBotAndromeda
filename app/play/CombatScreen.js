@@ -62,10 +62,21 @@ function stageLine(stage) {
   return bits.join(" · ");
 }
 
-function effectBadge(card) {
-  const fx = appliedEffect(card);
-  if (!fx) return "";
-  return `${fx.name} ${fx.pct}%`;
+function actorHint(actor, fight, boundNow) {
+  if (!actor) return null;
+  if (boundNow) {
+    return `Tocca a ${actor.name}, ma è immobilizzato. Continua salta il turno.`;
+  }
+  if (actor.actionsThisTurn >= 1) {
+    return `Carta giocata. Continua chiude il turno. AP restanti: ${actor.currentAp}.`;
+  }
+  if (actor.side === "enemy") {
+    return `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`;
+  }
+  if (fight.allyAuto) {
+    return `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`;
+  }
+  return `Tocca a ${actor.name}. Una carta o Skip turn. Il costo è il danno. Sulla carta: effetto, cosa fa, percentuale.`;
 }
 
 function HandRow({ unit, acting, onPick }) {
@@ -321,23 +332,13 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-[var(--muted)]">
                 {stage?.passed
                   ? stageLine(stage)
-                  : "Una carta a turno. Il costo è il danno. Ogni carta dice l'effetto, cosa fa e la percentuale."}
+                  : "Una carta a turno. Il costo è il danno. Ogni carta dice effetto, cosa fa e la percentuale."}
               </p>
             )}
           </div>
           <div className="p-3 mt-auto flex items-end justify-between gap-3">
             <p className="text-xs text-[var(--muted)] m-0 max-w-[14rem]">
-              {actor
-                ? boundNow
-                  ? `Tocca a ${actor.name}, ma è immobilizzato. Continua salta il turno.`
-                  : actor.actionsThisTurn >= 1
-                    ? `Carta giocata. Continua chiude il turno. AP restanti: ${actor.currentAp}.`
-                    : actor.side === "enemy"
-                      ? `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`
-                      : fight.allyAuto
-                        ? `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`
-                        : `Tocca a ${actor.name}. Una carta o Skip turn. Il costo è il danno. Sulla carta: effetto, cosa fa, percentuale.`}
-                : null}
+              {actorHint(actor, fight, boundNow)}
             </p>
             <div className="flex items-center gap-2 shrink-0">
               <button
