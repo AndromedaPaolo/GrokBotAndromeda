@@ -4,19 +4,67 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  STATUSES,
   canSkipTurn,
   continueFight,
   createFight,
   currentActor,
+  hasStatus,
   nextOfSide,
   playManualCard,
   setAllyAuto,
   skipTurn,
+  statusLabel,
 } from "@/lib/combat";
+
+function StatusBadges({ unit, testId }) {
+  const ids = unit?.alterations ?? [];
+  if (!ids.length) return null;
+  return (
+    <p className="flex flex-wrap gap-1 mt-1 mb-0" data-testid={testId}>
+      {ids.map((id) => (
+        <span
+          key={id}
+          title={STATUSES[id]?.hint}
+          className="rounded-full border border-[var(--gold)] px-2 py-0.5 text-[10px] uppercase tracking-wider text-[var(--gold)]"
+        >
+          {statusLabel(id)}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+function stageLine(stage) {
+  if (stage.passed && stage.boundSkip) {
+    return `${stage.actorName} è immobilizzato. Turno saltato. AP conservati (${stage.apLeft}).`;
+  }
+  if (stage.passed) {
+    return `${stage.actorName} passa. AP conservati (${stage.apLeft}).`;
+  }
+  if (!stage.card) return "";
+  const bits = [`${stage.actorName} · ${stage.card.name}`];
+  if (stage.missed) bits.push("mancato");
+  else {
+    if (stage.damage) bits.push(`Life −${stage.damage}`);
+    for (const id of stage.applied ?? []) {
+      bits.push(`${statusLabel(id)} su ${stage.foeName}`);
+    }
+    if (stage.drained) bits.push(`−${stage.drained} AP su ${stage.foeName}`);
+  }
+  bits.push(
+    `AP −${stage.spent ?? stage.card.sp}${stage.recovered ? ` · +${stage.recovered}` : ""} · restano ${stage.apLeft}`,
+  );
+  return bits.join(" · ");
+}
 
 function HandRow({ unit, acting, onPick }) {
   const clickable =
-    acting && unit.side === "ally" && !unit.auto && (unit.actionsThisTurn || 0) === 0;
+    acting &&
+    unit.side === "ally" &&
+    !unit.auto &&
+    (unit.actionsThisTurn || 0) === 0 &&
+    !hasStatus(unit, "bound");
   return (
     <div
       className="grid grid-cols-6 gap-1.5 sm:gap-2"
@@ -39,7 +87,7 @@ function HandRow({ unit, acting, onPick }) {
                   : "border-[var(--line)]"
             } ${clickable && !spent ? "cursor-pointer" : "cursor-default"}`}
           >
-            <img src={card.public?.art} alt={card.name} className="w-full block" />
+            <img src={card.public?.art} alt={`${card.name}: ${card.text}`} className="w-full block" />
             <span className="sr-only">{card.name}</span>
           </button>
         );
@@ -60,6 +108,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
   const ally = nextOfSide(fight, "ally");
   const stage = fight.stage;
   const media = stage?.media;
+  const boundNow = hasStatus(actor, "bound");
 
   function onContinue() {
     setFight((prev) => continueFight(prev));
@@ -122,6 +171,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                       {unit?.side === "enemy" ? "Nemico" : "Alleato"} · AP {unit?.currentAp} · +
                       {unit?.apGain}/turno
                     </span>
+                    <StatusBadges unit={unit} />
                   </span>
                 </li>
               );
@@ -150,12 +200,15 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               {actor?.apGain}/turno
               {actor?.life != null ? ` · Life ${actor.life}` : ""}
             </p>
+            <StatusBadges unit={actor} testId="now-actor-effects" />
             <p className="text-xs m-0 mt-2">
-              {actor?.side === "enemy"
-                ? "In azione. Una carta, oppure passa e tiene gli AP."
-                : fight.allyAuto
-                  ? "In azione. Auto: una carta, AP restanti al round dopo."
-                  : "In azione. Una carta o Skip. Gli AP non spesi restano."}
+              {boundNow
+                ? "Immobilizzato. Continua salta il turno. Gli AP restano."
+                : actor?.side === "enemy"
+                  ? "In azione. Una carta, oppure passa e tiene gli AP."
+                  : fight.allyAuto
+                    ? "In azione. Auto: una carta, AP restanti al round dopo."
+                    : "In azione. Una carta o Skip. Gli AP non spesi restano."}
             </p>
           </div>
         </aside>
@@ -230,9 +283,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             {stage?.card ? (
               <div className="absolute left-3 bottom-3 right-3 flex justify-between gap-2 text-xs">
                 <span className="rounded-full bg-black/70 px-3 py-1" data-testid="stage-ap">
-                  {`${stage.actorName} · ${stage.card.name} · AP −${stage.spent ?? stage.card.sp}${
-                    stage.recovered ? ` · +${stage.recovered}` : ""
-                  } · restano ${stage.apLeft}`}
+                  {stageLine(stage)}
                 </span>
                 <span className="rounded-full bg-black/70 px-3 py-1 text-[var(--gold)]">
                   {media?.type === "video" ? "Video" : "2D"}
@@ -241,21 +292,23 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             ) : (
               <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-[var(--muted)]">
                 {stage?.passed
-                  ? `${stage.actorName} passa. AP conservati (${stage.apLeft}).`
-                  : "Una carta a turno. Continua tiene lo still, poi chiude il turno."}
+                  ? stageLine(stage)
+                  : "Una carta a turno. L'effetto va sull'avversario."}
               </p>
             )}
           </div>
           <div className="p-3 mt-auto flex items-end justify-between gap-3">
             <p className="text-xs text-[var(--muted)] m-0 max-w-[14rem]">
               {actor
-                ? actor.actionsThisTurn >= 1
-                  ? `Carta giocata. Continua chiude il turno. AP restanti: ${actor.currentAp}.`
-                  : actor.side === "enemy"
-                    ? `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`
-                    : fight.allyAuto
-                      ? `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`
-                      : `Tocca a ${actor.name}. Una carta o Skip turn. Non devi spendere tutti gli AP.`
+                ? boundNow
+                  ? `Tocca a ${actor.name}, ma è immobilizzato. Continua salta il turno.`
+                  : actor.actionsThisTurn >= 1
+                    ? `Carta giocata. Continua chiude il turno. AP restanti: ${actor.currentAp}.`
+                    : actor.side === "enemy"
+                      ? `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`
+                      : fight.allyAuto
+                        ? `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`
+                        : `Tocca a ${actor.name}. Una carta o Skip turn. L'effetto va sull'avversario.`
                 : null}
             </p>
             <div className="flex items-center gap-2 shrink-0">
@@ -267,7 +320,9 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                 title={
                   canSkipTurn(fight)
                     ? "Passa senza giocare. Gli AP restano."
-                    : "Il mostro gioca a caso: Skip turn è spento."
+                    : boundNow
+                      ? "Immobilizzato: Continua salta il turno."
+                      : "Il mostro gioca a caso: Skip turn è spento."
                 }
                 onClick={onSkip}
               >

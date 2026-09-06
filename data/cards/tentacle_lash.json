@@ -5,9 +5,10 @@
   "sp": 3,
   "zone": null,
   "character_archetype": "tentacle",
+  "status": "wound",
   "r2": "cards/tentacle_lash/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/tentacle_lash/art.webp" },
-  "text": "A whipping strike that knocks their stance wide.",
-  "notes": "Art shows the action only. No heroine. No body zone."
+  "text": "A whipping strike that knocks their stance wide. Wound: they take +1 damage.",
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: Wound."
 }
