@@ -6,10 +6,15 @@
   "zone": null,
   "character_archetype": "selene",
   "status": "blind",
-  "deal": false,
   "r2": "cards/whisper/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/whisper/art.webp" },
-  "text": "Soft words that make them miss a beat. Blind: their next action misses.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Blind. No damage."
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/whisper/art.webp"
+  },
+  "flavor": "Soft words that make them miss a beat",
+  "text": "Soft words that make them miss a beat. Applies Blind (20%): their next action misses. Cost is damage (2).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

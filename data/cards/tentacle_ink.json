@@ -6,10 +6,15 @@
   "zone": null,
   "character_archetype": "tentacle",
   "status": "blind",
-  "deal": false,
   "r2": "cards/tentacle_ink/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_ink/art.webp" },
-  "text": "A dark burst that blinds the next strike. Blind: their next action misses.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Blind. No damage."
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_ink/art.webp"
+  },
+  "flavor": "A dark burst that blinds the next strike",
+  "text": "A dark burst that blinds the next strike. Applies Blind (20%): their next action misses. Cost is damage (1).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

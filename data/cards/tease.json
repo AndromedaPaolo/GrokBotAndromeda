@@ -7,8 +7,14 @@
   "character_archetype": "selene",
   "status": "wound",
   "r2": "cards/tease/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tease/art.webp" },
-  "text": "A lingering look that breaks their guard. Wound: they take +1 damage.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Wound."
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tease/art.webp"
+  },
+  "flavor": "A lingering look that breaks their guard",
+  "text": "A lingering look that breaks their guard. Applies Wound (20%): they take +1 damage from every hit. Cost is damage (1).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

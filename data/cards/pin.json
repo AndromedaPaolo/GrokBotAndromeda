@@ -5,10 +5,12 @@
   "sp": 3,
   "zone": null,
   "character_archetype": "selene",
-  "status": "bound",
+  "status": "wound",
   "r2": "cards/pin/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/pin/art.webp" },
-  "text": "Press in close and lock them down. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound."
+  "flavor": "Press in close and lock them down",
+  "text": "Press in close and lock them down. Applies Wound (20%): they take +1 damage from every hit. Cost is damage (3).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

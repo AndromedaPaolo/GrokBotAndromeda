@@ -7,8 +7,14 @@
   "character_archetype": "tentacle",
   "status": "wound",
   "r2": "cards/tentacle_lash/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_lash/art.webp" },
-  "text": "A whipping strike that knocks their stance wide. Wound: they take +1 damage.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Wound."
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_lash/art.webp"
+  },
+  "flavor": "A whipping strike that knocks their stance wide",
+  "text": "A whipping strike that knocks their stance wide. Applies Wound (20%): they take +1 damage from every hit. Cost is damage (3).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

@@ -5,10 +5,12 @@
   "sp": 2,
   "zone": null,
   "character_archetype": "selene",
-  "status": "bound",
+  "status": "dazed",
   "r2": "cards/grab/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/grab/art.webp" },
-  "text": "Seize them and hold their motion still. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound."
+  "flavor": "Seize them and hold their motion still",
+  "text": "Seize them and hold their motion still. Applies Dazed (20%): they act last in the turn order. Cost is damage (2).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

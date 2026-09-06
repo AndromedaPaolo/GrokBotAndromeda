@@ -6,10 +6,12 @@
   "zone": null,
   "character_archetype": "tentacle",
   "grows": true,
-  "status": "bound",
+  "status": "dazed",
   "r2": "cards/tentacle_birth/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/tentacle_birth/art.webp" },
-  "text": "A rift tears open and the tentacle takes form. Bound: they skip their next turn.",
-  "notes": "Origin card (Birth). Summons this monster. Grows +1 SP on each growth. Art shows the summoning, not a heroine. No body zone. On hit: Bound."
+  "flavor": "A rift tears open and the tentacle takes form",
+  "text": "A rift tears open and the tentacle takes form. Applies Dazed (80%): they act last in the turn order. Cost is damage (4).",
+  "notes": "Origin card (Birth). Summons this monster. Grows +1 SP on each growth. Art shows the summoning, not a heroine. No body zone.",
+  "category": "origin"
 }

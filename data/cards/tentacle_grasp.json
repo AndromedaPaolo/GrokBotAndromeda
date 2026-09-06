@@ -7,8 +7,14 @@
   "character_archetype": "tentacle",
   "drainAp": 1,
   "r2": "cards/tentacle_grasp/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_grasp/art.webp" },
-  "text": "They catch a limb and will not let go. −1 AP.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: drain 1 AP."
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_grasp/art.webp"
+  },
+  "flavor": "They catch a limb and will not let go",
+  "text": "They catch a limb and will not let go. Applies Drain (20%): they lose 1 AP. Cost is damage (2).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }

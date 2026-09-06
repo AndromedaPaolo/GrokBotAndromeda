@@ -7,8 +7,14 @@
   "character_archetype": "selene",
   "status": "dazed",
   "r2": "cards/slap/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/slap/art.webp" },
-  "text": "A sudden open-hand strike that snaps their focus. Dazed: they act last.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Dazed."
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/slap/art.webp"
+  },
+  "flavor": "A sudden open-hand strike that snaps their focus",
+  "text": "A sudden open-hand strike that snaps their focus. Applies Dazed (20%): they act last in the turn order. Cost is damage (1).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
+  "category": "normal"
 }
