@@ -282,9 +282,8 @@ button {
   }
 
   .combat-mid {
-    container-type: size;
     overflow: hidden;
-    grid-template-columns: minmax(260px, 1fr) minmax(0, calc((100cqh - 11.55rem) * 16 / 9));
+    grid-template-columns: minmax(260px, 1fr) minmax(0, auto);
     grid-template-rows: minmax(0, 1fr) 11rem;
     gap: 0.55rem 0.9rem;
   }
@@ -297,9 +296,11 @@ button {
   .action-stage {
     grid-column: 2;
     grid-row: 1;
-    aspect-ratio: auto;
+    aspect-ratio: 16 / 9;
     height: 100%;
-    width: 100%;
+    width: auto;
+    max-height: 100%;
+    justify-self: end;
   }
 
   .last-card {
@@ -314,5 +315,7 @@ button {
     grid-template-columns: minmax(0, 1fr) minmax(220px, 0.92fr);
     gap: 0.9rem;
     overflow: hidden;
+    width: 100%;
+    justify-self: end;
   }
 }

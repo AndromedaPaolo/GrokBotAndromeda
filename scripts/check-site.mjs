@@ -680,7 +680,6 @@ assert.match(playCss, /now-actor-figure/);
 assert.match(playCss, /object-fit: contain/);
 assert.match(playCss, /aspect-ratio: 16 \/ 9/);
 assert.match(playCss, /minmax\(260px/);
-assert.match(playCss, /100cqh/);
 assert.match(playCss, /\.result-col/);
 assert.match(playCss, /\.next-hand/);
 assert.match(playCss, /\.hand-grid/);
