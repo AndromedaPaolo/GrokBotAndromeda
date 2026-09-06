@@ -212,7 +212,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
         </div>
 
         <aside className="now-actor frame rounded-xl overflow-hidden flex flex-col" data-testid="now-actor">
-          <div className="relative flex-1 min-h-[220px] bg-black">
+          <div className="now-actor-art">
             {actor?.body || actor?.portrait ? (
               <img
                 src={actor.body || actor.portrait}
@@ -220,28 +220,19 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                 className="absolute inset-0 w-full h-full object-cover object-top"
               />
             ) : null}
-          </div>
-          <div className="p-3">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">Di turno</p>
-            <p className="display text-2xl m-0 mt-1">{actor?.name}</p>
-            <p className="text-xs text-[var(--muted)] m-0 mt-1" data-testid="now-actor-status">
-              {actor?.side === "enemy" ? "Nemico" : "Alleato"}
-              {" · "}
-              AP {actor?.currentAp}
-              {" · +"}
-              {actor?.apGain}/turno
-              {actor?.life != null ? ` · Life ${actor.life}` : ""}
-            </p>
-            <StatusBadges unit={actor} testId="now-actor-effects" />
-            <p className="text-xs m-0 mt-2">
-              {boundNow
-                ? "Immobilizzato. Continua salta il turno. Gli AP restano."
-                : actor?.side === "enemy"
-                  ? "In azione. Una carta, oppure passa e tiene gli AP."
-                  : fight.allyAuto
-                    ? "In azione. Auto: una carta, AP restanti al round dopo."
-                    : "In azione. Una carta o Skip. Gli AP non spesi restano."}
-            </p>
+            <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black via-black/70 to-transparent">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">Di turno</p>
+              <p className="display text-3xl sm:text-4xl m-0 mt-1">{actor?.name}</p>
+              <p className="text-xs text-[var(--muted)] m-0 mt-1" data-testid="now-actor-status">
+                {actor?.side === "enemy" ? "Nemico" : "Alleato"}
+                {" · "}
+                AP {actor?.currentAp}
+                {" · +"}
+                {actor?.apGain}/turno
+                {actor?.life != null ? ` · Life ${actor.life}` : ""}
+              </p>
+              <StatusBadges unit={actor} testId="now-actor-effects" />
+            </div>
           </div>
         </aside>
 
@@ -273,99 +264,95 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           ) : null}
         </section>
 
-        <aside className="stage-col frame rounded-xl overflow-hidden flex flex-col">
-          <div
-            className="relative bg-black aspect-video overflow-hidden shrink-0"
-            data-testid="stage"
-          >
-            {media?.type === "video" && media.src ? (
-              <video
-                key={media.src + (stage?.card?.id ?? "")}
-                src={media.src}
-                className="absolute inset-0 w-full h-full object-contain"
-                controls
-                playsInline
-                muted
-              />
-            ) : media?.src ? (
-              <img
-                src={media.src}
-                alt={stage?.card?.name ?? "Azione"}
-                className="absolute inset-0 w-full h-full object-contain"
-              />
+        <aside className="stage-col frame rounded-xl overflow-hidden">
+          <div className="flex flex-col sm:flex-row gap-4 p-3">
+            {stage?.card ? (
+              <div
+                className={`stage-art rounded-lg ${media?.type === "video" ? "is-video" : ""}`}
+                data-testid="stage"
+              >
+                {media?.type === "video" && media.src ? (
+                  <video
+                    key={media.src + (stage?.card?.id ?? "")}
+                    src={media.src}
+                    className="absolute inset-0 w-full h-full object-contain"
+                    controls
+                    playsInline
+                    muted
+                  />
+                ) : (
+                  <img
+                    src={media?.src}
+                    alt={stage.card.name}
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
+                )}
+              </div>
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center gap-6 px-4">
-                {enemy?.portrait ? (
-                  <img
-                    src={enemy.portrait}
-                    alt={enemy.name}
-                    className="h-28 w-28 rounded-full object-cover object-top opacity-90"
-                  />
-                ) : null}
-                <span className="display text-3xl text-[var(--gold)]">vs</span>
-                {ally?.portrait ? (
-                  <img
-                    src={ally.portrait}
-                    alt={ally.name}
-                    className="h-28 w-28 rounded-full object-cover object-top opacity-90"
-                  />
-                ) : null}
+              <div
+                className="stage-art rounded-lg flex items-center justify-center"
+                data-testid="stage"
+              >
+                <div className="flex items-center gap-3 px-2">
+                  {enemy?.portrait ? (
+                    <img
+                      src={enemy.portrait}
+                      alt={enemy.name}
+                      className="h-16 w-16 rounded-full object-cover object-top"
+                    />
+                  ) : null}
+                  <span className="display text-2xl text-[var(--gold)]">vs</span>
+                  {ally?.portrait ? (
+                    <img
+                      src={ally.portrait}
+                      alt={ally.name}
+                      className="h-16 w-16 rounded-full object-cover object-top"
+                    />
+                  ) : null}
+                </div>
               </div>
             )}
-            {stage?.card ? (
-              <div className="absolute left-3 bottom-3 right-3 flex flex-col gap-1">
-                <div className="flex justify-between gap-2 text-xs">
-                  <span className="rounded-lg bg-black/70 px-3 py-1" data-testid="stage-ap">
-                    {stageLine(stage)}
-                  </span>
-                  <span className="rounded-full bg-black/70 px-3 py-1 text-[var(--gold)] shrink-0 h-fit">
-                    {media?.type === "video" ? "Video" : "2D"}
-                  </span>
-                </div>
-                <p
-                  className="rounded-lg bg-black/70 px-3 py-1.5 text-[11px] leading-snug m-0"
-                  data-testid="stage-rules"
-                >
-                  {cardAppliesLine(stage.card)}
-                </p>
-              </div>
-            ) : (
-              <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-[var(--muted)]">
-                {stage?.passed
+            <div className="flex-1 flex flex-col gap-2 min-w-0">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
+                {stage?.card
+                  ? `${stage.card.name} · ${media?.type === "video" ? "Video" : "2D"}`
+                  : "Azione"}
+              </p>
+              <p className="text-sm leading-relaxed m-0" data-testid="stage-ap">
+                {stage?.card || stage?.passed
                   ? stageLine(stage)
                   : "Una carta a turno. Il costo è il danno. Ogni carta dice effetto, cosa fa e la percentuale."}
               </p>
-            )}
-          </div>
-          <div className="p-3 mt-auto flex items-end justify-between gap-3">
-            <p className="text-xs text-[var(--muted)] m-0 max-w-[14rem]">
-              {actorHint(actor, fight, boundNow)}
-            </p>
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                type="button"
-                className="ghost-btn"
-                data-testid="skip-btn"
-                disabled={!canSkipTurn(fight)}
-                title={
-                  canSkipTurn(fight)
-                    ? "Passa senza giocare. Gli AP restano."
-                    : boundNow
-                      ? "Immobilizzato: Continua salta il turno."
-                      : "Il mostro gioca a caso: Skip turn è spento."
-                }
-                onClick={onSkip}
-              >
-                Skip turn
-              </button>
-              <button
-                type="button"
-                className="gold-btn"
-                data-testid="continue-btn"
-                onClick={onContinue}
-              >
-                Continua
-              </button>
+              <p className="text-sm text-[var(--muted)] leading-relaxed m-0" data-testid="stage-rules">
+                {stage?.card ? cardAppliesLine(stage.card) : ""}
+              </p>
+              <p className="text-xs text-[var(--muted)] m-0">{actorHint(actor, fight, boundNow)}</p>
+              <div className="flex items-center gap-2 mt-auto pt-2">
+                <button
+                  type="button"
+                  className="ghost-btn"
+                  data-testid="skip-btn"
+                  disabled={!canSkipTurn(fight)}
+                  title={
+                    canSkipTurn(fight)
+                      ? "Passa senza giocare. Gli AP restano."
+                      : boundNow
+                        ? "Immobilizzato: Continua salta il turno."
+                        : "Il mostro gioca a caso: Skip turn è spento."
+                  }
+                  onClick={onSkip}
+                >
+                  Skip turn
+                </button>
+                <button
+                  type="button"
+                  className="gold-btn"
+                  data-testid="continue-btn"
+                  onClick={onContinue}
+                >
+                  Continua
+                </button>
+              </div>
             </div>
           </div>
         </aside>
