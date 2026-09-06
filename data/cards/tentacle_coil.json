@@ -9,7 +9,8 @@
   "r2": "cards/tentacle_coil/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/tentacle_coil/art.webp" },
-  "text": "They wind tight and steal the next step. −1 AP.",
-  "notes": "Art shows the action only. No heroine. No body zone. Normal: drain 1 AP at 20%. Bound/skip is Bond or Unique only.",
+  "flavor": "They wind tight and steal the next step",
+  "text": "They wind tight and steal the next step. Applies Drain (20%): they lose 1 AP. Cost is damage (2).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
   "category": "normal"
 }

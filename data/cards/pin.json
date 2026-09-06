@@ -9,7 +9,8 @@
   "r2": "cards/pin/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/pin/art.webp" },
-  "text": "Press in close and lock them down. Wound: they take +1 damage.",
-  "notes": "Art shows the action only. No heroine. No body zone. Normal: Wound at 20%. Bound/skip is Bond or Unique only.",
+  "flavor": "Press in close and lock them down",
+  "text": "Press in close and lock them down. Applies Wound (20%): they take +1 damage from every hit. Cost is damage (3).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
   "category": "normal"
 }

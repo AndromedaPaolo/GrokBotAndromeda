@@ -5,11 +5,13 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   STATUSES,
+  appliedEffect,
   canSkipTurn,
+  cardAppliesLine,
+  cardRulesText,
   continueFight,
   createFight,
   currentActor,
-  effectChanceLabel,
   hasStatus,
   nextOfSide,
   playManualCard,
@@ -48,19 +50,22 @@ function stageLine(stage) {
   if (stage.missed) bits.push("mancato");
   else {
     bits.push(`danno ${stage.damage ?? 0}`);
-    if (stage.resisted) {
-      bits.push(`effetto ${effectChanceLabel(stage.chance)} resistito`);
-    } else {
-      for (const id of stage.applied ?? []) {
-        bits.push(`${statusLabel(id)} su ${stage.foeName}`);
-      }
-      if (stage.drained) bits.push(`−${stage.drained} AP su ${stage.foeName}`);
+    const fx = appliedEffect(stage.card);
+    if (fx) {
+      bits.push(`applica ${fx.name} (${fx.pct}%): ${fx.doesIt}`);
+      bits.push(stage.resisted ? "resistito" : "colpito");
     }
   }
   bits.push(
     `AP −${stage.spent ?? stage.card.sp}${stage.recovered ? ` · +${stage.recovered}` : ""} · restano ${stage.apLeft}`,
   );
   return bits.join(" · ");
+}
+
+function effectBadge(card) {
+  const fx = appliedEffect(card);
+  if (!fx) return "";
+  return `${fx.name} ${fx.pct}%`;
 }
 
 function HandRow({ unit, acting, onPick }) {
@@ -84,6 +89,7 @@ function HandRow({ unit, acting, onPick }) {
             type="button"
             disabled={!clickable || spent}
             onClick={() => onPick?.(card.id)}
+            title={cardRulesText(card)}
             className={`relative rounded-md overflow-hidden border p-0 ${
               spent
                 ? "border-[var(--line)] opacity-35"
@@ -92,8 +98,17 @@ function HandRow({ unit, acting, onPick }) {
                   : "border-[var(--line)]"
             } ${clickable && !spent ? "cursor-pointer" : "cursor-default"}`}
           >
-            <img src={card.public?.art} alt={`${card.name}: ${card.text}`} className="w-full block" />
-            <span className="sr-only">{card.name}</span>
+            <img
+              src={card.public?.art}
+              alt={`${card.name}: ${cardRulesText(card)}`}
+              className="w-full block"
+            />
+            <span className="absolute inset-x-0 bottom-0 bg-black/75 px-0.5 py-0.5 text-center leading-tight">
+              <span className="block text-[8px] sm:text-[9px] text-white truncate">{card.name}</span>
+              <span className="block text-[8px] sm:text-[9px] text-[var(--gold)] truncate">
+                {effectBadge(card)}
+              </span>
+            </span>
           </button>
         );
       })}
@@ -286,19 +301,27 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               </div>
             )}
             {stage?.card ? (
-              <div className="absolute left-3 bottom-3 right-3 flex justify-between gap-2 text-xs">
-                <span className="rounded-full bg-black/70 px-3 py-1" data-testid="stage-ap">
-                  {stageLine(stage)}
-                </span>
-                <span className="rounded-full bg-black/70 px-3 py-1 text-[var(--gold)]">
-                  {media?.type === "video" ? "Video" : "2D"}
-                </span>
+              <div className="absolute left-3 bottom-3 right-3 flex flex-col gap-1">
+                <div className="flex justify-between gap-2 text-xs">
+                  <span className="rounded-lg bg-black/70 px-3 py-1" data-testid="stage-ap">
+                    {stageLine(stage)}
+                  </span>
+                  <span className="rounded-full bg-black/70 px-3 py-1 text-[var(--gold)] shrink-0 h-fit">
+                    {media?.type === "video" ? "Video" : "2D"}
+                  </span>
+                </div>
+                <p
+                  className="rounded-lg bg-black/70 px-3 py-1.5 text-[11px] leading-snug m-0"
+                  data-testid="stage-rules"
+                >
+                  {cardAppliesLine(stage.card)}
+                </p>
               </div>
             ) : (
               <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-[var(--muted)]">
                 {stage?.passed
                   ? stageLine(stage)
-                  : "Una carta a turno. Il costo è il danno. Gli effetti dipendono dalla categoria."}
+                  : "Una carta a turno. Il costo è il danno. Ogni carta dice l'effetto, cosa fa e la percentuale."}
               </p>
             )}
           </div>
@@ -313,7 +336,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                       ? `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`
                       : fight.allyAuto
                         ? `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`
-                        : `Tocca a ${actor.name}. Una carta o Skip turn. Il costo è il danno. Gli effetti non sono automatici.`
+                        : `Tocca a ${actor.name}. Una carta o Skip turn. Il costo è il danno. Sulla carta: effetto, cosa fa, percentuale.`}
                 : null}
             </p>
             <div className="flex items-center gap-2 shrink-0">

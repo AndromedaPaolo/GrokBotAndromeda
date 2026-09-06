@@ -15,37 +15,37 @@ assert.equal(hero.apparent_age, 27);
 const starter = {
   slap: {
     sp: 1,
-    text: "A sudden open-hand strike that snaps their focus. Dazed: they act last.",
+    flavor: "A sudden open-hand strike that snaps their focus",
     status: "dazed",
     category: "normal",
   },
   kiss: {
     sp: 2,
-    text: "A close kiss that steals their next breath. −1 AP.",
+    flavor: "A close kiss that steals their next breath",
     drainAp: 1,
     category: "normal",
   },
   grab: {
     sp: 2,
-    text: "Seize them and hold their motion still. Dazed: they act last.",
+    flavor: "Seize them and hold their motion still",
     status: "dazed",
     category: "normal",
   },
   tease: {
     sp: 1,
-    text: "A lingering look that breaks their guard. Wound: they take +1 damage.",
+    flavor: "A lingering look that breaks their guard",
     status: "wound",
     category: "normal",
   },
   pin: {
     sp: 3,
-    text: "Press in close and lock them down. Wound: they take +1 damage.",
+    flavor: "Press in close and lock them down",
     status: "wound",
     category: "normal",
   },
   whisper: {
     sp: 2,
-    text: "Soft words that make them miss a beat. Blind: their next action misses.",
+    flavor: "Soft words that make them miss a beat",
     status: "blind",
     category: "normal",
   },
@@ -57,13 +57,14 @@ for (const [id, expected] of Object.entries(starter)) {
   assert.equal(card.sp, expected.sp);
   assert.equal(card.zone, null);
   assert.equal(card.character_archetype, "selene");
-  assert.equal(card.text, expected.text);
+  assert.equal(card.flavor, expected.flavor);
   assert.equal(card.status ?? null, expected.status ?? null);
   assert.equal(card.drainAp ?? 0, expected.drainAp ?? 0);
   assert.equal(card.category, expected.category ?? "normal");
   assert.equal(card.deal, undefined);
   assert.match(card.notes, /No heroine/);
   assert.doesNotMatch(JSON.stringify(card), /Head|Chest|Arms|Legs/);
+  assert.doesNotMatch(JSON.stringify(card), /\bbound\b/i);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
   assert.ok(existsSync(artPath), `missing art ${artPath}`);
 }
@@ -80,42 +81,42 @@ const tentacleCards = {
   tentacle_lash: {
     kind: "monster_normal",
     sp: 3,
-    text: "A whipping strike that knocks their stance wide. Wound: they take +1 damage.",
+    flavor: "A whipping strike that knocks their stance wide",
     status: "wound",
     category: "normal",
   },
   tentacle_coil: {
     kind: "monster_normal",
     sp: 2,
-    text: "They wind tight and steal the next step. −1 AP.",
+    flavor: "They wind tight and steal the next step",
     drainAp: 1,
     category: "normal",
   },
   tentacle_slam: {
     kind: "monster_normal",
     sp: 3,
-    text: "A heavy crash that rattles the stone. Dazed: they act last.",
+    flavor: "A heavy crash that rattles the stone",
     status: "dazed",
     category: "normal",
   },
   tentacle_grasp: {
     kind: "monster_normal",
     sp: 2,
-    text: "They catch a limb and will not let go. −1 AP.",
+    flavor: "They catch a limb and will not let go",
     drainAp: 1,
     category: "normal",
   },
   tentacle_ink: {
     kind: "monster_normal",
     sp: 1,
-    text: "A dark burst that blinds the next strike. Blind: their next action misses.",
+    flavor: "A dark burst that blinds the next strike",
     status: "blind",
     category: "normal",
   },
   tentacle_birth: {
     kind: "monster_origin",
     sp: 4,
-    text: "A rift tears open and the tentacle takes form. Dazed: they act last.",
+    flavor: "A rift tears open and the tentacle takes form",
     status: "dazed",
     category: "origin",
   },
@@ -128,12 +129,13 @@ for (const [id, expected] of Object.entries(tentacleCards)) {
   assert.equal(card.sp, expected.sp);
   assert.equal(card.zone, null);
   assert.equal(card.character_archetype, "tentacle");
-  assert.equal(card.text, expected.text);
+  assert.equal(card.flavor, expected.flavor);
   assert.equal(card.status ?? null, expected.status ?? null);
   assert.equal(card.drainAp ?? 0, expected.drainAp ?? 0);
   assert.equal(card.category, expected.category ?? "normal");
   assert.equal(card.deal, undefined);
   assert.doesNotMatch(JSON.stringify(card), /Head|Chest|Arms|Legs/);
+  assert.doesNotMatch(JSON.stringify(card), /\bbound\b/i);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
   assert.ok(existsSync(artPath), `missing art ${artPath}`);
 }
@@ -196,6 +198,29 @@ assert.equal(
 );
 assert.equal(combat.landingStatus({ category: "normal", status: "bound" }), null);
 assert.equal(combat.landingStatus({ category: "unique", status: "bound" }), "bound");
+assert.equal(
+  combat.cardAppliesLine({ status: "dazed", category: "normal", sp: 1 }),
+  "Applies Dazed (20%): they act last in the turn order.",
+);
+assert.equal(
+  combat.cardAppliesLine({ status: "dazed", category: "origin", sp: 4 }),
+  "Applies Dazed (80%): they act last in the turn order.",
+);
+assert.equal(
+  combat.cardAppliesLine({ drainAp: 1, category: "normal", sp: 2 }),
+  "Applies Drain (20%): they lose 1 AP.",
+);
+assert.equal(combat.cardAppliesLine({ status: "bound", category: "normal", sp: 1 }), "");
+assert.equal(
+  combat.cardAppliesLine({ status: "bound", category: "unique", sp: 1 }),
+  "Applies Bound (100%): they skip their next turn.",
+);
+for (const card of allCards) {
+  assert.equal(card.text, combat.cardRulesText(card, allCards));
+  assert.match(card.text, /Applies /);
+  assert.match(card.text, /\(\d+%\)/);
+  assert.match(card.text, /Cost is damage/);
+}
 
 const fight0 = combat.createFight({
   hero,
@@ -300,12 +325,15 @@ ally.currentAp = 3;
 const slapIdx = ally.hand.findIndex((c) => c.id === "slap");
 assert.ok(slapIdx >= 0);
 ally.hand[slapIdx] = { ...ally.hand[slapIdx], recoverAp: 2 };
-const recovered = combat.playManualCard(manual, "slap");
+const recovered = combat.playManualCard(manual, "slap", alwaysPlay);
 assert.equal(recovered.stage.spent, 1);
 assert.equal(recovered.stage.recovered, 2);
 assert.equal(recovered.units.find((u) => u.side === "ally").currentAp, 4);
 const afterManual = combat.continueFight(recovered, alwaysPlay);
-assert.notEqual(afterManual.actorId, recovered.actorId);
+assert.ok(
+  afterManual.actorId !== recovered.actorId || afterManual.round !== recovered.round,
+  "continue after a play must end the turn",
+);
 const allyAfter = afterManual.units.find((u) => u.side === "ally");
 if (afterManual.round === recovered.round) {
   assert.equal(allyAfter.currentAp, 4);
@@ -627,12 +655,14 @@ assert.match(playUi, /AP non spesi restano/);
 assert.match(playUi, /Skip turn/);
 assert.match(playUi, /now-actor-effects/);
 assert.match(playUi, /Immobilizzato/);
+assert.match(playUi, /data-testid="stage-rules"/);
+assert.match(playUi, /cardAppliesLine/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
 assert.match(playUi, /danno /);
 assert.match(playUi, /resistito/);
-assert.match(catalogUi, /effectChanceLabel/);
-assert.match(catalogUi, /effect 20%/);
-assert.match(catalogUi, /Bond \(rare\) or Unique/);
+assert.match(catalogUi, /cardAppliesLine/);
+assert.match(catalogUi, /20% chance/);
+assert.doesNotMatch(catalogUi, /Bound/);
 
 console.log("catalog + landing checks ok");

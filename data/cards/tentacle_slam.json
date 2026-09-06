@@ -13,7 +13,8 @@
   "public": {
     "art": "/media/cards/tentacle_slam/art.webp"
   },
-  "text": "A heavy crash that rattles the stone. Dazed: they act last.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Dazed.",
+  "flavor": "A heavy crash that rattles the stone",
+  "text": "A heavy crash that rattles the stone. Applies Dazed (20%): they act last in the turn order. Cost is damage (3).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
   "category": "normal"
 }

@@ -6,9 +6,11 @@ import {
   CATEGORIES,
   HERO_CARD_IDS,
   TENTACLE_CARD_IDS,
+  appliedEffect,
+  cardAppliesLine,
   cardCategory,
-  cardEffectChance,
-  effectChanceLabel,
+  cardFlavor,
+  cardRulesText,
 } from "@/lib/combat";
 
 export const metadata = {
@@ -20,20 +22,37 @@ function CardGrid({ cards, catalog }) {
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
       {cards.map((card) => {
         const cat = cardCategory(card);
-        const chance = cardEffectChance(card, catalog);
+        const fx = appliedEffect(card, catalog);
+        const applies = cardAppliesLine(card, catalog);
+        const rules = cardRulesText(card, catalog);
         return (
           <figure key={card.id} className="m-0">
             <img
               src={card.public?.art}
-              alt={`${card.name}: ${card.text}`}
+              alt={`${card.name}: ${rules}`}
               className="w-full rounded-lg border border-[var(--line)]"
             />
             <figcaption className="mt-2">
               <p className="display text-xl m-0">{card.name}</p>
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mt-1">
-                {CATEGORIES[cat]?.name ?? cat} · effetto {effectChanceLabel(chance)} · danno = costo
+                {CATEGORIES[cat]?.name ?? cat} · danno {card.sp}
               </p>
-              <p className="text-xs text-[var(--muted)] m-0 mt-1 leading-relaxed">{card.text}</p>
+              {applies ? (
+                <p
+                  className="text-sm text-[var(--ink)] m-0 mt-2 leading-relaxed"
+                  data-testid={`card-effect-${card.id}`}
+                >
+                  {applies}
+                </p>
+              ) : null}
+              {fx ? (
+                <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--gold)] m-0 mt-1">
+                  {fx.pct}% chance
+                </p>
+              ) : null}
+              <p className="text-xs text-[var(--muted)] m-0 mt-1 leading-relaxed">
+                {cardFlavor(card)}.
+              </p>
             </figcaption>
           </figure>
         );
@@ -82,8 +101,8 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Starter hand</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            Six English Normal cards. Cost is damage. Effects land 20% of the time. Bound (skip
-            a turn) is Bond (rare) or Unique only.
+            Six English Normal cards. Cost is damage. Each card names the effect it applies, what
+            that effect does, and the 20% chance.
           </p>
           <CardGrid cards={hand} catalog={cards} />
         </div>
@@ -109,8 +128,8 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Tentacle cards</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            English, no body zone. Cost is damage. Five Normal strikes (effect 20%) plus Birth,
-            Origin (effect 80%). Bound (skip a turn) is Bond, rarely, or Unique, always.
+            English, no body zone. Cost is damage. Five Normal strikes apply their effect at 20%.
+            Birth is Origin: Dazed at 80%.
           </p>
           <CardGrid cards={tentacleHand} catalog={cards} />
         </div>

@@ -13,7 +13,8 @@
   "public": {
     "art": "/media/cards/whisper/art.webp"
   },
-  "text": "Soft words that make them miss a beat. Blind: their next action misses.",
-  "notes": "Art shows the action only. No heroine. No body zone. Normal: Blind at 20%. Damage equals cost.",
+  "flavor": "Soft words that make them miss a beat",
+  "text": "Soft words that make them miss a beat. Applies Blind (20%): their next action misses. Cost is damage (2).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
   "category": "normal"
 }

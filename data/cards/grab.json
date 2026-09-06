@@ -9,7 +9,8 @@
   "r2": "cards/grab/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/grab/art.webp" },
-  "text": "Seize them and hold their motion still. Dazed: they act last.",
-  "notes": "Art shows the action only. No heroine. No body zone. Normal: Dazed at 20%. Bound/skip is Bond or Unique only.",
+  "flavor": "Seize them and hold their motion still",
+  "text": "Seize them and hold their motion still. Applies Dazed (20%): they act last in the turn order. Cost is damage (2).",
+  "notes": "Art shows the action only. No heroine. No body zone.",
   "category": "normal"
 }
