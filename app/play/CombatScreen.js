@@ -304,75 +304,73 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             ) : null}
           </aside>
 
-          <div className="combat-bottom">
-            <section className="result-col frame rounded-xl flex flex-col gap-1">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
-                Quello che succede
-              </p>
-              <p className="text-sm leading-snug m-0" data-testid="stage-ap">
-                {stage?.card || stage?.passed
-                  ? stageLine(stage)
-                  : "Una carta a turno. Il costo è il danno."}
-              </p>
-              <p className="text-xs text-[var(--muted)] leading-snug m-0" data-testid="stage-rules">
-                {lastCard ? cardAppliesLine(lastCard) : ""}
-              </p>
-              <p className="text-xs text-[var(--muted)] m-0">{actorHint(actor, fight, boundNow)}</p>
-              <div className="flex items-center gap-2 mt-auto pt-1">
-                <button
-                  type="button"
-                  className="ghost-btn"
-                  data-testid="skip-btn"
-                  disabled={!canSkipTurn(fight)}
-                  title={
-                    canSkipTurn(fight)
-                      ? "Passa senza giocare. Gli AP restano."
-                      : boundNow
-                        ? "Immobilizzato: Continua salta il turno."
-                        : "Il mostro gioca a caso: Skip turn è spento."
-                  }
-                  onClick={onSkip}
-                >
-                  Skip turn
-                </button>
-                <button
-                  type="button"
-                  className="gold-btn"
-                  data-testid="continue-btn"
-                  onClick={onContinue}
-                >
-                  Continua
-                </button>
-              </div>
-            </section>
+          <section className="result-col frame rounded-xl flex flex-col gap-1">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
+              Quello che succede
+            </p>
+            <p className="text-sm leading-snug m-0" data-testid="stage-ap">
+              {stage?.card || stage?.passed
+                ? stageLine(stage)
+                : "Una carta a turno. Il costo è il danno."}
+            </p>
+            <p className="text-xs text-[var(--muted)] leading-snug m-0" data-testid="stage-rules">
+              {lastCard ? cardAppliesLine(lastCard) : ""}
+            </p>
+            <p className="text-xs text-[var(--muted)] m-0">{actorHint(actor, fight, boundNow)}</p>
+            <div className="flex items-center gap-2 mt-auto pt-1">
+              <button
+                type="button"
+                className="ghost-btn"
+                data-testid="skip-btn"
+                disabled={!canSkipTurn(fight)}
+                title={
+                  canSkipTurn(fight)
+                    ? "Passa senza giocare. Gli AP restano."
+                    : boundNow
+                      ? "Immobilizzato: Continua salta il turno."
+                      : "Il mostro gioca a caso: Skip turn è spento."
+                }
+                onClick={onSkip}
+              >
+                Skip turn
+              </button>
+              <button
+                type="button"
+                className="gold-btn"
+                data-testid="continue-btn"
+                onClick={onContinue}
+              >
+                Continua
+              </button>
+            </div>
+          </section>
 
-            <section className="next-hand frame rounded-xl" data-testid="next-hand">
-              <div className="flex items-end justify-between gap-2 mb-1">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
-                    Prossimo di turno
-                  </p>
-                  <h2 className="display text-lg m-0 mt-0.5 leading-tight">{upcoming?.name ?? "—"}</h2>
-                </div>
-                <label className="text-[10px] text-[var(--muted)] flex items-center gap-1.5">
-                  <input
-                    type="checkbox"
-                    checked={fight.allyAuto}
-                    onChange={onAuto}
-                    data-testid="auto-toggle"
-                  />
-                  Auto
-                </label>
+          <section className="next-hand frame rounded-xl" data-testid="next-hand">
+            <div className="flex items-end justify-between gap-2 mb-1">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
+                  Prossimo di turno
+                </p>
+                <h2 className="display text-lg m-0 mt-0.5 leading-tight">{upcoming?.name ?? "—"}</h2>
               </div>
-              {upcoming ? (
-                <HandList
-                  unit={upcoming}
-                  acting={actor?.id === upcoming.id}
-                  onPick={onPick}
+              <label className="text-[10px] text-[var(--muted)] flex items-center gap-1.5">
+                <input
+                  type="checkbox"
+                  checked={fight.allyAuto}
+                  onChange={onAuto}
+                  data-testid="auto-toggle"
                 />
-              ) : null}
-            </section>
-          </div>
+                Auto
+              </label>
+            </div>
+            {upcoming ? (
+              <HandList
+                unit={upcoming}
+                acting={actor?.id === upcoming.id}
+                onPick={onPick}
+              />
+            ) : null}
+          </section>
         </div>
       </div>
     </div>
