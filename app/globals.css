@@ -115,30 +115,53 @@ button {
   font: inherit;
 }
 
+.combat-root {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.combat-header {
+  flex: 0 0 auto;
+  padding-top: 0.55rem;
+  padding-bottom: 0.45rem;
+}
+
 .combat-board {
-  display: grid;
-  gap: 0.65rem 1rem;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto auto auto;
-}
-
-.turn-bar {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.now-actor {
-  grid-column: 1;
-  grid-row: 2;
+  flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  overflow: auto;
+  padding-bottom: 0.5rem;
+}
+
+.turn-bar {
+  flex: 0 0 auto;
+}
+
+.combat-mid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 0.5rem;
+}
+
+.now-actor {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .now-actor-art {
   position: relative;
   flex: 1;
-  min-height: 52vh;
+  min-height: 0;
   background: #000;
 }
 
@@ -156,7 +179,7 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 1.6rem 0.75rem 0.65rem;
+  padding: 1.4rem 0.7rem 0.55rem;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.82) 0%,
@@ -166,49 +189,54 @@ button {
 }
 
 .action-stage {
-  grid-column: 1;
-  grid-row: 3;
   min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  overflow: hidden;
+  background: #000;
 }
 
 .action-frame {
   position: relative;
-  width: 100%;
   aspect-ratio: 16 / 9;
+  width: min(100%, calc(100cqh * 16 / 9));
+  height: min(100%, calc(100cqw * 9 / 16));
+  max-width: 100%;
+  max-height: 100%;
   background: #000;
+}
+
+.combat-bottom {
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .last-card,
 .result-col,
 .next-hand {
-  padding: 0.55rem 0.7rem;
-}
-
-.last-card {
-  grid-column: 1;
-  grid-row: 4;
+  padding: 0.45rem 0.6rem;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .result-col {
-  grid-column: 1;
-  grid-row: 5;
+  overflow: auto;
 }
 
 .result-col .gold-btn,
 .result-col .ghost-btn {
-  padding: 0.45rem 0.95rem;
-  font-size: 0.8rem;
-}
-
-.next-hand {
-  grid-column: 1;
-  grid-row: 6;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.78rem;
 }
 
 .stage-art {
   position: relative;
   width: 100%;
-  max-width: 6.75rem;
+  max-width: 5.25rem;
   aspect-ratio: 3 / 4;
   background: #000;
   overflow: hidden;
@@ -217,11 +245,33 @@ button {
 .hand-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.hand-grid button {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hand-card-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.next-hand {
+  display: flex;
+  flex-direction: column;
 }
 
 .life-row {
-  margin-top: 0.35rem;
+  margin-top: 0.3rem;
 }
 
 .life-track {
@@ -239,51 +289,28 @@ button {
 
 @media (min-width: 960px) {
   .combat-board {
+    overflow: hidden;
+  }
+
+  .combat-mid {
+    grid-template-columns: minmax(260px, 28%) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0.65rem 1rem;
+  }
+
+  .combat-bottom {
+    display: grid;
     grid-template-columns: minmax(260px, 28%) minmax(0, 1fr) minmax(220px, 26%);
-    grid-template-rows: auto auto auto;
-    align-items: stretch;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0.65rem 1rem;
+    max-height: 28vh;
+    overflow: hidden;
+    flex: 0 1 auto;
   }
 
-  .turn-bar {
-    grid-column: 1 / -1;
-    grid-row: 1;
-  }
-
-  .now-actor {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .now-actor-art {
-    min-height: 0;
-    height: 100%;
-    flex: 1;
-  }
-
-  .action-stage {
-    grid-column: 2 / -1;
-    grid-row: 2;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .action-frame {
-    flex: 0 0 auto;
-    height: auto;
-  }
-
-  .last-card {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .result-col {
-    grid-column: 2;
-    grid-row: 3;
-  }
-
+  .last-card,
+  .result-col,
   .next-hand {
-    grid-column: 3;
-    grid-row: 3;
+    min-height: 0;
   }
 }

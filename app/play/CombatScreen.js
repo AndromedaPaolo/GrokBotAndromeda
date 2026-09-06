@@ -129,7 +129,7 @@ function HandList({ unit, acting, onPick }) {
             <img
               src={card.public?.art}
               alt={`${card.name}: ${cardRulesText(card)}`}
-              className="w-full block"
+              className="hand-card-art"
             />
             <span className="absolute inset-x-0 bottom-0 bg-black/75 px-0.5 py-0.5 text-center leading-tight">
               <span className="block text-[8px] sm:text-[9px] text-white truncate">{card.name}</span>
@@ -175,9 +175,9 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
   }
 
   return (
-    <div className="min-h-screen flex flex-col" data-testid="combat-root">
-      <header className="px-4 sm:px-6 pt-5 pb-3 flex items-center justify-between gap-3">
-        <Link href="/" className="display text-2xl text-[var(--ink)]">
+    <div className="combat-root" data-testid="combat-root">
+      <header className="combat-header px-4 sm:px-6 flex items-center justify-between gap-3">
+        <Link href="/" className="display text-xl text-[var(--ink)]">
           Fantasy Empire
         </Link>
         <nav className="flex items-center gap-4 text-xs uppercase tracking-[0.18em] text-[var(--gold)]">
@@ -186,9 +186,9 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
         </nav>
       </header>
 
-      <div className="combat-board px-3 sm:px-5 pb-6 flex-1" data-testid="combat-layout-split">
-        <div className="turn-bar frame rounded-xl px-3 py-2" data-testid="turn-bar">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-[var(--gold)] mb-2">
+      <div className="combat-board px-3 sm:px-4" data-testid="combat-layout-split">
+        <div className="turn-bar frame rounded-xl px-3 py-1.5" data-testid="turn-bar">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-[var(--gold)] mb-1">
             Turno {fight.round} · una carta ciascuno · AP non spesi restano
           </p>
           <ol className="flex items-stretch gap-2 overflow-x-auto">
@@ -199,7 +199,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               return (
                 <li
                   key={id}
-                  className={`flex items-center gap-2 rounded-lg px-2 py-1 min-w-[9.5rem] border ${
+                  className={`flex items-center gap-2 rounded-lg px-2 py-0.5 min-w-[9rem] border ${
                     active
                       ? "border-[var(--gold)] bg-[color-mix(in_srgb,var(--gold)_14%,transparent)]"
                       : "border-[var(--line)]"
@@ -210,7 +210,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                     <img
                       src={unit.portrait}
                       alt=""
-                      className="h-10 w-10 rounded-full object-cover object-top"
+                      className="h-8 w-8 rounded-full object-cover object-top"
                     />
                   ) : null}
                   <span>
@@ -226,6 +226,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </ol>
         </div>
 
+        <div className="combat-mid">
         <aside className="now-actor frame rounded-xl overflow-hidden" data-testid="now-actor">
           <div className="now-actor-art">
             {actor?.body || actor?.portrait ? (
@@ -251,7 +252,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </div>
         </aside>
 
-        <section className="action-stage frame rounded-xl overflow-hidden flex flex-col">
+        <section className="action-stage frame rounded-xl overflow-hidden">
           <div className="action-frame" data-testid="stage">
             {media?.type === "video" && media.src ? (
               <video
@@ -282,7 +283,9 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             ) : null}
           </div>
         </section>
+        </div>
 
+        <div className="combat-bottom">
         <aside className="last-card frame rounded-xl" data-testid="last-card">
           <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mb-1.5">
             Ultima carta
@@ -370,6 +373,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             />
           ) : null}
         </section>
+        </div>
       </div>
     </div>
   );
