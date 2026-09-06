@@ -44,7 +44,7 @@ function LifeRow({ unit }) {
   const cur = Math.max(0, Number(unit?.life) || 0);
   const pct = Math.min(100, Math.round((cur / max) * 100));
   return (
-    <div className="mt-2" data-testid="now-actor-life">
+    <div className="life-row" data-testid="now-actor-life">
       <div className="flex justify-between text-[10px] uppercase tracking-[0.16em] text-[var(--muted)] mb-1">
         <span>Vita</span>
         <span>
@@ -107,7 +107,7 @@ function HandList({ unit, acting, onPick }) {
     (unit.actionsThisTurn || 0) === 0 &&
     !hasStatus(unit, "bound");
   return (
-    <div className="grid grid-cols-2 gap-1.5" data-testid={`${unit.side}-hand`}>
+    <div className="hand-grid" data-testid={`${unit.side}-hand`}>
       {unit.hand.map((card, index) => {
         const key = `${card.id}:${index}`;
         const spent = unit.playedKeys.includes(key);
@@ -226,28 +226,28 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </ol>
         </div>
 
-        <aside className="now-actor frame rounded-xl overflow-hidden flex flex-col" data-testid="now-actor">
+        <aside className="now-actor frame rounded-xl overflow-hidden" data-testid="now-actor">
           <div className="now-actor-art">
             {actor?.body || actor?.portrait ? (
               <img
                 src={actor.body || actor.portrait}
                 alt={actor.name}
-                className="absolute inset-0 w-full h-full object-cover object-top"
+                className="now-actor-figure"
               />
             ) : null}
-          </div>
-          <div className="p-3">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">Di turno</p>
-            <p className="display text-3xl m-0 mt-1">{actor?.name}</p>
-            <p className="text-xs text-[var(--muted)] m-0 mt-1" data-testid="now-actor-status">
-              {actor?.side === "enemy" ? "Nemico" : "Alleato"}
-              {" · "}
-              AP {actor?.currentAp}
-              {" · +"}
-              {actor?.apGain}/turno
-            </p>
-            {actor ? <LifeRow unit={actor} /> : null}
-            <StatusBadges unit={actor} testId="now-actor-effects" />
+            <div className="now-actor-meta">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">Di turno</p>
+              <p className="display text-2xl m-0 mt-0.5">{actor?.name}</p>
+              <p className="text-xs text-[var(--muted)] m-0 mt-1" data-testid="now-actor-status">
+                {actor?.side === "enemy" ? "Nemico" : "Alleato"}
+                {" · "}
+                AP {actor?.currentAp}
+                {" · +"}
+                {actor?.apGain}/turno
+              </p>
+              {actor ? <LifeRow unit={actor} /> : null}
+              <StatusBadges unit={actor} testId="now-actor-effects" />
+            </div>
           </div>
         </aside>
 
@@ -283,12 +283,12 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </div>
         </section>
 
-        <aside className="last-card frame rounded-xl p-3" data-testid="last-card">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mb-2">
+        <aside className="last-card frame rounded-xl" data-testid="last-card">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mb-1.5">
             Ultima carta
           </p>
           {lastCard ? (
-            <div className="stage-art rounded-lg mx-auto">
+            <div className="stage-art rounded-md mx-auto">
               <img
                 src={lastCard.public?.art}
                 alt={lastCard.name}
@@ -299,24 +299,24 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             <p className="text-xs text-[var(--muted)] m-0">Nessuna carta giocata in questo turno.</p>
           )}
           {lastCard ? (
-            <p className="display text-xl m-0 mt-2 text-center">{lastCard.name}</p>
+            <p className="display text-lg m-0 mt-1.5 text-center leading-tight">{lastCard.name}</p>
           ) : null}
         </aside>
 
-        <section className="result-col frame rounded-xl p-3 flex flex-col gap-2">
+        <section className="result-col frame rounded-xl flex flex-col gap-1.5">
           <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
             Quello che succede
           </p>
-          <p className="text-sm leading-relaxed m-0" data-testid="stage-ap">
+          <p className="text-sm leading-snug m-0" data-testid="stage-ap">
             {stage?.card || stage?.passed
               ? stageLine(stage)
               : "Una carta a turno. Il costo è il danno."}
           </p>
-          <p className="text-sm text-[var(--muted)] leading-relaxed m-0" data-testid="stage-rules">
+          <p className="text-xs text-[var(--muted)] leading-snug m-0" data-testid="stage-rules">
             {lastCard ? cardAppliesLine(lastCard) : ""}
           </p>
           <p className="text-xs text-[var(--muted)] m-0">{actorHint(actor, fight, boundNow)}</p>
-          <div className="flex items-center gap-2 mt-auto pt-2">
+          <div className="flex items-center gap-2 mt-auto pt-1">
             <button
               type="button"
               className="ghost-btn"
@@ -344,13 +344,13 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </div>
         </section>
 
-        <section className="next-hand frame rounded-xl p-3" data-testid="next-hand">
-          <div className="flex items-end justify-between gap-2 mb-2">
+        <section className="next-hand frame rounded-xl" data-testid="next-hand">
+          <div className="flex items-end justify-between gap-2 mb-1.5">
             <div>
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
                 Prossimo di turno
               </p>
-              <h2 className="display text-2xl m-0 mt-1">{upcoming?.name ?? "—"}</h2>
+              <h2 className="display text-xl m-0 mt-0.5 leading-tight">{upcoming?.name ?? "—"}</h2>
             </div>
             <label className="text-[10px] text-[var(--muted)] flex items-center gap-1.5">
               <input

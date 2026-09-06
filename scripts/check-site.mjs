@@ -674,9 +674,14 @@ const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf
 const playCss = readFileSync(path.join(root, "app/globals.css"), "utf8");
 assert.match(playCss, /grid-column: 1 \/ -1/);
 assert.match(playCss, /now-actor-art/);
+assert.match(playCss, /now-actor-figure/);
+assert.match(playCss, /object-fit: contain/);
+assert.match(playCss, /aspect-ratio: 16 \/ 9/);
 assert.match(playCss, /minmax\(260px/);
 assert.match(playCss, /\.result-col/);
 assert.match(playCss, /\.next-hand/);
+assert.match(playCss, /\.hand-grid/);
+assert.match(playUi, /now-actor-meta/);
 assert.match(playUi, /danno /);
 assert.match(playUi, /resistito/);
 assert.match(catalogUi, /cardAppliesLine/);
