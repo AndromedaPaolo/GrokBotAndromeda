@@ -5,15 +5,11 @@
   "sp": 2,
   "zone": null,
   "character_archetype": "selene",
-  "status": "bound",
+  "status": "dazed",
   "r2": "cards/grab/",
-  "files": [
-    "art.webp"
-  ],
-  "public": {
-    "art": "/media/cards/grab/art.webp"
-  },
-  "text": "Seize them and hold their motion still. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound.",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/grab/art.webp" },
+  "text": "Seize them and hold their motion still. Dazed: they act last.",
+  "notes": "Art shows the action only. No heroine. No body zone. Normal: Dazed at 20%. Bound/skip is Bond or Unique only.",
   "category": "normal"
 }

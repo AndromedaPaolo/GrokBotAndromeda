@@ -7,7 +7,7 @@ import {
   HERO_CARD_IDS,
   TENTACLE_CARD_IDS,
   cardCategory,
-  effectChance,
+  cardEffectChance,
   effectChanceLabel,
 } from "@/lib/combat";
 
@@ -20,7 +20,7 @@ function CardGrid({ cards, catalog }) {
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
       {cards.map((card) => {
         const cat = cardCategory(card);
-        const chance = effectChance(card, catalog);
+        const chance = cardEffectChance(card, catalog);
         return (
           <figure key={card.id} className="m-0">
             <img
@@ -82,7 +82,8 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Starter hand</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            Six English Normal cards. Cost is damage. Effects land 20% of the time. No body zone.
+            Six English Normal cards. Cost is damage. Effects land 20% of the time. Bound (skip
+            a turn) is Bond (rare) or Unique only.
           </p>
           <CardGrid cards={hand} catalog={cards} />
         </div>
@@ -109,7 +110,7 @@ export default async function CatalogPage() {
           <h2 className="display text-4xl">Tentacle cards</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
             English, no body zone. Cost is damage. Five Normal strikes (effect 20%) plus Birth,
-            Origin (effect 80%): it summons this monster, grows +1 SP, and can Bind.
+            Origin (effect 80%). Bound (skip a turn) is Bond, rarely, or Unique, always.
           </p>
           <CardGrid cards={tentacleHand} catalog={cards} />
         </div>

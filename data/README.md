@@ -12,4 +12,5 @@ Il primo mostro Tentacle ha 5 carte normali (`tentacle_lash`, `tentacle_coil`, `
 
 Combattimento: una carta a turno (o passa). Gli AP non spesi restano e al round nuovo si somma `carte/6`. Una carta può avere `recoverAp` per restituire AP dopo il costo.
 Categoria (`category`): `normal` (starter, effetto 20%), `fusion` (20% se entrambi i genitori sono Normal, altrimenti la % più alta dei genitori), `bond` / `special` / `origin` (80%), `unique` (100%, solo super boss delle invasioni). Special solo ai boss. Origin = nascita mostro. Bond = eventi speciali.
-Il costo (`sp`) è il danno. Status e `drainAp` tirano la % della categoria; non stackano. `blind` fa mancare la prossima azione, `bound` salta il prossimo turno, `dazed` agisce per ultimo, `wound` è +1 danno subito. Blind e Bound si consumano; Dazed e Wound restano fino a fine scontro.
+`bound` (salta il turno) solo su Bond (15%) e Unique (100%). Normal, Fusion di Normal, Special e Origin non saltano il turno.
+Il costo (`sp`) è il danno. Status e `drainAp` tirano la % della categoria; non stackano. `blind` fa mancare la prossima azione, `dazed` agisce per ultimo, `wound` è +1 danno subito. Blind e Bound si consumano; Dazed e Wound restano fino a fine scontro.

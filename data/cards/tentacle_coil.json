@@ -5,15 +5,11 @@
   "sp": 2,
   "zone": null,
   "character_archetype": "tentacle",
-  "status": "bound",
+  "drainAp": 1,
   "r2": "cards/tentacle_coil/",
-  "files": [
-    "art.webp"
-  ],
-  "public": {
-    "art": "/media/cards/tentacle_coil/art.webp"
-  },
-  "text": "They wind tight and steal the next step. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound.",
+  "files": ["art.webp"],
+  "public": { "art": "/media/cards/tentacle_coil/art.webp" },
+  "text": "They wind tight and steal the next step. −1 AP.",
+  "notes": "Art shows the action only. No heroine. No body zone. Normal: drain 1 AP at 20%. Bound/skip is Bond or Unique only.",
   "category": "normal"
 }
