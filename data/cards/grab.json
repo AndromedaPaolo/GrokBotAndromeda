@@ -7,8 +7,13 @@
   "character_archetype": "selene",
   "status": "bound",
   "r2": "cards/grab/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/grab/art.webp" },
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/grab/art.webp"
+  },
   "text": "Seize them and hold their motion still. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound."
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound.",
+  "category": "normal"
 }

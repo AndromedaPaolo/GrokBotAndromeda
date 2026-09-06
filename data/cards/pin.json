@@ -7,8 +7,13 @@
   "character_archetype": "selene",
   "status": "bound",
   "r2": "cards/pin/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/pin/art.webp" },
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/pin/art.webp"
+  },
   "text": "Press in close and lock them down. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound."
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound.",
+  "category": "normal"
 }

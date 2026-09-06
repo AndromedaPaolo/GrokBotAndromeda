@@ -2,28 +2,42 @@
 import Link from "next/link";
 import SiteFooter from "../../components/SiteFooter";
 import { getCatalog } from "@/lib/catalog";
-import { HERO_CARD_IDS, TENTACLE_CARD_IDS } from "@/lib/combat";
+import {
+  CATEGORIES,
+  HERO_CARD_IDS,
+  TENTACLE_CARD_IDS,
+  cardCategory,
+  effectChance,
+  effectChanceLabel,
+} from "@/lib/combat";
 
 export const metadata = {
   title: "Catalogo — Fantasy Empire",
 };
 
-function CardGrid({ cards }) {
+function CardGrid({ cards, catalog }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
-      {cards.map((card) => (
-        <figure key={card.id} className="m-0">
-          <img
-            src={card.public?.art}
-            alt={`${card.name}: ${card.text}`}
-            className="w-full rounded-lg border border-[var(--line)]"
-          />
-          <figcaption className="mt-2">
-            <p className="display text-xl m-0">{card.name}</p>
-            <p className="text-xs text-[var(--muted)] m-0 mt-1 leading-relaxed">{card.text}</p>
-          </figcaption>
-        </figure>
-      ))}
+      {cards.map((card) => {
+        const cat = cardCategory(card);
+        const chance = effectChance(card, catalog);
+        return (
+          <figure key={card.id} className="m-0">
+            <img
+              src={card.public?.art}
+              alt={`${card.name}: ${card.text}`}
+              className="w-full rounded-lg border border-[var(--line)]"
+            />
+            <figcaption className="mt-2">
+              <p className="display text-xl m-0">{card.name}</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mt-1">
+                {CATEGORIES[cat]?.name ?? cat} · effetto {effectChanceLabel(chance)} · danno = costo
+              </p>
+              <p className="text-xs text-[var(--muted)] m-0 mt-1 leading-relaxed">{card.text}</p>
+            </figcaption>
+          </figure>
+        );
+      })}
     </div>
   );
 }
@@ -68,9 +82,9 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Starter hand</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            Six English cards. Each one applies an effect to the opponent. No body zone.
+            Six English Normal cards. Cost is damage. Effects land 20% of the time. No body zone.
           </p>
-          <CardGrid cards={hand} />
+          <CardGrid cards={hand} catalog={cards} />
         </div>
       </section>
 
@@ -94,10 +108,10 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Tentacle cards</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            English, no body zone. On hit the effect lands on the opponent. Birth is Origin:
-            it summons this monster, grows +1 SP, and Binds.
+            English, no body zone. Cost is damage. Five Normal strikes (effect 20%) plus Birth,
+            Origin (effect 80%): it summons this monster, grows +1 SP, and can Bind.
           </p>
-          <CardGrid cards={tentacleHand} />
+          <CardGrid cards={tentacleHand} catalog={cards} />
         </div>
       </section>
       <SiteFooter />

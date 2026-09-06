@@ -17,32 +17,37 @@ const starter = {
     sp: 1,
     text: "A sudden open-hand strike that snaps their focus. Dazed: they act last.",
     status: "dazed",
+    category: "normal",
   },
   kiss: {
     sp: 2,
     text: "A close kiss that steals their next breath. −1 AP.",
     drainAp: 1,
+    category: "normal",
   },
   grab: {
     sp: 2,
     text: "Seize them and hold their motion still. Bound: they skip their next turn.",
     status: "bound",
+    category: "normal",
   },
   tease: {
     sp: 1,
     text: "A lingering look that breaks their guard. Wound: they take +1 damage.",
     status: "wound",
+    category: "normal",
   },
   pin: {
     sp: 3,
     text: "Press in close and lock them down. Bound: they skip their next turn.",
     status: "bound",
+    category: "normal",
   },
   whisper: {
     sp: 2,
     text: "Soft words that make them miss a beat. Blind: their next action misses.",
     status: "blind",
-    deal: false,
+    category: "normal",
   },
 };
 
@@ -55,7 +60,8 @@ for (const [id, expected] of Object.entries(starter)) {
   assert.equal(card.text, expected.text);
   assert.equal(card.status ?? null, expected.status ?? null);
   assert.equal(card.drainAp ?? 0, expected.drainAp ?? 0);
-  assert.equal(card.deal ?? true, expected.deal ?? true);
+  assert.equal(card.category, expected.category ?? "normal");
+  assert.equal(card.deal, undefined);
   assert.match(card.notes, /No heroine/);
   assert.doesNotMatch(JSON.stringify(card), /Head|Chest|Arms|Legs/);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
@@ -76,37 +82,42 @@ const tentacleCards = {
     sp: 3,
     text: "A whipping strike that knocks their stance wide. Wound: they take +1 damage.",
     status: "wound",
+    category: "normal",
   },
   tentacle_coil: {
     kind: "monster_normal",
     sp: 2,
     text: "They wind tight and steal the next step. Bound: they skip their next turn.",
     status: "bound",
+    category: "normal",
   },
   tentacle_slam: {
     kind: "monster_normal",
     sp: 3,
     text: "A heavy crash that rattles the stone. Dazed: they act last.",
     status: "dazed",
+    category: "normal",
   },
   tentacle_grasp: {
     kind: "monster_normal",
     sp: 2,
     text: "They catch a limb and will not let go. −1 AP.",
     drainAp: 1,
+    category: "normal",
   },
   tentacle_ink: {
     kind: "monster_normal",
     sp: 1,
     text: "A dark burst that blinds the next strike. Blind: their next action misses.",
     status: "blind",
-    deal: false,
+    category: "normal",
   },
   tentacle_birth: {
     kind: "monster_origin",
     sp: 4,
     text: "A rift tears open and the tentacle takes form. Bound: they skip their next turn.",
     status: "bound",
+    category: "origin",
   },
 };
 
@@ -120,7 +131,8 @@ for (const [id, expected] of Object.entries(tentacleCards)) {
   assert.equal(card.text, expected.text);
   assert.equal(card.status ?? null, expected.status ?? null);
   assert.equal(card.drainAp ?? 0, expected.drainAp ?? 0);
-  assert.equal(card.deal ?? true, expected.deal ?? true);
+  assert.equal(card.category, expected.category ?? "normal");
+  assert.equal(card.deal, undefined);
   assert.doesNotMatch(JSON.stringify(card), /Head|Chest|Arms|Legs/);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
   assert.ok(existsSync(artPath), `missing art ${artPath}`);
@@ -132,6 +144,7 @@ const birth = JSON.parse(
 assert.equal(birth.name, "Birth");
 assert.equal(birth.grows, true);
 assert.equal(birth.status, "bound");
+assert.equal(birth.category, "origin");
 assert.ok(existsSync(path.join(root, "public/media/characters/monster_tentacle/body.webp")));
 
 const landing = readFileSync(path.join(root, "app/page.js"), "utf8");
@@ -151,6 +164,22 @@ const monsterPool = monsterCardIds.map((id) =>
 const drawn = combat.drawHand(monsterPool, 6, rng);
 assert.equal(drawn.length, 6);
 assert.equal(new Set(drawn.map((c) => c.id)).size, 6);
+
+const allCards = [...heroCards, ...monsterPool];
+assert.equal(combat.cardCategory(heroCards[0]), "normal");
+assert.equal(combat.cardCategory({ kind: "monster_origin" }), "origin");
+assert.equal(combat.effectChance({ category: "normal" }), 0.2);
+assert.equal(combat.effectChance({ category: "fusion", fusionOf: ["slap", "kiss"] }, allCards), 0.2);
+assert.equal(combat.effectChance({ category: "fusion", fusionOf: ["tentacle_birth", "slap"] }, allCards), 0.8);
+assert.equal(
+  combat.effectChance({ category: "fusion", fusionOf: [{ category: "unique" }, { category: "normal" }] }),
+  1,
+);
+assert.equal(combat.effectChance({ category: "bond" }), 0.8);
+assert.equal(combat.effectChance({ category: "special" }), 0.8);
+assert.equal(combat.effectChance({ category: "origin" }), 0.8);
+assert.equal(combat.effectChance({ category: "unique" }), 1);
+assert.equal(combat.effectChanceLabel(0.2), "20%");
 
 const fight0 = combat.createFight({
   hero,
@@ -179,6 +208,7 @@ if (firstActor.side === "enemy") {
 }
 
 const alwaysPlay = () => 0.99;
+const alwaysLand = () => 0;
 const fight1 = combat.continueFight(fight0, alwaysPlay);
 assert.ok(fight1.stage, "Continue must put an action on the stage");
 assert.ok(fight1.stage.media?.src);
@@ -303,13 +333,30 @@ const fxEnemy = fx.units.find((u) => u.side === "enemy");
 fxAlly.currentAp = 6;
 fxAlly.alterations = [];
 const enemyLife = fxEnemy.life;
-const slapped = combat.playManualCard(fx, "slap");
+const slapped = combat.playManualCard(fx, "slap", alwaysLand);
 assert.deepEqual(slapped.stage.applied, ["dazed"]);
 assert.equal(slapped.stage.damage, 1);
 assert.equal(slapped.units.find((u) => u.side === "enemy").life, enemyLife - 1);
 assert.ok(combat.hasStatus(slapped.units.find((u) => u.side === "enemy"), "dazed"));
 const slappedAgain = combat.addStatus(slapped.units.find((u) => u.side === "enemy"), "dazed");
 assert.equal(slappedAgain, false);
+
+let resistFight = walkToAlly(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(26),
+  }),
+);
+resistFight.units.find((u) => u.side === "ally").currentAp = 6;
+resistFight.units.find((u) => u.side === "ally").alterations = [];
+const resisted = combat.playManualCard(resistFight, "slap", alwaysPlay);
+assert.deepEqual(resisted.stage.applied, []);
+assert.equal(resisted.stage.damage, 1);
+assert.equal(resisted.stage.resisted, true);
+assert.equal(combat.hasStatus(resisted.units.find((u) => u.side === "enemy"), "dazed"), false);
 
 let grabFight = walkToAlly(
   combat.createFight({
@@ -322,7 +369,7 @@ let grabFight = walkToAlly(
 );
 grabFight.units.find((u) => u.side === "ally").currentAp = 6;
 grabFight.units.find((u) => u.side === "ally").alterations = [];
-const grabbed = combat.playManualCard(grabFight, "grab");
+const grabbed = combat.playManualCard(grabFight, "grab", alwaysLand);
 assert.deepEqual(grabbed.stage.applied, ["bound"]);
 assert.ok(combat.hasStatus(grabbed.units.find((u) => u.side === "enemy"), "bound"));
 let afterGrab = combat.continueFight(grabbed, alwaysPlay);
@@ -359,7 +406,7 @@ const kissEnemy = kissFight.units.find((u) => u.side === "enemy");
 kissFight.units.find((u) => u.side === "ally").currentAp = 6;
 kissFight.units.find((u) => u.side === "ally").alterations = [];
 kissEnemy.currentAp = 3;
-const kissed = combat.playManualCard(kissFight, "kiss");
+const kissed = combat.playManualCard(kissFight, "kiss", alwaysLand);
 assert.equal(kissed.stage.drained, 1);
 assert.equal(kissed.units.find((u) => u.side === "enemy").currentAp, 2);
 
@@ -374,12 +421,12 @@ let woundFight = walkToAlly(
 );
 woundFight.units.find((u) => u.side === "ally").currentAp = 6;
 woundFight.units.find((u) => u.side === "ally").alterations = [];
-const wounded = combat.playManualCard(woundFight, "tease");
+const wounded = combat.playManualCard(woundFight, "tease", alwaysLand);
 assert.ok(combat.hasStatus(wounded.units.find((u) => u.side === "enemy"), "wound"));
 const woundLife = wounded.units.find((u) => u.side === "enemy").life;
 wounded.stage.hold = false;
 wounded.units.find((u) => u.side === "ally").actionsThisTurn = 0;
-const woundSlap = combat.playManualCard(wounded, "slap");
+const woundSlap = combat.playManualCard(wounded, "slap", alwaysPlay);
 assert.equal(woundSlap.stage.damage, 2);
 assert.equal(woundSlap.units.find((u) => u.side === "enemy").life, woundLife - 2);
 
@@ -394,9 +441,9 @@ let blindFight = walkToAlly(
 );
 blindFight.units.find((u) => u.side === "ally").currentAp = 6;
 blindFight.units.find((u) => u.side === "ally").alterations = [];
-const whispered = combat.playManualCard(blindFight, "whisper");
+const whispered = combat.playManualCard(blindFight, "whisper", alwaysLand);
 assert.deepEqual(whispered.stage.applied, ["blind"]);
-assert.equal(whispered.stage.damage, 0);
+assert.equal(whispered.stage.damage, 2);
 assert.ok(combat.hasStatus(whispered.units.find((u) => u.side === "enemy"), "blind"));
 let afterWhisper = combat.continueFight(whispered, alwaysPlay);
 let blindHops = 0;
@@ -481,6 +528,10 @@ assert.match(playUi, /now-actor-effects/);
 assert.match(playUi, /Immobilizzato/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
-assert.match(catalogUi, /figcaption/);
+assert.match(playUi, /danno /);
+assert.match(playUi, /resistito/);
+assert.match(catalogUi, /effectChanceLabel/);
+assert.match(catalogUi, /effect 20%/);
+assert.match(catalogUi, /effect 80%/);
 
 console.log("catalog + landing checks ok");

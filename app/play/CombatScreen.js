@@ -9,6 +9,7 @@ import {
   continueFight,
   createFight,
   currentActor,
+  effectChanceLabel,
   hasStatus,
   nextOfSide,
   playManualCard,
@@ -46,11 +47,15 @@ function stageLine(stage) {
   const bits = [`${stage.actorName} · ${stage.card.name}`];
   if (stage.missed) bits.push("mancato");
   else {
-    if (stage.damage) bits.push(`Life −${stage.damage}`);
-    for (const id of stage.applied ?? []) {
-      bits.push(`${statusLabel(id)} su ${stage.foeName}`);
+    bits.push(`danno ${stage.damage ?? 0}`);
+    if (stage.resisted) {
+      bits.push(`effetto ${effectChanceLabel(stage.chance)} resistito`);
+    } else {
+      for (const id of stage.applied ?? []) {
+        bits.push(`${statusLabel(id)} su ${stage.foeName}`);
+      }
+      if (stage.drained) bits.push(`−${stage.drained} AP su ${stage.foeName}`);
     }
-    if (stage.drained) bits.push(`−${stage.drained} AP su ${stage.foeName}`);
   }
   bits.push(
     `AP −${stage.spent ?? stage.card.sp}${stage.recovered ? ` · +${stage.recovered}` : ""} · restano ${stage.apLeft}`,
@@ -293,7 +298,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-[var(--muted)]">
                 {stage?.passed
                   ? stageLine(stage)
-                  : "Una carta a turno. L'effetto va sull'avversario."}
+                  : "Una carta a turno. Il costo è il danno. Gli effetti dipendono dalla categoria."}
               </p>
             )}
           </div>
@@ -308,7 +313,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                       ? `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`
                       : fight.allyAuto
                         ? `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`
-                        : `Tocca a ${actor.name}. Una carta o Skip turn. L'effetto va sull'avversario.`
+                        : `Tocca a ${actor.name}. Una carta o Skip turn. Il costo è il danno. Gli effetti non sono automatici.`
                 : null}
             </p>
             <div className="flex items-center gap-2 shrink-0">

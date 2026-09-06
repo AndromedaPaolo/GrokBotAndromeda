@@ -7,8 +7,13 @@
   "character_archetype": "tentacle",
   "status": "dazed",
   "r2": "cards/tentacle_slam/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_slam/art.webp" },
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_slam/art.webp"
+  },
   "text": "A heavy crash that rattles the stone. Dazed: they act last.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Dazed."
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: Dazed.",
+  "category": "normal"
 }

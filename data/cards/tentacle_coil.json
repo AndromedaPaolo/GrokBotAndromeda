@@ -7,8 +7,13 @@
   "character_archetype": "tentacle",
   "status": "bound",
   "r2": "cards/tentacle_coil/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_coil/art.webp" },
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_coil/art.webp"
+  },
   "text": "They wind tight and steal the next step. Bound: they skip their next turn.",
-  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound."
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: Bound.",
+  "category": "normal"
 }

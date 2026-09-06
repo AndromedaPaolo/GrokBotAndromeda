@@ -6,6 +6,9 @@
   "zone": "Chest",
   "character_archetype": "warrior_f",
   "r2": "cards/quick_slash/",
-  "files": ["art.webp"],
-  "notes": "Zona obbligatoria sulle carte eroe: Head | Chest | Arms | Legs."
+  "files": [
+    "art.webp"
+  ],
+  "notes": "Zona obbligatoria sulle carte eroe: Head | Chest | Arms | Legs.",
+  "category": "normal"
 }
