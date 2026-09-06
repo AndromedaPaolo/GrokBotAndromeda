@@ -46,7 +46,7 @@ function LifeRow({ unit }) {
   return (
     <div className="life-row" data-testid="now-actor-life">
       <div className="flex justify-between text-[10px] uppercase tracking-[0.16em] text-[var(--muted)] mb-1">
-        <span>Vita</span>
+        <span>Life</span>
         <span>
           {cur}/{max}
         </span>
@@ -60,24 +60,24 @@ function LifeRow({ unit }) {
 
 function stageLine(stage) {
   if (stage.passed && stage.boundSkip) {
-    return `${stage.actorName} è immobilizzato. Turno saltato. AP conservati (${stage.apLeft}).`;
+    return `${stage.actorName} is bound. Turn skipped. AP kept (${stage.apLeft}).`;
   }
   if (stage.passed) {
-    return `${stage.actorName} passa. AP conservati (${stage.apLeft}).`;
+    return `${stage.actorName} passes. AP kept (${stage.apLeft}).`;
   }
   if (!stage.card) return "";
   const bits = [`${stage.actorName} · ${stage.card.name}`];
-  if (stage.missed) bits.push("mancato");
+  if (stage.missed) bits.push("missed");
   else {
-    bits.push(`danno ${stage.damage ?? 0}`);
+    bits.push(`damage ${stage.damage ?? 0}`);
     const fx = appliedEffect(stage.card);
     if (fx) {
-      bits.push(`applica ${fx.name} (${fx.pct}%): ${fx.doesIt}`);
-      bits.push(stage.resisted ? "resistito" : "colpito");
+      bits.push(`applies ${fx.name} (${fx.pct}%): ${fx.doesEn}`);
+      bits.push(stage.resisted ? "resisted" : "hit");
     }
   }
   bits.push(
-    `AP −${stage.spent ?? stage.card.sp}${stage.recovered ? ` · +${stage.recovered}` : ""} · restano ${stage.apLeft}`,
+    `AP −${stage.spent ?? stage.card.sp}${stage.recovered ? ` · +${stage.recovered}` : ""} · left ${stage.apLeft}`,
   );
   return bits.join(" · ");
 }
@@ -85,18 +85,18 @@ function stageLine(stage) {
 function actorHint(actor, fight, boundNow) {
   if (!actor) return null;
   if (boundNow) {
-    return `Tocca a ${actor.name}, ma è immobilizzato. Continua salta il turno.`;
+    return `${actor.name} is bound. Continue skips the turn.`;
   }
   if (actor.actionsThisTurn >= 1) {
-    return `Carta giocata. Continua chiude il turno. AP restanti: ${actor.currentAp}.`;
+    return `Card played. Continue ends the turn. AP left: ${actor.currentAp}.`;
   }
   if (actor.side === "enemy") {
-    return `Tocca a ${actor.name}. Continua: una carta a caso, o passa e tiene gli AP.`;
+    return `${actor.name}'s turn. Continue plays a random card, or pass and keep AP.`;
   }
   if (fight.allyAuto) {
-    return `Tocca a ${actor.name}. Continua: una carta. Skip turn passa.`;
+    return `${actor.name}'s turn. Continue plays a card. Skip turn passes.`;
   }
-  return `Tocca a ${actor.name}. Una carta o Skip turn. Il costo è il danno.`;
+  return `${actor.name}'s turn. Play a card or Skip turn. Cost is damage.`;
 }
 
 function HandList({ unit, acting, onPick }) {
@@ -157,6 +157,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
   const media = stage?.media;
   const boundNow = hasStatus(actor, "bound");
   const lastCard = stage?.card ?? null;
+  const recentCards = fight.recentCards ?? [];
 
   function onContinue() {
     setFight((prev) => continueFight(prev));
@@ -181,15 +182,15 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           Fantasy Empire
         </Link>
         <nav className="flex items-center gap-4 text-xs uppercase tracking-[0.18em] text-[var(--gold)]">
-          <Link href="/play/catalog">Catalogo</Link>
-          <span>Combattimento</span>
+          <Link href="/play/catalog">Catalog</Link>
+          <span>Combat</span>
         </nav>
       </header>
 
       <div className="combat-board px-3 sm:px-4" data-testid="combat-layout-split">
         <div className="turn-bar frame rounded-xl px-3 py-1.5" data-testid="turn-bar">
           <p className="text-[10px] uppercase tracking-[0.22em] text-[var(--gold)] mb-1">
-            Turno {fight.round} · una carta ciascuno · AP non spesi restano
+            Turn {fight.round} · one card each · leftover AP stays
           </p>
           <ol className="flex items-stretch gap-2 overflow-x-auto">
             {fight.order.map((id, i) => {
@@ -216,8 +217,8 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                   <span>
                     <span className="block text-sm leading-tight">{unit?.name}</span>
                     <span className="block text-[10px] uppercase tracking-wider text-[var(--muted)]">
-                      {unit?.side === "enemy" ? "Nemico" : "Alleato"} · AP {unit?.currentAp} · +
-                      {unit?.apGain}/turno
+                      {unit?.side === "enemy" ? "Enemy" : "Ally"} · AP {unit?.currentAp} · +
+                      {unit?.apGain}/turn
                     </span>
                   </span>
                 </li>
@@ -238,14 +239,14 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               ) : null}
             </div>
             <div className="now-actor-meta">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">Di turno</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--gold)] m-0">On turn</p>
               <p className="display text-2xl m-0 mt-0.5">{actor?.name}</p>
               <p className="text-xs text-[var(--muted)] m-0 mt-1" data-testid="now-actor-status">
-                {actor?.side === "enemy" ? "Nemico" : "Alleato"}
+                {actor?.side === "enemy" ? "Enemy" : "Ally"}
                 {" · "}
                 AP {actor?.currentAp}
                 {" · +"}
-                {actor?.apGain}/turno
+                {actor?.apGain}/turn
               </p>
               {actor ? <LifeRow unit={actor} /> : null}
               <StatusBadges unit={actor} testId="now-actor-effects" />
@@ -266,13 +267,13 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
               ) : media?.src ? (
                 <img
                   src={media.src}
-                  alt={lastCard?.name ?? "Azione"}
+                  alt={lastCard?.name ?? "Action"}
                   className="absolute inset-0 w-full h-full object-contain"
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)] m-0">
-                    Video / immagine dell azione
+                    Video / action image
                   </p>
                 </div>
               )}
@@ -285,33 +286,38 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
           </section>
 
           <aside className="last-card frame rounded-xl" data-testid="last-card">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mb-1">
-              Ultima carta
+            <p className="last-card-label text-[10px] uppercase tracking-[0.18em] text-[var(--gold)]">
+              Last cards
             </p>
-            {lastCard ? (
-              <div className="stage-art rounded-md mx-auto">
-                <img
-                  src={lastCard.public?.art}
-                  alt={lastCard.name}
-                  className="absolute inset-0 w-full h-full object-contain"
-                />
-              </div>
-            ) : (
-              <p className="text-xs text-[var(--muted)] m-0">Nessuna carta giocata in questo turno.</p>
-            )}
-            {lastCard ? (
-              <p className="display text-base m-0 mt-1 text-center leading-tight">{lastCard.name}</p>
-            ) : null}
+            <div className="last-card-row">
+              {[0, 1, 2].map((i) => {
+                const card = recentCards[i];
+                return (
+                  <div key={card ? `${card.id}:${i}` : `empty-${i}`} className="last-card-slot">
+                    {card ? (
+                      <>
+                        <img
+                          src={card.public?.art}
+                          alt={card.name}
+                          className="last-card-art"
+                        />
+                        <span className="last-card-name">{card.name}</span>
+                      </>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
           </aside>
 
           <section className="result-col frame rounded-xl flex flex-col gap-1">
             <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
-              Quello che succede
+              What happens
             </p>
             <p className="text-sm leading-snug m-0" data-testid="stage-ap">
               {stage?.card || stage?.passed
                 ? stageLine(stage)
-                : "Una carta a turno. Il costo è il danno."}
+                : "One card per turn. Cost is damage."}
             </p>
             <p className="text-xs text-[var(--muted)] leading-snug m-0" data-testid="stage-rules">
               {lastCard ? cardAppliesLine(lastCard) : ""}
@@ -325,10 +331,10 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                 disabled={!canSkipTurn(fight)}
                 title={
                   canSkipTurn(fight)
-                    ? "Passa senza giocare. Gli AP restano."
+                    ? "Pass without playing. AP stays."
                     : boundNow
-                      ? "Immobilizzato: Continua salta il turno."
-                      : "Il mostro gioca a caso: Skip turn è spento."
+                      ? "Bound: Continue skips the turn."
+                      : "The monster plays at random. Skip turn is off."
                 }
                 onClick={onSkip}
               >
@@ -340,7 +346,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
                 data-testid="continue-btn"
                 onClick={onContinue}
               >
-                Continua
+                Continue
               </button>
             </div>
           </section>
@@ -349,7 +355,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             <div className="flex items-end justify-between gap-2 mb-1">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0">
-                  Prossimo di turno
+                  Next up
                 </p>
                 <h2 className="display text-lg m-0 mt-0.5 leading-tight">{upcoming?.name ?? "—"}</h2>
               </div>

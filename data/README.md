@@ -1,16 +1,16 @@
-# Registro carte e personaggi
+# Card and character registry
 
-JSON = id e regole. I file veri (webp/mp4) stanno su R2, vedi `docs/Fantasy_Empire_Asset_Dove.md`.
+JSON = ids and rules. The actual files (webp/mp4) live on R2; see `docs/Fantasy_Empire_Asset_Dove.md`.
 
 - `characters/{id}.json` → `r2://fe-media/characters/{id}/`
 - `cards/{id}.json` → `r2://fe-media/cards/{id}/`
 
-Carte eroe: campo `zone` di solito `Head` | `Chest` | `Arms` | `Legs`.
-Le 6 carte starter di Selene (`slap`, `kiss`, `grab`, `tease`, `pin`, `whisper`) hanno `zone: null`: l’azione non mira a una parte del corpo. L’arte mostra solo l’azione (mano, bacio, catene…), non l’eroina.
-Carte mostro / Bond / Origin: `zone` = `null`.
-Il primo mostro Tentacle ha 5 carte normali (`tentacle_lash`, `tentacle_coil`, `tentacle_slam`, `tentacle_grasp`, `tentacle_ink`) e 1 Origin: `tentacle_birth` (carta Birth, `kind: monster_origin`, cresce +1 SP). L’arte mostra l’azione o l’evocazione, non una ragazza.
+Hero cards: `zone` is usually `Head` | `Chest` | `Arms` | `Legs`.
+Selene’s 6 starter cards (`slap`, `kiss`, `grab`, `tease`, `pin`, `whisper`) have `zone: null`: the action does not target a body part. Art shows the action only (hand, kiss, chains…), not the heroine.
+Monster / Bond / Origin cards: `zone` = `null`.
+The first Tentacle monster has 5 Normal cards (`tentacle_lash`, `tentacle_coil`, `tentacle_slam`, `tentacle_grasp`, `tentacle_ink`) and 1 Origin: `tentacle_birth` (Birth card, `kind: monster_origin`, grows +1 SP). Art shows the action or the summon, not a girl.
 
-Combattimento: una carta a turno (o passa). Gli AP non spesi restano e al round nuovo si somma `carte/6`. Una carta può avere `recoverAp` per restituire AP dopo il costo.
-Categoria (`category`): `normal` (starter, effetto 20%), `fusion` (20% se entrambi i genitori sono Normal, altrimenti la % più alta dei genitori), `bond` / `special` / `origin` (80%), `unique` (100%, solo super boss delle invasioni). Special solo ai boss. Origin = nascita mostro. Bond = eventi speciali.
-Le 12 carte in catalogo non usano Bound. Il testo dice l’effetto, cosa fa e la %.
-Il costo (`sp`) è il danno. Status e `drainAp` tirano la % della categoria; non stackano. `blind` fa mancare la prossima azione, `dazed` agisce per ultimo, `wound` è +1 danno subito, `drainAp` toglie AP. Blind si consuma; Dazed e Wound restano fino a fine scontro.
+Combat: one card per turn (or pass). Unspent AP stays, and a new round adds `cards/6`. A card may have `recoverAp` to give AP back after the cost.
+Category (`category`): `normal` (starter, 20% effect), `fusion` (20% if both parents are Normal, otherwise the higher parent %), `bond` / `special` / `origin` (80%), `unique` (100%, invasion super-bosses only). Special is bosses only. Origin = monster birth. Bond = special events.
+The 12 catalog cards do not use Bound. The text states the effect, what it does, and the %.
+Cost (`sp`) is the damage. Statuses and `drainAp` roll the category %; they do not stack. `blind` makes the next action miss, `dazed` acts last, `wound` is +1 damage taken, `drainAp` removes AP. Blind is consumed; Dazed and Wound last until the fight ends.

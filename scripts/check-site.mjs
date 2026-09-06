@@ -232,6 +232,7 @@ const fight0 = combat.createFight({
 assert.equal(fight0.units.find((u) => u.side === "enemy").hand.length, 6);
 assert.equal(fight0.units.find((u) => u.side === "ally").hand.length, 6);
 assert.equal(fight0.stage, null);
+assert.deepEqual(fight0.recentCards, []);
 for (const unit of fight0.units) {
   assert.equal(unit.apGain, 1);
   assert.equal(unit.currentAp, 1);
@@ -256,6 +257,8 @@ const fight1 = combat.continueFight(fight0, alwaysPlay);
 assert.ok(fight1.stage, "Continue must put an action on the stage");
 assert.ok(fight1.stage.media?.src);
 assert.equal(fight1.stage.hold, true);
+assert.equal(fight1.recentCards.length, 1);
+assert.equal(fight1.recentCards[0].id, fight1.stage.card.id);
 
 const fight2 = combat.continueFight(fight1, alwaysPlay);
 assert.ok(fight2.stage, "Continue must not clear the stage");
@@ -265,6 +268,12 @@ assert.notEqual(
   fight1.actorId,
   "second Continue ends the turn instead of dumping remaining AP",
 );
+
+let recentWalk = fight0;
+for (let i = 0; i < 12 && recentWalk.recentCards.length < 3; i += 1) {
+  recentWalk = combat.continueFight(recentWalk, alwaysPlay);
+}
+assert.equal(recentWalk.recentCards.length, 3);
 const actorAfterOnePlay = fight2.units.find((u) => u.id === combat.currentActor(fight1).id);
 assert.equal(
   actorAfterOnePlay.currentAp,
@@ -651,24 +660,25 @@ assert.match(playUi, /data-testid="skip-btn"/);
 assert.match(playUi, /data-testid="now-actor"/);
 assert.match(playUi, /data-testid="now-actor-status"/);
 assert.match(playUi, /data-testid="now-actor-life"/);
-assert.match(playUi, /Di turno/);
+assert.match(playUi, /On turn/);
 assert.match(playUi, /data-testid="stage"/);
 assert.match(playUi, /data-testid="stage-ap"/);
 assert.match(playUi, /data-testid="last-card"/);
 assert.match(playUi, /data-testid="next-hand"/);
-assert.match(playUi, /Prossimo di turno/);
-assert.match(playUi, /Quello che succede/);
-assert.match(playUi, /Ultima carta/);
-assert.match(playUi, /AP non spesi restano/);
+assert.match(playUi, /Next up/);
+assert.match(playUi, /What happens/);
+assert.match(playUi, /Last cards/);
+assert.match(playUi, /leftover AP stays/);
 assert.match(playUi, /Skip turn/);
 assert.match(playUi, /now-actor-effects/);
-assert.match(playUi, /Immobilizzato/);
+assert.match(playUi, /Bound: Continue skips the turn/);
 assert.match(playUi, /data-testid="stage-rules"/);
 assert.match(playUi, /cardAppliesLine/);
 assert.match(playUi, /effectBadge/);
 assert.match(playUi, /now-actor-art/);
 assert.match(playUi, /combat-layout-split/);
 assert.match(playUi, /combat-mid/);
+assert.match(playUi, /last-card-row/);
 assert.doesNotMatch(playUi, /absolute left-3 bottom-3/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
@@ -684,9 +694,10 @@ assert.match(playCss, /\.result-col/);
 assert.match(playCss, /\.next-hand/);
 assert.match(playCss, /\.hand-grid/);
 assert.match(playCss, /\.combat-mid/);
+assert.match(playCss, /\.last-card-row/);
 assert.match(playUi, /now-actor-meta/);
-assert.match(playUi, /danno /);
-assert.match(playUi, /resistito/);
+assert.match(playUi, /damage /);
+assert.match(playUi, /resisted/);
 assert.match(catalogUi, /cardAppliesLine/);
 assert.match(catalogUi, /card-effect-/);
 assert.doesNotMatch(catalogUi, /Bound/);

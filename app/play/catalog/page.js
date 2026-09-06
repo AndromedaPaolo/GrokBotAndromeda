@@ -13,7 +13,7 @@ import {
 } from "@/lib/combat";
 
 export const metadata = {
-  title: "Catalogo — Fantasy Empire",
+  title: "Catalog — Fantasy Empire",
 };
 
 function CardGrid({ cards, catalog }) {
@@ -33,7 +33,7 @@ function CardGrid({ cards, catalog }) {
             <figcaption className="mt-2">
               <p className="display text-xl m-0">{card.name}</p>
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] m-0 mt-1">
-                {CATEGORIES[cat]?.name ?? cat} · danno {card.sp}
+                {CATEGORIES[cat]?.name ?? cat} · damage {card.sp}
               </p>
               {applies ? (
                 <p
@@ -70,7 +70,7 @@ export default async function CatalogPage() {
           Fantasy Empire
         </Link>
         <Link href="/play" className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">
-          Combattimento
+          Combat
         </Link>
       </header>
 
