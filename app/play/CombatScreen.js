@@ -8,6 +8,7 @@ import {
   appliedEffect,
   canSkipTurn,
   cardAppliesLine,
+  effectBadge,
   cardRulesText,
   continueFight,
   createFight,

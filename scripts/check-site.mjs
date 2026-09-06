@@ -211,10 +211,10 @@ assert.equal(
   "Applies Drain (20%): they lose 1 AP.",
 );
 assert.equal(combat.cardAppliesLine({ status: "bound", category: "normal", sp: 1 }), "");
-assert.equal(
-  combat.cardAppliesLine({ status: "bound", category: "unique", sp: 1 }),
-  "Applies Bound (100%): they skip their next turn.",
-);
+assert.equal(combat.cardAppliesLine({ status: "bound", category: "unique", sp: 1 }), "Applies Bound (100%): they skip their next turn.");
+assert.equal(combat.effectBadge({ status: "dazed", category: "normal" }), "Dazed 20%");
+assert.equal(combat.effectBadge({ status: "dazed", category: "origin" }), "Dazed 80%");
+assert.equal(combat.effectBadge({ drainAp: 1, category: "normal" }), "Drain 20%");
 for (const card of allCards) {
   assert.equal(card.text, combat.cardRulesText(card, allCards));
   assert.match(card.text, /Applies /);
@@ -657,12 +657,13 @@ assert.match(playUi, /now-actor-effects/);
 assert.match(playUi, /Immobilizzato/);
 assert.match(playUi, /data-testid="stage-rules"/);
 assert.match(playUi, /cardAppliesLine/);
+assert.match(playUi, /effectBadge/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
 assert.match(playUi, /danno /);
 assert.match(playUi, /resistito/);
 assert.match(catalogUi, /cardAppliesLine/);
-assert.match(catalogUi, /20% chance/);
+assert.match(catalogUi, /card-effect-/);
 assert.doesNotMatch(catalogUi, /Bound/);
 
 console.log("catalog + landing checks ok");

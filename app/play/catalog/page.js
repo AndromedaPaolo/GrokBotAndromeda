@@ -6,7 +6,6 @@ import {
   CATEGORIES,
   HERO_CARD_IDS,
   TENTACLE_CARD_IDS,
-  appliedEffect,
   cardAppliesLine,
   cardCategory,
   cardFlavor,
@@ -22,7 +21,6 @@ function CardGrid({ cards, catalog }) {
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
       {cards.map((card) => {
         const cat = cardCategory(card);
-        const fx = appliedEffect(card, catalog);
         const applies = cardAppliesLine(card, catalog);
         const rules = cardRulesText(card, catalog);
         return (
@@ -43,11 +41,6 @@ function CardGrid({ cards, catalog }) {
                   data-testid={`card-effect-${card.id}`}
                 >
                   {applies}
-                </p>
-              ) : null}
-              {fx ? (
-                <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--gold)] m-0 mt-1">
-                  {fx.pct}% chance
                 </p>
               ) : null}
               <p className="text-xs text-[var(--muted)] m-0 mt-1 leading-relaxed">
