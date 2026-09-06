@@ -18,6 +18,10 @@ function CardGrid({ cards }) {
             alt={`${card.name}: ${card.text}`}
             className="w-full rounded-lg border border-[var(--line)]"
           />
+          <figcaption className="mt-2">
+            <p className="display text-xl m-0">{card.name}</p>
+            <p className="text-xs text-[var(--muted)] m-0 mt-1 leading-relaxed">{card.text}</p>
+          </figcaption>
         </figure>
       ))}
     </div>
@@ -64,8 +68,7 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Starter hand</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            Six English cards. Cost top-left, action in the frame, text at the bottom. No body
-            zone.
+            Six English cards. Each one applies an effect to the opponent. No body zone.
           </p>
           <CardGrid cards={hand} />
         </div>
@@ -91,8 +94,8 @@ export default async function CatalogPage() {
         <div>
           <h2 className="display text-4xl">Tentacle cards</h2>
           <p className="text-[var(--muted)] mt-2 max-w-xl">
-            English, no body zone. Birth is the Origin card: it summons this monster and grows
-            +1 SP.
+            English, no body zone. On hit the effect lands on the opponent. Birth is Origin:
+            it summons this monster, grows +1 SP, and Binds.
           </p>
           <CardGrid cards={tentacleHand} />
         </div>

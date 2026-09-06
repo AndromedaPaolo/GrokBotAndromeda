@@ -5,9 +5,10 @@
   "sp": 2,
   "zone": null,
   "character_archetype": "tentacle",
+  "drainAp": 1,
   "r2": "cards/tentacle_grasp/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/tentacle_grasp/art.webp" },
-  "text": "They catch a limb and will not let go.",
-  "notes": "Art shows the action only. No heroine. No body zone."
+  "text": "They catch a limb and will not let go. −1 AP.",
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: drain 1 AP."
 }

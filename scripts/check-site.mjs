@@ -13,12 +13,37 @@ assert.equal(hero.name, "Selene");
 assert.equal(hero.apparent_age, 27);
 
 const starter = {
-  slap: { sp: 1, text: "A sudden open-hand strike that snaps their focus." },
-  kiss: { sp: 2, text: "A close kiss that steals their next breath." },
-  grab: { sp: 2, text: "Seize them and hold their motion still." },
-  tease: { sp: 1, text: "A lingering look that breaks their guard." },
-  pin: { sp: 3, text: "Press in close and lock them down." },
-  whisper: { sp: 2, text: "Soft words that make them miss a beat." },
+  slap: {
+    sp: 1,
+    text: "A sudden open-hand strike that snaps their focus. Dazed: they act last.",
+    status: "dazed",
+  },
+  kiss: {
+    sp: 2,
+    text: "A close kiss that steals their next breath. −1 AP.",
+    drainAp: 1,
+  },
+  grab: {
+    sp: 2,
+    text: "Seize them and hold their motion still. Bound: they skip their next turn.",
+    status: "bound",
+  },
+  tease: {
+    sp: 1,
+    text: "A lingering look that breaks their guard. Wound: they take +1 damage.",
+    status: "wound",
+  },
+  pin: {
+    sp: 3,
+    text: "Press in close and lock them down. Bound: they skip their next turn.",
+    status: "bound",
+  },
+  whisper: {
+    sp: 2,
+    text: "Soft words that make them miss a beat. Blind: their next action misses.",
+    status: "blind",
+    deal: false,
+  },
 };
 
 for (const [id, expected] of Object.entries(starter)) {
@@ -28,6 +53,9 @@ for (const [id, expected] of Object.entries(starter)) {
   assert.equal(card.zone, null);
   assert.equal(card.character_archetype, "selene");
   assert.equal(card.text, expected.text);
+  assert.equal(card.status ?? null, expected.status ?? null);
+  assert.equal(card.drainAp ?? 0, expected.drainAp ?? 0);
+  assert.equal(card.deal ?? true, expected.deal ?? true);
   assert.match(card.notes, /No heroine/);
   assert.doesNotMatch(JSON.stringify(card), /Head|Chest|Arms|Legs/);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
@@ -46,32 +74,39 @@ const tentacleCards = {
   tentacle_lash: {
     kind: "monster_normal",
     sp: 3,
-    text: "A whipping strike that knocks their stance wide.",
+    text: "A whipping strike that knocks their stance wide. Wound: they take +1 damage.",
+    status: "wound",
   },
   tentacle_coil: {
     kind: "monster_normal",
     sp: 2,
-    text: "They wind tight and steal the next step.",
+    text: "They wind tight and steal the next step. Bound: they skip their next turn.",
+    status: "bound",
   },
   tentacle_slam: {
     kind: "monster_normal",
     sp: 3,
-    text: "A heavy crash that rattles the stone.",
+    text: "A heavy crash that rattles the stone. Dazed: they act last.",
+    status: "dazed",
   },
   tentacle_grasp: {
     kind: "monster_normal",
     sp: 2,
-    text: "They catch a limb and will not let go.",
+    text: "They catch a limb and will not let go. −1 AP.",
+    drainAp: 1,
   },
   tentacle_ink: {
     kind: "monster_normal",
     sp: 1,
-    text: "A dark burst that blinds the next strike.",
+    text: "A dark burst that blinds the next strike. Blind: their next action misses.",
+    status: "blind",
+    deal: false,
   },
   tentacle_birth: {
     kind: "monster_origin",
     sp: 4,
-    text: "A rift tears open and the tentacle takes form.",
+    text: "A rift tears open and the tentacle takes form. Bound: they skip their next turn.",
+    status: "bound",
   },
 };
 
@@ -83,6 +118,9 @@ for (const [id, expected] of Object.entries(tentacleCards)) {
   assert.equal(card.zone, null);
   assert.equal(card.character_archetype, "tentacle");
   assert.equal(card.text, expected.text);
+  assert.equal(card.status ?? null, expected.status ?? null);
+  assert.equal(card.drainAp ?? 0, expected.drainAp ?? 0);
+  assert.equal(card.deal ?? true, expected.deal ?? true);
   assert.doesNotMatch(JSON.stringify(card), /Head|Chest|Arms|Legs/);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
   assert.ok(existsSync(artPath), `missing art ${artPath}`);
@@ -93,6 +131,7 @@ const birth = JSON.parse(
 );
 assert.equal(birth.name, "Birth");
 assert.equal(birth.grows, true);
+assert.equal(birth.status, "bound");
 assert.ok(existsSync(path.join(root, "public/media/characters/monster_tentacle/body.webp")));
 
 const landing = readFileSync(path.join(root, "app/page.js"), "utf8");
@@ -228,11 +267,172 @@ if (afterManual.round === recovered.round) {
   assert.equal(allyAfter.currentAp, 4 + allyAfter.apGain);
 }
 
+const ordered = combat.sortTurnOrder([
+  { id: "slow", currentAp: 0, side: "ally", alterations: ["dazed"] },
+  { id: "fast", currentAp: 4, side: "enemy", alterations: [] },
+]);
+assert.equal(ordered[0].id, "fast");
+assert.equal(ordered[1].id, "slow");
+
+function walkToAlly(state) {
+  let s = combat.setAllyAuto(state, false);
+  let hops = 0;
+  while (hops < 16) {
+    const who = combat.currentActor(s);
+    if (who.side === "ally" && !combat.hasStatus(who, "bound")) break;
+    const id = s.actorId;
+    s = combat.continueFight(s, alwaysPlay);
+    if (s.actorId === id) s = combat.continueFight(s, alwaysPlay);
+    hops += 1;
+  }
+  return s;
+}
+
+let fx = walkToAlly(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(21),
+  }),
+);
+assert.equal(combat.currentActor(fx).side, "ally");
+const fxAlly = fx.units.find((u) => u.side === "ally");
+const fxEnemy = fx.units.find((u) => u.side === "enemy");
+fxAlly.currentAp = 6;
+fxAlly.alterations = [];
+const enemyLife = fxEnemy.life;
+const slapped = combat.playManualCard(fx, "slap");
+assert.deepEqual(slapped.stage.applied, ["dazed"]);
+assert.equal(slapped.stage.damage, 1);
+assert.equal(slapped.units.find((u) => u.side === "enemy").life, enemyLife - 1);
+assert.ok(combat.hasStatus(slapped.units.find((u) => u.side === "enemy"), "dazed"));
+const slappedAgain = combat.addStatus(slapped.units.find((u) => u.side === "enemy"), "dazed");
+assert.equal(slappedAgain, false);
+
+let grabFight = walkToAlly(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(22),
+  }),
+);
+grabFight.units.find((u) => u.side === "ally").currentAp = 6;
+grabFight.units.find((u) => u.side === "ally").alterations = [];
+const grabbed = combat.playManualCard(grabFight, "grab");
+assert.deepEqual(grabbed.stage.applied, ["bound"]);
+assert.ok(combat.hasStatus(grabbed.units.find((u) => u.side === "enemy"), "bound"));
+let afterGrab = combat.continueFight(grabbed, alwaysPlay);
+let grabHops = 0;
+while (combat.currentActor(afterGrab).side !== "enemy" && grabHops < 12) {
+  const who = combat.currentActor(afterGrab);
+  if (who.side === "ally") {
+    afterGrab =
+      (who.actionsThisTurn || 0) >= 1
+        ? combat.continueFight(afterGrab, alwaysPlay)
+        : combat.skipTurn(afterGrab);
+  } else {
+    afterGrab = combat.continueFight(afterGrab, alwaysPlay);
+  }
+  grabHops += 1;
+}
+assert.equal(combat.currentActor(afterGrab).side, "enemy");
+assert.ok(combat.hasStatus(afterGrab.units.find((u) => u.side === "enemy"), "bound"));
+const boundSkip = combat.continueFight(afterGrab, alwaysPlay);
+assert.equal(boundSkip.stage.boundSkip, true);
+assert.equal(boundSkip.stage.passed, true);
+assert.equal(combat.hasStatus(boundSkip.units.find((u) => u.side === "enemy"), "bound"), false);
+
+let kissFight = walkToAlly(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(23),
+  }),
+);
+const kissEnemy = kissFight.units.find((u) => u.side === "enemy");
+kissFight.units.find((u) => u.side === "ally").currentAp = 6;
+kissFight.units.find((u) => u.side === "ally").alterations = [];
+kissEnemy.currentAp = 3;
+const kissed = combat.playManualCard(kissFight, "kiss");
+assert.equal(kissed.stage.drained, 1);
+assert.equal(kissed.units.find((u) => u.side === "enemy").currentAp, 2);
+
+let woundFight = walkToAlly(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(24),
+  }),
+);
+woundFight.units.find((u) => u.side === "ally").currentAp = 6;
+woundFight.units.find((u) => u.side === "ally").alterations = [];
+const wounded = combat.playManualCard(woundFight, "tease");
+assert.ok(combat.hasStatus(wounded.units.find((u) => u.side === "enemy"), "wound"));
+const woundLife = wounded.units.find((u) => u.side === "enemy").life;
+wounded.stage.hold = false;
+wounded.units.find((u) => u.side === "ally").actionsThisTurn = 0;
+const woundSlap = combat.playManualCard(wounded, "slap");
+assert.equal(woundSlap.stage.damage, 2);
+assert.equal(woundSlap.units.find((u) => u.side === "enemy").life, woundLife - 2);
+
+let blindFight = walkToAlly(
+  combat.createFight({
+    hero,
+    monster,
+    heroCards,
+    monsterCards: monsterPool,
+    rng: combat.rngFromSeed(25),
+  }),
+);
+blindFight.units.find((u) => u.side === "ally").currentAp = 6;
+blindFight.units.find((u) => u.side === "ally").alterations = [];
+const whispered = combat.playManualCard(blindFight, "whisper");
+assert.deepEqual(whispered.stage.applied, ["blind"]);
+assert.equal(whispered.stage.damage, 0);
+assert.ok(combat.hasStatus(whispered.units.find((u) => u.side === "enemy"), "blind"));
+let afterWhisper = combat.continueFight(whispered, alwaysPlay);
+let blindHops = 0;
+let missedHit = afterWhisper;
+while (blindHops < 16) {
+  const who = combat.currentActor(afterWhisper);
+  if (who.side === "ally") {
+    afterWhisper =
+      (who.actionsThisTurn || 0) >= 1
+        ? combat.continueFight(afterWhisper, alwaysPlay)
+        : combat.skipTurn(afterWhisper);
+  } else {
+    missedHit = combat.continueFight(afterWhisper, alwaysPlay);
+    afterWhisper = missedHit;
+    if (missedHit.stage?.card) break;
+  }
+  blindHops += 1;
+}
+assert.equal(missedHit.stage.missed, true);
+assert.equal(missedHit.stage.damage, 0);
+assert.deepEqual(missedHit.stage.applied, []);
+assert.equal(combat.hasStatus(missedHit.units.find((u) => u.side === "enemy"), "blind"), false);
+
 let cursor = fight0;
 let guard = 0;
 while (combat.currentActor(cursor).side !== "ally" && guard < 12) {
   cursor = combat.continueFight(cursor, combat.rngFromSeed(30 + guard));
   guard += 1;
+}
+if (combat.hasStatus(combat.currentActor(cursor), "bound")) {
+  cursor = combat.continueFight(cursor, alwaysPlay);
+  guard = 0;
+  while (combat.currentActor(cursor).side !== "ally" && guard < 12) {
+    cursor = combat.continueFight(cursor, combat.rngFromSeed(50 + guard));
+    guard += 1;
+  }
 }
 assert.equal(combat.currentActor(cursor).side, "ally");
 const skipperId = cursor.actorId;
@@ -254,8 +454,10 @@ const leftover = {};
 while (roundWalk.round === 1 && guard < 40) {
   const who = combat.currentActor(roundWalk);
   leftover[who.id] = who.currentAp;
-  if (who.side === "ally") roundWalk = combat.skipTurn(roundWalk);
-  else roundWalk = combat.continueFight(roundWalk, combat.rngFromSeed(40 + guard));
+  if (who.side === "ally") {
+    if (combat.hasStatus(who, "bound")) roundWalk = combat.continueFight(roundWalk);
+    else roundWalk = combat.skipTurn(roundWalk);
+  } else roundWalk = combat.continueFight(roundWalk, combat.rngFromSeed(40 + guard));
   guard += 1;
 }
 assert.equal(roundWalk.round, 2);
@@ -275,6 +477,10 @@ assert.match(playUi, /data-testid="stage"/);
 assert.match(playUi, /data-testid="stage-ap"/);
 assert.match(playUi, /AP non spesi restano/);
 assert.match(playUi, /Skip turn/);
+assert.match(playUi, /now-actor-effects/);
+assert.match(playUi, /Immobilizzato/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
+const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
+assert.match(catalogUi, /figcaption/);
 
 console.log("catalog + landing checks ok");

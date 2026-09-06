@@ -5,9 +5,11 @@
   "sp": 1,
   "zone": null,
   "character_archetype": "tentacle",
+  "status": "blind",
+  "deal": false,
   "r2": "cards/tentacle_ink/",
   "files": ["art.webp"],
   "public": { "art": "/media/cards/tentacle_ink/art.webp" },
-  "text": "A dark burst that blinds the next strike.",
-  "notes": "Art shows the action only. No heroine. No body zone."
+  "text": "A dark burst that blinds the next strike. Blind: their next action misses.",
+  "notes": "Art shows the action only. No heroine. No body zone. On hit: Blind. No damage."
 }

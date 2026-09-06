@@ -11,3 +11,4 @@ Carte mostro / Bond / Origin: `zone` = `null`.
 Il primo mostro Tentacle ha 5 carte normali (`tentacle_lash`, `tentacle_coil`, `tentacle_slam`, `tentacle_grasp`, `tentacle_ink`) e 1 Origin: `tentacle_birth` (carta Birth, `kind: monster_origin`, cresce +1 SP). L’arte mostra l’azione o l’evocazione, non una ragazza.
 
 Combattimento: una carta a turno (o passa). Gli AP non spesi restano e al round nuovo si somma `carte/6`. Una carta può avere `recoverAp` per restituire AP dopo il costo.
+Effetti sull’avversario (`status`, `drainAp`, `deal: false`). Non stackano. `blind` fa mancare la prossima azione, `bound` salta il prossimo turno, `dazed` agisce per ultimo, `wound` è +1 danno subito. Blind e Bound si consumano; Dazed e Wound restano fino a fine scontro.
