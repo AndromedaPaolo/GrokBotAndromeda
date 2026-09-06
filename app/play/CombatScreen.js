@@ -170,7 +170,7 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
         </nav>
       </header>
 
-      <div className="combat-board px-3 sm:px-5 pb-6 flex-1">
+      <div className="combat-board px-3 sm:px-5 pb-6 flex-1" data-testid="combat-layout-below">
         <div className="turn-bar frame rounded-xl px-3 py-2" data-testid="turn-bar">
           <p className="text-[10px] uppercase tracking-[0.22em] text-[var(--gold)] mb-2">
             Turno {fight.round} · una carta ciascuno · AP non spesi restano
