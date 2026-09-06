@@ -236,7 +236,9 @@ for (const unit of fight0.units) {
   assert.equal(unit.apGain, 1);
   assert.equal(unit.currentAp, 1);
   assert.ok(unit.life > 0);
+  assert.equal(unit.maxLife, unit.life);
 }
+assert.equal(combat.nextToAct(fight0).id, combat.currentActor(fight0).id);
 
 const firstActor = combat.currentActor(fight0);
 if (firstActor.side === "enemy") {
@@ -648,9 +650,15 @@ assert.match(playUi, /data-testid="continue-btn"/);
 assert.match(playUi, /data-testid="skip-btn"/);
 assert.match(playUi, /data-testid="now-actor"/);
 assert.match(playUi, /data-testid="now-actor-status"/);
+assert.match(playUi, /data-testid="now-actor-life"/);
 assert.match(playUi, /Di turno/);
 assert.match(playUi, /data-testid="stage"/);
 assert.match(playUi, /data-testid="stage-ap"/);
+assert.match(playUi, /data-testid="last-card"/);
+assert.match(playUi, /data-testid="next-hand"/);
+assert.match(playUi, /Prossimo di turno/);
+assert.match(playUi, /Quello che succede/);
+assert.match(playUi, /Ultima carta/);
 assert.match(playUi, /AP non spesi restano/);
 assert.match(playUi, /Skip turn/);
 assert.match(playUi, /now-actor-effects/);
@@ -659,15 +667,16 @@ assert.match(playUi, /data-testid="stage-rules"/);
 assert.match(playUi, /cardAppliesLine/);
 assert.match(playUi, /effectBadge/);
 assert.match(playUi, /now-actor-art/);
-assert.match(playUi, /stage-art/);
-assert.match(playUi, /combat-layout-below/);
+assert.match(playUi, /combat-layout-split/);
 assert.doesNotMatch(playUi, /absolute left-3 bottom-3/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
 const playCss = readFileSync(path.join(root, "app/globals.css"), "utf8");
 assert.match(playCss, /grid-column: 1 \/ -1/);
 assert.match(playCss, /now-actor-art/);
-assert.match(playCss, /minmax\(380px/);
+assert.match(playCss, /minmax\(260px/);
+assert.match(playCss, /\.result-col/);
+assert.match(playCss, /\.next-hand/);
 assert.match(playUi, /danno /);
 assert.match(playUi, /resistito/);
 assert.match(catalogUi, /cardAppliesLine/);
