@@ -119,43 +119,92 @@ button {
   display: grid;
   gap: 0.85rem 1.1rem;
   grid-template-columns: 1fr;
-  grid-template-areas:
-    "turns"
-    "now"
-    "enemy"
-    "stage"
-    "ally";
+  grid-template-rows: auto auto auto auto auto;
 }
 
 .turn-bar {
-  grid-area: turns;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .now-actor {
-  grid-area: now;
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+}
+
+.now-actor-art {
+  position: relative;
+  min-height: 52vh;
+  background: #000;
 }
 
 .enemy-row {
-  grid-area: enemy;
+  grid-column: 1;
+  grid-row: 3;
 }
 
 .ally-row {
-  grid-area: ally;
+  grid-column: 1;
+  grid-row: 4;
 }
 
 .stage-col {
-  grid-area: stage;
+  grid-column: 1;
+  grid-row: 5;
   min-height: 0;
+}
+
+.stage-art {
+  position: relative;
+  width: 100%;
+  max-width: 13.5rem;
+  aspect-ratio: 3 / 4;
+  background: #000;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.stage-art.is-video {
+  max-width: 22rem;
+  aspect-ratio: 16 / 9;
 }
 
 @media (min-width: 960px) {
   .combat-board {
-    grid-template-columns: 200px minmax(0, 1fr) minmax(280px, 38%);
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas:
-      "turns turns turns"
-      "now enemy stage"
-      "now ally stage";
+    grid-template-columns: minmax(380px, 42%) minmax(0, 1fr);
+    grid-template-rows: auto minmax(220px, 1fr) auto auto;
     align-items: stretch;
+    min-height: calc(100vh - 4.75rem);
+  }
+
+  .turn-bar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .now-actor {
+    grid-column: 1;
+    grid-row: 2 / 4;
+  }
+
+  .now-actor-art {
+    min-height: 0;
+    flex: 1;
+  }
+
+  .enemy-row {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .ally-row {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .stage-col {
+    grid-column: 1 / -1;
+    grid-row: 4;
   }
 }
