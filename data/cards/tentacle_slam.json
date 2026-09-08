@@ -11,10 +11,12 @@
     "art.webp"
   ],
   "public": {
-    "art": "/media/cards/tentacle_slam/art.webp"
+    "art": "/media/cards/tentacle_slam/art.webp",
+    "video": "/media/videos/monster_tentacle.tentacle_slam.hit/master.mp4",
+    "poster": "/media/videos/monster_tentacle.tentacle_slam.hit/poster.jpg"
   },
   "flavor": "A heavy crash that rattles the stone",
   "text": "A heavy crash that rattles the stone. Applies Dazed (20%): they act last in the turn order. Cost is damage (3).",
-  "notes": "Art shows the action only. No heroine. No body zone.",
+  "notes": "Art shows the action only. No heroine. No body zone. Combat video shows the attack on Selene, SFW sexy, invented adult 27.",
   "category": "normal"
 }

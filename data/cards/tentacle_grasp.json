@@ -11,10 +11,12 @@
     "art.webp"
   ],
   "public": {
-    "art": "/media/cards/tentacle_grasp/art.webp"
+    "art": "/media/cards/tentacle_grasp/art.webp",
+    "video": "/media/videos/monster_tentacle.tentacle_grasp.hit/master.mp4",
+    "poster": "/media/videos/monster_tentacle.tentacle_grasp.hit/poster.jpg"
   },
   "flavor": "They catch a limb and will not let go",
   "text": "They catch a limb and will not let go. Applies Drain (20%): they lose 1 AP. Cost is damage (2).",
-  "notes": "Art shows the action only. No heroine. No body zone.",
+  "notes": "Art shows the action only. No heroine. No body zone. Combat video shows the attack on Selene, SFW sexy, invented adult 27.",
   "category": "normal"
 }

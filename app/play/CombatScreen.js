@@ -257,12 +257,17 @@ export default function CombatScreen({ hero, monster, heroCards, monsterCards })
             <div className="action-frame" data-testid="stage">
               {media?.type === "video" && media.src ? (
                 <video
-                  key={media.src + (lastCard?.id ?? "")}
+                  key={`${media.src}:${fight.round}:${fight.actorId}:${stage?.apLeft}`}
                   src={media.src}
-                  className="absolute inset-0 w-full h-full object-contain"
+                  poster={lastCard?.public?.poster || lastCard?.public?.art}
+                  className="absolute inset-0 w-full h-full object-contain bg-black"
                   controls
                   playsInline
                   muted
+                  autoPlay
+                  loop
+                  preload="auto"
+                  data-testid="stage-video"
                 />
               ) : media?.src ? (
                 <img

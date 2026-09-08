@@ -8,10 +8,16 @@
   "grows": true,
   "status": "dazed",
   "r2": "cards/tentacle_birth/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_birth/art.webp" },
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_birth/art.webp",
+    "video": "/media/videos/monster_tentacle.tentacle_birth.hit/master.mp4",
+    "poster": "/media/videos/monster_tentacle.tentacle_birth.hit/poster.jpg"
+  },
   "flavor": "A rift tears open and the tentacle takes form",
   "text": "A rift tears open and the tentacle takes form. Applies Dazed (80%): they act last in the turn order. Cost is damage (4).",
-  "notes": "Origin card (Birth). Summons this monster. Grows +1 SP on each growth. Art shows the summoning, not a heroine. No body zone.",
+  "notes": "Origin card (Birth). Summons this monster. Grows +1 SP on each growth. Art shows the summoning, not a heroine. No body zone. Combat video shows the attack on Selene, SFW sexy, invented adult 27.",
   "category": "origin"
 }

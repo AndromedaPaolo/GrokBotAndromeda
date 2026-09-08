@@ -138,6 +138,11 @@ for (const [id, expected] of Object.entries(tentacleCards)) {
   assert.doesNotMatch(JSON.stringify(card), /\bbound\b/i);
   const artPath = path.join(root, "public", card.public.art.replace(/^\//, ""));
   assert.ok(existsSync(artPath), `missing art ${artPath}`);
+  assert.match(card.public.video, /\/media\/videos\/monster_tentacle\./);
+  const videoPath = path.join(root, "public", card.public.video.replace(/^\//, ""));
+  const posterPath = path.join(root, "public", card.public.poster.replace(/^\//, ""));
+  assert.ok(existsSync(videoPath), `missing video ${videoPath}`);
+  assert.ok(existsSync(posterPath), `missing poster ${posterPath}`);
 }
 
 const birth = JSON.parse(
@@ -166,6 +171,12 @@ const monsterPool = monsterCardIds.map((id) =>
 const drawn = combat.drawHand(monsterPool, 6, rng);
 assert.equal(drawn.length, 6);
 assert.equal(new Set(drawn.map((c) => c.id)).size, 6);
+for (const card of monsterPool) {
+  const media = combat.stageMedia(card);
+  assert.equal(media.type, "video");
+  assert.equal(media.src, card.public.video);
+}
+assert.equal(combat.stageMedia(heroCards[0]).type, "image");
 
 const allCards = [...heroCards, ...monsterPool];
 assert.equal(combat.cardCategory(heroCards[0]), "normal");
@@ -256,6 +267,7 @@ const alwaysLand = () => 0;
 const fight1 = combat.continueFight(fight0, alwaysPlay);
 assert.ok(fight1.stage, "Continue must put an action on the stage");
 assert.ok(fight1.stage.media?.src);
+assert.equal(fight1.stage.media.type, "video");
 assert.equal(fight1.stage.hold, true);
 assert.equal(fight1.recentCards.length, 1);
 assert.equal(fight1.recentCards[0].id, fight1.stage.card.id);
@@ -679,6 +691,8 @@ assert.match(playUi, /now-actor-art/);
 assert.match(playUi, /combat-layout-split/);
 assert.match(playUi, /combat-mid/);
 assert.match(playUi, /last-card-row/);
+assert.match(playUi, /data-testid="stage-video"/);
+assert.match(playUi, /autoPlay/);
 assert.doesNotMatch(playUi, /absolute left-3 bottom-3/);
 assert.doesNotMatch(playUi, /setTimeout|setInterval/);
 const catalogUi = readFileSync(path.join(root, "app/play/catalog/page.js"), "utf8");
