@@ -7,10 +7,16 @@
   "character_archetype": "tentacle",
   "drainAp": 1,
   "r2": "cards/tentacle_coil/",
-  "files": ["art.webp"],
-  "public": { "art": "/media/cards/tentacle_coil/art.webp" },
+  "files": [
+    "art.webp"
+  ],
+  "public": {
+    "art": "/media/cards/tentacle_coil/art.webp",
+    "video": "/media/videos/monster_tentacle.tentacle_coil.hit/master.mp4",
+    "poster": "/media/videos/monster_tentacle.tentacle_coil.hit/poster.jpg"
+  },
   "flavor": "They wind tight and steal the next step",
   "text": "They wind tight and steal the next step. Applies Drain (20%): they lose 1 AP. Cost is damage (2).",
-  "notes": "Art shows the action only. No heroine. No body zone.",
+  "notes": "Art shows the action only. No heroine. No body zone. Combat video shows the attack on Selene, SFW sexy, invented adult 27.",
   "category": "normal"
 }
